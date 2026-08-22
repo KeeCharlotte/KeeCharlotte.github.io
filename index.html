@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KeeCharlotte</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111827;
+            color: #f9fafb;
+        }
+
+        header {
+            text-align: center;
+            padding: 100px 20px 60px;
+        }
+
+        header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        header p {
+            color: #9ca3af;
+            font-size: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #1f2937;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .card p {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>KeeCharlotte</h1>
+
+    <p>
+        Developer · Writer · Creator
+    </p>
+</header>
+
+
+<main class="container">
+
+    <h2>My Projects</h2>
+
+    <div class="projects">
+
+        <div class="card">
+            <h2>🎮 Games</h2>
+
+            <p>
+                遊戲開發中的作品。
+            </p>
+
+            <a class="button" href="#">
+                View Projects
+            </a>
+        </div>
+
+
+        <div class="card">
+            <h2>💻 Software</h2>
+
+            <p>
+                程式系統、工具與其他軟體專案。
+            </p>
+
+            <a class="button" href="#">
+                View Projects
+            </a>
+        </div>
+
+
+        <div class="card">
+            <h2>📖 Writing</h2>
+
+            <p>
+                小說與其他創作作品。
+            </p>
+
+            <a class="button" href="#">
+                View Works
+            </a>
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+    © 2026 KeeCharlotte
+</footer>
+
+</body>
+</html>
