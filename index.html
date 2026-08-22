@@ -1,1001 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>KeeCharlotte — Portfolio</title>
-
-    <style>
-        /* =========================================
-           GLOBAL
-        ========================================= */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            background: #0a0a0a;
-            color: #f5f5f5;
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-
-        /* =========================================
-           HEADER
-        ========================================= */
-
-        header {
-            min-height: 45vh;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            text-align: center;
-
-            padding: 80px 20px;
-        }
-
-        .name {
-            font-size: clamp(42px, 8vw, 90px);
-            font-weight: 700;
-            letter-spacing: -3px;
-
-            margin: 0;
-        }
-
-        .subtitle {
-            margin-top: 20px;
-
-            color: #888;
-
-            font-size: 18px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-
-        /* =========================================
-           MAIN
-        ========================================= */
-
-        main {
-            width: min(1200px, 92%);
-            margin: auto;
-        }
-
-        .section-title {
-            text-align: center;
-
-            margin-bottom: 50px;
-
-            font-size: 28px;
-            letter-spacing: 5px;
-        }
-
-
-        /* =========================================
-           CATEGORY GRID
-        ========================================= */
-
-        .categories {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(280px, 1fr));
-
-            gap: 18px;
-
-            padding-bottom: 100px;
-        }
-
-
-        .category {
-            position: relative;
-
-            min-height: 190px;
-
-            padding: 30px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #171717,
-                    #101010
-                );
-
-            border: 1px solid #292929;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.25s ease,
-                border-color 0.25s ease,
-                background 0.25s ease;
-        }
-
-        .category:hover {
-            transform: translateY(-6px);
-
-            border-color: #666;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #202020,
-                    #141414
-                );
-        }
-
-        .category-number {
-            position: absolute;
-
-            top: 20px;
-            right: 25px;
-
-            color: #444;
-
-            font-size: 14px;
-        }
-
-        .category h2 {
-            margin: 0;
-
-            font-size: 24px;
-            letter-spacing: 2px;
-        }
-
-        .category p {
-            margin: 10px 0 0;
-
-            color: #777;
-
-            font-size: 14px;
-        }
-
-
-        /* =========================================
-           PAGE SYSTEM
-        ========================================= */
-
-        .page {
-            display: none;
-
-            padding: 60px 0 100px;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-
-        .back-button {
-            display: inline-block;
-
-            margin-bottom: 40px;
-
-            color: #999;
-
-            background: none;
-
-            border: none;
-
-            cursor: pointer;
-
-            font-size: 14px;
-
-            padding: 0;
-        }
-
-        .back-button:hover {
-            color: white;
-        }
-
-
-        /* =========================================
-           PROJECT LIST
-        ========================================= */
-
-        .project-list {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(280px, 1fr));
-
-            gap: 20px;
-        }
-
-
-        .project {
-            padding: 30px;
-
-            background: #151515;
-
-            border: 1px solid #292929;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.25s ease,
-                border-color 0.25s ease;
-        }
-
-        .project:hover {
-            transform: translateY(-5px);
-
-            border-color: #666;
-        }
-
-        .project h3 {
-            margin-top: 0;
-
-            font-size: 22px;
-        }
-
-        .project p {
-            color: #888;
-
-            line-height: 1.6;
-        }
-
-        .status {
-            display: inline-block;
-
-            margin-top: 10px;
-
-            padding: 5px 10px;
-
-            border: 1px solid #333;
-
-            color: #999;
-
-            font-size: 12px;
-        }
-
-
-        /* =========================================
-           PROJECT DETAIL
-        ========================================= */
-
-        .project-detail {
-            max-width: 800px;
-
-            margin: auto;
-        }
-
-        .project-detail h1 {
-            font-size: clamp(36px, 7vw, 64px);
-
-            margin-bottom: 20px;
-        }
-
-        .project-detail p {
-            color: #999;
-
-            font-size: 17px;
-
-            line-height: 1.8;
-        }
-
-        .info {
-            margin-top: 40px;
-
-            padding: 25px;
-
-            background: #151515;
-
-            border: 1px solid #292929;
-        }
-
-        .info h3 {
-            margin-top: 0;
-        }
-
-
-        .github-button {
-            display: inline-block;
-
-            margin-top: 35px;
-
-            padding: 13px 22px;
-
-            background: white;
-
-            color: black;
-
-            font-weight: 600;
-
-            transition: opacity 0.2s ease;
-        }
-
-        .github-button:hover {
-            opacity: 0.8;
-        }
-
-
-        /* =========================================
-           FOOTER
-        ========================================= */
-
-        footer {
-            padding: 60px 20px;
-
-            text-align: center;
-
-            color: #555;
-
-            font-size: 13px;
-        }
-
-
-        /* =========================================
-           MOBILE
-        ========================================= */
-
-        @media (max-width: 600px) {
-
-            header {
-                min-height: 40vh;
-            }
-
-            .categories {
-                grid-template-columns: 1fr;
-            }
-
-            .category {
-                min-height: 160px;
-            }
-        }
-
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="KeeCharlotte — Life portfolio, ability archive, and personal record.">
+  <title>KeeCharlotte — Life Portfolio</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --surface: rgba(255,255,255,.055);
+      --surface-strong: rgba(255,255,255,.085);
+      --line: rgba(255,255,255,.12);
+      --line-strong: rgba(255,255,255,.24);
+      --text: #f5f5f7;
+      --muted: #a1a1a6;
+      --muted-2: #6e6e73;
+      --radius-lg: 30px;
+      --radius-md: 22px;
+      --ease: cubic-bezier(.2,.75,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(90,110,255,.13), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, a { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: rgba(143,161,255,.28); }
+
+    .view { display: none; min-height: 100vh; }
+    .view.active { display: block; animation: viewIn .55s var(--ease) both; }
+    @keyframes viewIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+    .topbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      font-weight: 650;
+      letter-spacing: -.02em;
+      cursor: pointer;
+    }
+
+    .topbar-note {
+      color: var(--muted-2);
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .portal {
+      min-height: 100vh;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .portal::before,
+    .portal::after {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      width: 34rem;
+      height: 34rem;
+      border-radius: 999px;
+      filter: blur(90px);
+      opacity: .16;
+      pointer-events: none;
+    }
+    .portal::before { top: -15rem; right: -10rem; background: #6d7cff; }
+    .portal::after { bottom: -18rem; left: -12rem; background: #9d67ff; opacity: .10; }
+
+    .portal-main {
+      min-height: calc(100vh - 76px);
+      display: grid;
+      align-content: center;
+      padding: 72px 0 92px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--muted-2);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .20em;
+      text-transform: uppercase;
+    }
+
+    .portal-title {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(64px, 10vw, 138px);
+      line-height: .88;
+      letter-spacing: -.075em;
+      font-weight: 720;
+    }
+
+    .portal-lede {
+      max-width: 580px;
+      margin: 30px 0 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.5;
+      letter-spacing: -.02em;
+    }
+
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 64px;
+    }
+
+    .portal-card {
+      min-height: 300px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+      box-shadow: inset 0 1px rgba(255,255,255,.06), 0 30px 80px rgba(0,0,0,.20);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .45s var(--ease), border-color .35s ease, background .35s ease;
+    }
+
+    .portal-card::after {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      border-radius: 999px;
+      right: -90px;
+      bottom: -110px;
+      filter: blur(4px);
+      opacity: .52;
+      transition: transform .55s var(--ease), opacity .35s ease;
+      pointer-events: none;
+    }
+
+    .portal-card.ability::after { background: radial-gradient(circle at 35% 35%, #c0c9ff, #5865f2 45%, transparent 72%); }
+    .portal-card.about::after { background: radial-gradient(circle at 35% 35%, #fff, #777 42%, transparent 72%); opacity: .30; }
+
+    .portal-card:hover,
+    .portal-card:focus-visible {
+      transform: translateY(-7px);
+      border-color: var(--line-strong);
+      background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.035));
+      outline: none;
+    }
+    .portal-card:hover::after,
+    .portal-card:focus-visible::after { transform: translate(-18px, -16px) scale(1.07); opacity: .70; }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted-2);
+      font-size: 12px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      font-size: 20px;
+      transition: transform .35s var(--ease), background .25s ease;
+    }
+    .portal-card:hover .arrow { transform: translate(3px, -3px); background: rgba(255,255,255,.10); }
+
+    .card-copy { position: relative; z-index: 1; max-width: 72%; }
+    .card-copy h2 {
+      margin: 0;
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+    .card-copy p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .subpage { padding-bottom: 80px; }
+    .subpage-hero { padding: 84px 0 58px; }
+    .subpage-title {
+      margin: 0;
+      font-size: clamp(54px, 8vw, 104px);
+      line-height: .95;
+      letter-spacing: -.065em;
+    }
+    .subpage-intro {
+      max-width: 620px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 0;
+      cursor: pointer;
+      transition: color .2s ease, transform .2s ease;
+    }
+    .back-link:hover { color: var(--text); transform: translateX(-2px); }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 22px 0 80px;
+    }
+
+    .category {
+      min-height: 210px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,.032);
+      cursor: pointer;
+      text-align: left;
+      overflow: hidden;
+      transition: transform .32s var(--ease), border-color .25s ease, background .25s ease;
+    }
+    .category:hover,
+    .category:focus-visible {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,.27);
+      background: rgba(255,255,255,.057);
+      outline: none;
+    }
+    .category-number { color: var(--muted-2); font-size: 12px; letter-spacing: .12em; }
+    .category-bottom { position: relative; z-index: 1; }
+    .category h2 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing: -.035em;
+    }
+    .category p { max-width: 470px; margin: 10px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+
+    .detail-wrap { padding: 36px 0 100px; }
+    .detail-title {
+      margin: 32px 0 46px;
+      font-size: clamp(44px, 6vw, 76px);
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .project-card,
+    .empty-card,
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,.035);
+    }
+    .project-card {
+      padding: 28px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .3s var(--ease), border-color .25s ease, background .25s ease;
+    }
+    .project-card:hover,
+    .project-card:focus-visible { transform: translateY(-4px); border-color: var(--line-strong); background: rgba(255,255,255,.055); outline: none; }
+    .project-card h3, .empty-card h3 { margin: 0; font-size: 23px; letter-spacing: -.025em; }
+    .project-card p, .empty-card p { margin: 12px 0 0; color: var(--muted); line-height: 1.65; }
+    .empty-card { padding: 32px; }
+    .status {
+      display: inline-flex;
+      margin-top: 20px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .project-detail { max-width: 800px; }
+    .project-detail .detail-title { margin-bottom: 22px; }
+    .project-description { color: var(--muted); font-size: 18px; line-height: 1.75; }
+    .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin-top: 38px; }
+    .info-card { padding: 24px; }
+    .info-card h3 { margin: 0 0 10px; color: var(--muted-2); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+    .info-card p { margin: 0; line-height: 1.55; }
+    .github-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 13px 18px;
+      border-radius: 999px;
+      background: #f5f5f7;
+      color: #050505;
+      font-size: 13px;
+      font-weight: 700;
+      transition: transform .25s var(--ease), opacity .2s ease;
+    }
+    .github-button:hover { transform: translateY(-2px); opacity: .88; }
+
+    .about-stage {
+      min-height: calc(100vh - 76px);
+      display: grid;
+      align-content: center;
+      padding: 70px 0 110px;
+    }
+    .about-panel {
+      padding: clamp(30px, 6vw, 72px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.022));
+    }
+    .about-panel h1 {
+      margin: 0;
+      font-size: clamp(58px, 9vw, 112px);
+      line-height: .94;
+      letter-spacing: -.065em;
+    }
+    .about-panel p {
+      max-width: 620px;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .coming-soon {
+      display: inline-flex;
+      margin-top: 34px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted-2);
+      font-size: 11px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    footer {
+      padding: 42px 0;
+      color: var(--muted-2);
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 28px, 1180px); }
+      .topbar { min-height: 66px; }
+      .topbar-note { display: none; }
+      .portal-main { min-height: calc(100vh - 66px); padding: 48px 0 64px; }
+      .portal-title { font-size: clamp(58px, 18vw, 88px); }
+      .portal-lede { margin-top: 22px; }
+      .portal-grid { grid-template-columns: 1fr; margin-top: 44px; }
+      .portal-card { min-height: 230px; padding: 24px; border-radius: 24px; }
+      .card-copy { max-width: 82%; }
+      .subpage-hero { padding: 54px 0 38px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category { min-height: 180px; }
+      .info-grid { grid-template-columns: 1fr; }
+      .about-stage { min-height: calc(100vh - 66px); padding: 44px 0 76px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
-
-
 <body>
+  <div id="portalPage" class="view active portal">
+    <div class="shell">
+      <nav class="topbar" aria-label="Primary">
+        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
+        <span class="topbar-note">Life Portfolio · 2026</span>
+      </nav>
+      <main class="portal-main">
+        <div>
+          <p class="eyebrow">Personal archive</p>
+          <h1 class="portal-title">KeeCharlotte.</h1>
+          <p class="portal-lede">A living record of what I can build, learn, create, and experience.</p>
 
+          <div class="portal-grid" aria-label="Portfolio sections">
+            <button class="portal-card ability" type="button" onclick="showAbility()">
+              <span class="card-top"><span>01 · Capability archive</span><span class="arrow" aria-hidden="true">↗</span></span>
+              <span class="card-copy">
+                <h2>Ability</h2>
+                <p>Projects, craft, discipline, knowledge, and the things I can do.</p>
+              </span>
+            </button>
 
-<!-- =========================================
-     HOME
-========================================= -->
-
-<div id="homePage" class="page active">
-
-    <header>
-
-        <h1 class="name">
-            KeeCharlotte
-        </h1>
-
-        <div class="subtitle">
-            Developer · Creator · Writer
+            <button class="portal-card about" type="button" onclick="showAbout()">
+              <span class="card-top"><span>02 · Personal record</span><span class="arrow" aria-hidden="true">↗</span></span>
+              <span class="card-copy">
+                <h2>About me</h2>
+                <p>The quieter side of the archive — life, interests, experiences, and records.</p>
+              </span>
+            </button>
+          </div>
         </div>
-
-    </header>
-
-
-    <main>
-
-        <h2 class="section-title">
-            PORTFOLIO
-        </h2>
-
-
-        <div class="categories">
-
-
-            <!-- 01 -->
-            <div
-                class="category"
-                onclick="openCategory('Achievements')"
-            >
-
-                <span class="category-number">
-                    01
-                </span>
-
-                <h2>
-                    ACHIEVEMENTS
-                </h2>
-
-                <p>
-                    Milestones, accomplishments and completed works.
-                </p>
-
-            </div>
-
-
-            <!-- 02 -->
-            <div
-                class="category"
-                onclick="openCategory('Games')"
-            >
-
-                <span class="category-number">
-                    02
-                </span>
-
-                <h2>
-                    GAMES
-                </h2>
-
-                <p>
-                    Game development and interactive experiences.
-                </p>
-
-            </div>
-
-
-            <!-- 03 -->
-            <div
-                class="category"
-                onclick="openCategory('Software')"
-            >
-
-                <span class="category-number">
-                    03
-                </span>
-
-                <h2>
-                    SOFTWARE
-                </h2>
-
-                <p>
-                    Systems, tools and software projects.
-                </p>
-
-            </div>
-
-
-            <!-- 04 -->
-            <div
-                class="category"
-                onclick="openCategory('Music')"
-            >
-
-                <span class="category-number">
-                    04
-                </span>
-
-                <h2>
-                    MUSIC
-                </h2>
-
-                <p>
-                    Music, composition and sound projects.
-                </p>
-
-            </div>
-
-
-            <!-- 05 -->
-            <div
-                class="category"
-                onclick="openCategory('Art')"
-            >
-
-                <span class="category-number">
-                    05
-                </span>
-
-                <h2>
-                    ART
-                </h2>
-
-                <p>
-                    Visual art, design and creative works.
-                </p>
-
-            </div>
-
-
-            <!-- 06 -->
-            <div
-                class="category"
-                onclick="openCategory('Discipline')"
-            >
-
-                <span class="category-number">
-                    06
-                </span>
-
-                <h2>
-                    DISCIPLINE
-                </h2>
-
-                <p>
-                    Training, practice and self-development.
-                </p>
-
-            </div>
-
-
-            <!-- 07 -->
-            <div
-                class="category"
-                onclick="openCategory('Fiction')"
-            >
-
-                <span class="category-number">
-                    07
-                </span>
-
-                <h2>
-                    FICTION
-                </h2>
-
-                <p>
-                    Novels, stories and fictional worlds.
-                </p>
-
-            </div>
-
-
-            <!-- 08 -->
-            <div
-                class="category"
-                onclick="openCategory('Survival Skills')"
-            >
-
-                <span class="category-number">
-                    08
-                </span>
-
-                <h2>
-                    SURVIVAL SKILLS
-                </h2>
-
-                <p>
-                    Practical knowledge and survival skills.
-                </p>
-
-            </div>
-
-
-            <!-- 09 -->
-            <div
-                class="category"
-                onclick="openCategory('Civilizational Mastery')"
-            >
-
-                <span class="category-number">
-                    09
-                </span>
-
-                <h2>
-                    CIVILIZATIONAL MASTERY
-                </h2>
-
-                <p>
-                    Knowledge concerning civilization and its development.
-                </p>
-
-            </div>
-
-
-            <!-- 10 -->
-            <div
-                class="category"
-                onclick="openCategory('Cognition')"
-            >
-
-                <span class="category-number">
-                    10
-                </span>
-
-                <h2>
-                    COGNITION
-                </h2>
-
-                <p>
-                    Thinking, learning and cognitive exploration.
-                </p>
-
-            </div>
-
-
+      </main>
+      <footer>© 2026 KeeCharlotte</footer>
+    </div>
+  </div>
+
+  <div id="abilityPage" class="view subpage">
+    <div class="shell">
+      <nav class="topbar" aria-label="Ability navigation">
+        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
+        <button class="back-link" type="button" onclick="showPortal()">← Overview</button>
+      </nav>
+
+      <header class="subpage-hero">
+        <p class="eyebrow">01 · Capability archive</p>
+        <h1 class="subpage-title">Ability.</h1>
+        <p class="subpage-intro">Ten dimensions of work, skill, knowledge, and long-term practice.</p>
+      </header>
+
+      <main class="category-grid" aria-label="Ability categories">
+        <button class="category" type="button" onclick="openCategory('Achievements')"><span class="category-number">01</span><span class="category-bottom"><h2>ACHIEVEMENTS</h2><p>Milestones, accomplishments and completed works.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Games')"><span class="category-number">02</span><span class="category-bottom"><h2>GAMES</h2><p>Game development and interactive experiences.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Software')"><span class="category-number">03</span><span class="category-bottom"><h2>SOFTWARE</h2><p>Systems, tools and software projects.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Music')"><span class="category-number">04</span><span class="category-bottom"><h2>MUSIC</h2><p>Music, composition and sound projects.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Art')"><span class="category-number">05</span><span class="category-bottom"><h2>ART</h2><p>Visual art, design and creative works.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Discipline')"><span class="category-number">06</span><span class="category-bottom"><h2>DISCIPLINE</h2><p>Training, practice and self-development.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Fiction')"><span class="category-number">07</span><span class="category-bottom"><h2>FICTION</h2><p>Novels, stories and fictional worlds.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Survival Skills')"><span class="category-number">08</span><span class="category-bottom"><h2>SURVIVAL SKILLS</h2><p>Practical knowledge and survival skills.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Civilizational Mastery')"><span class="category-number">09</span><span class="category-bottom"><h2>CIVILIZATIONAL MASTERY</h2><p>Knowledge concerning civilization and its development.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Cognition')"><span class="category-number">10</span><span class="category-bottom"><h2>COGNITION</h2><p>Thinking, learning and cognitive exploration.</p></span></button>
+      </main>
+      <footer>© 2026 KeeCharlotte</footer>
+    </div>
+  </div>
+
+  <div id="aboutPage" class="view subpage">
+    <div class="shell">
+      <nav class="topbar" aria-label="About navigation">
+        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
+        <button class="back-link" type="button" onclick="showPortal()">← Overview</button>
+      </nav>
+      <main class="about-stage">
+        <section class="about-panel">
+          <p class="eyebrow">02 · Personal record</p>
+          <h1>About me.</h1>
+          <p>This space is reserved for the more personal side of the archive — everyday experiences, interests, journeys, observations, and records outside the Ability collection.</p>
+          <span class="coming-soon">Archive begins here</span>
+        </section>
+      </main>
+      <footer>© 2026 KeeCharlotte</footer>
+    </div>
+  </div>
+
+  <div id="categoryPage" class="view subpage">
+    <div class="shell">
+      <nav class="topbar" aria-label="Category navigation">
+        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
+        <button class="back-link" type="button" onclick="showAbility()">← Ability</button>
+      </nav>
+      <main class="detail-wrap">
+        <p class="eyebrow">Ability · Category</p>
+        <h1 id="categoryTitle" class="detail-title">CATEGORY</h1>
+        <div id="projectList" class="project-list"></div>
+      </main>
+    </div>
+  </div>
+
+  <div id="projectPage" class="view subpage">
+    <div class="shell">
+      <nav class="topbar" aria-label="Project navigation">
+        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
+        <button class="back-link" type="button" onclick="goCategory()">← Category</button>
+      </nav>
+      <main class="detail-wrap project-detail">
+        <p class="eyebrow">Ability · Project</p>
+        <h1 id="projectTitle" class="detail-title">Project</h1>
+        <p id="projectDescription" class="project-description">Project description.</p>
+        <div class="info-grid">
+          <section class="info-card"><h3>Status</h3><p id="projectStatus">In Development</p></section>
+          <section class="info-card"><h3>Technologies</h3><p id="projectTechnology">—</p></section>
         </div>
+        <a id="githubLink" class="github-button" href="#" target="_blank" rel="noopener noreferrer">VIEW SOURCE CODE <span aria-hidden="true">↗</span></a>
+      </main>
+    </div>
+  </div>
 
-    </main>
-
-
-    <footer>
-        © 2026 KeeCharlotte
-    </footer>
-
-</div>
-
-
-
-<!-- =========================================
-     CATEGORY PAGE
-========================================= -->
-
-<div id="categoryPage" class="page">
-
-    <main>
-
-        <button
-            class="back-button"
-            onclick="goHome()"
-        >
-            ← BACK
-        </button>
-
-
-        <h1 id="categoryTitle">
-            CATEGORY
-        </h1>
-
-
-        <div
-            id="projectList"
-            class="project-list"
-        >
-
-        </div>
-
-    </main>
-
-</div>
-
-
-
-<!-- =========================================
-     PROJECT DETAIL PAGE
-========================================= -->
-
-<div id="projectPage" class="page">
-
-    <main>
-
-        <button
-            class="back-button"
-            onclick="goCategory()"
-        >
-            ← BACK
-        </button>
-
-
-        <div class="project-detail">
-
-            <h1 id="projectTitle">
-                Project
-            </h1>
-
-
-            <p id="projectDescription">
-                Project description.
-            </p>
-
-
-            <div class="info">
-
-                <h3>
-                    Status
-                </h3>
-
-                <p id="projectStatus">
-                    In Development
-                </p>
-
-            </div>
-
-
-            <div class="info">
-
-                <h3>
-                    Technologies
-                </h3>
-
-                <p id="projectTechnology">
-                    —
-                </p>
-
-            </div>
-
-
-            <a
-                id="githubLink"
-                class="github-button"
-                href="#"
-                target="_blank"
-            >
-                VIEW SOURCE CODE →
-            </a>
-
-        </div>
-
-    </main>
-
-</div>
-
-
-
-<script>
-
-    /* =========================================
-       PROJECT DATA
-    ========================================= */
-
+  <script>
     const projects = {
-
-        Games: [
-
-            {
-                name: "Example RPG",
-                description:
-                    "A role-playing game currently under development.",
-                status:
-                    "In Development",
-                technology:
-                    "C#, Unity",
-                github:
-                    "https://github.com/KeeCharlotte"
-            }
-
-        ],
-
-
-        Software: [
-
-            {
-                name: "Example Software",
-                description:
-                    "A software system currently under development.",
-                status:
-                    "In Development",
-                technology:
-                    "Python, JavaScript",
-                github:
-                    "https://github.com/KeeCharlotte"
-            }
-
-        ],
-
-
-        Achievements: [],
-
-        Music: [],
-
-        Art: [],
-
-        Discipline: [],
-
-        Fiction: [],
-
-        "Survival Skills": [],
-
-        "Civilizational Mastery": [],
-
-        Cognition: []
-
+      Games: [{
+        name: "Example RPG",
+        description: "A role-playing game currently under development.",
+        status: "In Development",
+        technology: "C#, Unity",
+        github: "https://github.com/KeeCharlotte"
+      }],
+      Software: [{
+        name: "Example Software",
+        description: "A software system currently under development.",
+        status: "In Development",
+        technology: "Python, JavaScript",
+        github: "https://github.com/KeeCharlotte"
+      }],
+      Achievements: [],
+      Music: [],
+      Art: [],
+      Discipline: [],
+      Fiction: [],
+      "Survival Skills": [],
+      "Civilizational Mastery": [],
+      Cognition: []
     };
 
-
-    /* =========================================
-       CURRENT CATEGORY
-    ========================================= */
-
     let currentCategory = "";
+    const views = ["portalPage", "abilityPage", "aboutPage", "categoryPage", "projectPage"];
 
-
-    /* =========================================
-       OPEN CATEGORY
-    ========================================= */
-
-    function openCategory(category) {
-
-        currentCategory = category;
-
-        document
-            .getElementById("homePage")
-            .classList.remove("active");
-
-        document
-            .getElementById("projectPage")
-            .classList.remove("active");
-
-        document
-            .getElementById("categoryPage")
-            .classList.add("active");
-
-
-        document
-            .getElementById("categoryTitle")
-            .textContent = category.toUpperCase();
-
-
-        const list =
-            document.getElementById("projectList");
-
-
-        list.innerHTML = "";
-
-
-        const categoryProjects =
-            projects[category] || [];
-
-
-        if (categoryProjects.length === 0) {
-
-            list.innerHTML = `
-
-                <div class="project">
-
-                    <h3>
-                        No projects yet
-                    </h3>
-
-                    <p>
-                        This section is currently empty.
-                        More works will be added in the future.
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-        }
-
-
-        categoryProjects.forEach(
-            (project, index) => {
-
-                const element =
-                    document.createElement("div");
-
-
-                element.className = "project";
-
-
-                element.onclick = function () {
-
-                    openProject(index);
-
-                };
-
-
-                element.innerHTML = `
-
-                    <h3>
-                        ${project.name}
-                    </h3>
-
-                    <p>
-                        ${project.description}
-                    </p>
-
-                    <span class="status">
-                        ${project.status}
-                    </span>
-
-                `;
-
-
-                list.appendChild(element);
-
-            }
-        );
-
+    function activateView(id) {
+      views.forEach(viewId => document.getElementById(viewId).classList.toggle("active", viewId === id));
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
 
+    function setHash(hash) {
+      if (window.location.hash !== hash) history.pushState(null, "", hash);
+    }
 
-    /* =========================================
-       OPEN PROJECT
-    ========================================= */
+    function showPortal(push = true) {
+      activateView("portalPage");
+      if (push) setHash("#home");
+      document.title = "KeeCharlotte — Life Portfolio";
+    }
+
+    function showAbility(push = true) {
+      activateView("abilityPage");
+      if (push) setHash("#ability");
+      document.title = "Ability — KeeCharlotte";
+    }
+
+    function showAbout(push = true) {
+      activateView("aboutPage");
+      if (push) setHash("#about");
+      document.title = "About me — KeeCharlotte";
+    }
+
+    function openCategory(category, push = true) {
+      currentCategory = category;
+      activateView("categoryPage");
+      document.getElementById("categoryTitle").textContent = category.toUpperCase();
+      const list = document.getElementById("projectList");
+      const categoryProjects = projects[category] || [];
+      list.innerHTML = "";
+
+      if (categoryProjects.length === 0) {
+        list.innerHTML = '<section class="empty-card"><h3>No projects yet</h3><p>This section is currently empty. More works will be added in the future.</p></section>';
+      } else {
+        categoryProjects.forEach((project, index) => {
+          const element = document.createElement("button");
+          element.className = "project-card";
+          element.type = "button";
+          element.onclick = () => openProject(index);
+
+          const title = document.createElement("h3");
+          title.textContent = project.name;
+          const description = document.createElement("p");
+          description.textContent = project.description;
+          const status = document.createElement("span");
+          status.className = "status";
+          status.textContent = project.status;
+
+          element.append(title, description, status);
+          list.appendChild(element);
+        });
+      }
+
+      if (push) setHash("#ability/" + encodeURIComponent(category));
+      document.title = category + " — KeeCharlotte";
+    }
 
     function openProject(index) {
-
-        const project =
-            projects[currentCategory][index];
-
-
-        document
-            .getElementById("categoryPage")
-            .classList.remove("active");
-
-
-        document
-            .getElementById("projectPage")
-            .classList.add("active");
-
-
-        document
-            .getElementById("projectTitle")
-            .textContent = project.name;
-
-
-        document
-            .getElementById("projectDescription")
-            .textContent = project.description;
-
-
-        document
-            .getElementById("projectStatus")
-            .textContent = project.status;
-
-
-        document
-            .getElementById("projectTechnology")
-            .textContent = project.technology;
-
-
-        document
-            .getElementById("githubLink")
-            .href = project.github;
-
+      const project = projects[currentCategory][index];
+      activateView("projectPage");
+      document.getElementById("projectTitle").textContent = project.name;
+      document.getElementById("projectDescription").textContent = project.description;
+      document.getElementById("projectStatus").textContent = project.status;
+      document.getElementById("projectTechnology").textContent = project.technology;
+      document.getElementById("githubLink").href = project.github;
+      setHash("#ability/" + encodeURIComponent(currentCategory) + "/" + index);
+      document.title = project.name + " — KeeCharlotte";
     }
-
-
-    /* =========================================
-       BACK TO HOME
-    ========================================= */
-
-    function goHome() {
-
-        document
-            .getElementById("categoryPage")
-            .classList.remove("active");
-
-
-        document
-            .getElementById("projectPage")
-            .classList.remove("active");
-
-
-        document
-            .getElementById("homePage")
-            .classList.add("active");
-
-    }
-
-
-    /* =========================================
-       BACK TO CATEGORY
-    ========================================= */
 
     function goCategory() {
-
-        document
-            .getElementById("projectPage")
-            .classList.remove("active");
-
-
-        document
-            .getElementById("categoryPage")
-            .classList.add("active");
-
+      if (currentCategory) openCategory(currentCategory);
+      else showAbility();
     }
 
-</script>
+    function routeFromHash() {
+      const hash = window.location.hash || "#home";
+      const parts = hash.replace(/^#/, "").split("/");
+      if (parts[0] === "ability") {
+        if (parts[1]) {
+          const category = decodeURIComponent(parts[1]);
+          if (projects[category]) {
+            openCategory(category, false);
+            if (parts[2] !== undefined && projects[category][Number(parts[2])]) {
+              currentCategory = category;
+              const project = projects[category][Number(parts[2])];
+              activateView("projectPage");
+              document.getElementById("projectTitle").textContent = project.name;
+              document.getElementById("projectDescription").textContent = project.description;
+              document.getElementById("projectStatus").textContent = project.status;
+              document.getElementById("projectTechnology").textContent = project.technology;
+              document.getElementById("githubLink").href = project.github;
+              document.title = project.name + " — KeeCharlotte";
+            }
+          } else showAbility(false);
+        } else showAbility(false);
+      } else if (parts[0] === "about") showAbout(false);
+      else showPortal(false);
+    }
 
-
+    window.addEventListener("popstate", routeFromHash);
+    routeFromHash();
+  </script>
 </body>
 </html>
