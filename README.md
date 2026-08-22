@@ -1,3 +1,3 @@
-# KeeCharlotte.github.io
-Personal Portfolio Website
+# KeeCharlotte
+## Personal Portfolio Website
 visit: https://keecharlotte.github.io/
