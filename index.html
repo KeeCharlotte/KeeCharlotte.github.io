@@ -9,7 +9,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100..900&family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -24,7 +24,7 @@
       --rose-soft: #6f414d;
       --line: #33272f;
       --line-strong: #65404a;
-      --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+      --serif: "Fraunces", Georgia, "Times New Roman", serif;
       --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
       --radius-outer: 28px;
@@ -600,7 +600,7 @@
     <div class="shell">
       <nav class="topbar" aria-label="Category navigation">
         <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="showAbility()">← Ability</button>
+        <button class="back-link" type="button" onclick="backToAbility()">← Ability</button>
       </nav>
 
       <main class="detail-wrap">
@@ -615,7 +615,7 @@
     <div class="shell">
       <nav class="topbar" aria-label="Project navigation">
         <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="goCategory()">← Category</button>
+        <button class="back-link" type="button" onclick="backToCategory()">← Category</button>
       </nav>
 
       <main class="detail-wrap project-detail">
@@ -662,13 +662,23 @@
     let currentCategory = "";
     const views = ["portalPage", "abilityPage", "aboutPage", "categoryPage", "projectPage"];
 
+    function currentHash() {
+      return window.location.hash || "#home";
+    }
+
     function activateView(id) {
       views.forEach(viewId => document.getElementById(viewId).classList.toggle("active", viewId === id));
       window.scrollTo({ top: 0, behavior: "instant" });
     }
 
     function setHash(hash) {
-      if (window.location.hash !== hash) history.pushState(null, "", hash);
+      if (currentHash() !== hash) {
+        history.pushState(
+          { route: hash, from: currentHash() },
+          "",
+          hash
+        );
+      }
     }
 
     function showPortal(push = true) {
@@ -737,13 +747,31 @@
       document.title = project.name + " — KeeCharlotte";
     }
 
-    function goCategory() {
+    function backToAbility() {
+      if (history.state?.from === "#ability") {
+        history.back();
+        return;
+      }
+
+      showAbility();
+    }
+
+    function backToCategory() {
+      const targetHash = currentCategory
+        ? "#ability/" + encodeURIComponent(currentCategory)
+        : null;
+
+      if (targetHash && history.state?.from === targetHash) {
+        history.back();
+        return;
+      }
+
       if (currentCategory) openCategory(currentCategory);
       else showAbility();
     }
 
     function routeFromHash() {
-      const hash = window.location.hash || "#home";
+      const hash = currentHash();
       const parts = hash.replace(/^#/, "").split("/");
 
       if (parts[0] === "ability") {
@@ -752,9 +780,14 @@
           if (projects[category]) {
             openCategory(category, false);
 
-            if (parts[2] !== undefined && projects[category][Number(parts[2])]) {
+            const projectIndex = Number(parts[2]);
+            if (
+              parts[2] !== undefined &&
+              Number.isInteger(projectIndex) &&
+              projects[category][projectIndex]
+            ) {
               currentCategory = category;
-              const project = projects[category][Number(parts[2])];
+              const project = projects[category][projectIndex];
               activateView("projectPage");
               document.getElementById("projectTitle").textContent = project.name;
               document.getElementById("projectDescription").textContent = project.description;
@@ -775,6 +808,13 @@
         showPortal(false);
       }
     }
+
+    const initialHash = currentHash();
+    history.replaceState(
+      { route: initialHash, from: history.state?.from ?? null },
+      "",
+      initialHash
+    );
 
     window.addEventListener("popstate", routeFromHash);
     routeFromHash();
