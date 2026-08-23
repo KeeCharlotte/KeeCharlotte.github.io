@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#050505">
-  <meta name="description" content="KeeCharlotte — Life portfolio, ability archive, and personal record.">
+  <meta name="description" content="KeeCharlotte — Life portfolio, ability archive, and personal record">
   <title>KeeCharlotte — Life Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #050505;
@@ -31,7 +34,7 @@
         radial-gradient(circle at 50% -20%, rgba(90,110,255,.13), transparent 34rem),
         var(--bg);
       color: var(--text);
-      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      font-family: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -122,7 +125,7 @@
     }
 
     .portal-lede {
-      max-width: 580px;
+      max-width: 620px;
       margin: 30px 0 0;
       color: var(--muted);
       font-size: clamp(18px, 2vw, 24px);
@@ -430,8 +433,8 @@
       <main class="portal-main">
         <div>
           <p class="eyebrow">Personal archive</p>
-          <h1 class="portal-title">KeeCharlotte.</h1>
-          <p class="portal-lede">A living record of what I can build, learn, create, and experience.</p>
+          <h1 class="portal-title">KeeCharlotte</h1>
+          <p class="portal-lede">A record of what I’ve built and who I’m becoming.</p>
 
           <div class="portal-grid" aria-label="Portfolio sections">
             <button class="portal-card ability" type="button" onclick="showAbility()">
@@ -464,22 +467,22 @@
       </nav>
 
       <header class="subpage-hero">
-        <p class="eyebrow">01 · Capability archive</p>
-        <h1 class="subpage-title">Ability.</h1>
+        <p class="eyebrow">Capability archive</p>
+        <h1 class="subpage-title">Ability</h1>
         <p class="subpage-intro">Ten dimensions of work, skill, knowledge, and long-term practice.</p>
       </header>
 
       <main class="category-grid" aria-label="Ability categories">
-        <button class="category" type="button" onclick="openCategory('Achievements')"><span class="category-number">01</span><span class="category-bottom"><h2>ACHIEVEMENTS</h2><p>Milestones, accomplishments and completed works.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Games')"><span class="category-number">02</span><span class="category-bottom"><h2>GAMES</h2><p>Game development and interactive experiences.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Software')"><span class="category-number">03</span><span class="category-bottom"><h2>SOFTWARE</h2><p>Systems, tools and software projects.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Music')"><span class="category-number">04</span><span class="category-bottom"><h2>MUSIC</h2><p>Music, composition and sound projects.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Art')"><span class="category-number">05</span><span class="category-bottom"><h2>ART</h2><p>Visual art, design and creative works.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Discipline')"><span class="category-number">06</span><span class="category-bottom"><h2>DISCIPLINE</h2><p>Training, practice and self-development.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Fiction')"><span class="category-number">07</span><span class="category-bottom"><h2>FICTION</h2><p>Novels, stories and fictional worlds.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Survival Skills')"><span class="category-number">08</span><span class="category-bottom"><h2>SURVIVAL SKILLS</h2><p>Practical knowledge and survival skills.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Civilizational Mastery')"><span class="category-number">09</span><span class="category-bottom"><h2>CIVILIZATIONAL MASTERY</h2><p>Knowledge concerning civilization and its development.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Cognition')"><span class="category-number">10</span><span class="category-bottom"><h2>COGNITION</h2><p>Thinking, learning and cognitive exploration.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Achievements')"><span class="category-number">01</span><span class="category-bottom"><h2>Achievements</h2><p>Milestones, accomplishments and completed works.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Games')"><span class="category-number">02</span><span class="category-bottom"><h2>Games</h2><p>Game development and interactive experiences.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Software')"><span class="category-number">03</span><span class="category-bottom"><h2>Software</h2><p>Systems, tools and software projects.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Music')"><span class="category-number">04</span><span class="category-bottom"><h2>Music</h2><p>Music, composition and sound projects.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Art')"><span class="category-number">05</span><span class="category-bottom"><h2>Art</h2><p>Visual art, design and creative works.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Discipline')"><span class="category-number">06</span><span class="category-bottom"><h2>Discipline</h2><p>Training, practice and self-development.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Fiction')"><span class="category-number">07</span><span class="category-bottom"><h2>Fiction</h2><p>Novels, stories and fictional worlds.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Survival Skills')"><span class="category-number">08</span><span class="category-bottom"><h2>Survival Skills</h2><p>Practical knowledge and survival skills.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Civilizational Mastery')"><span class="category-number">09</span><span class="category-bottom"><h2>Civilizational Mastery</h2><p>Knowledge concerning civilization and its development.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Cognition')"><span class="category-number">10</span><span class="category-bottom"><h2>Cognition</h2><p>Thinking, learning and cognitive exploration.</p></span></button>
       </main>
       <footer>© 2026 KeeCharlotte</footer>
     </div>
@@ -493,8 +496,8 @@
       </nav>
       <main class="about-stage">
         <section class="about-panel">
-          <p class="eyebrow">02 · Personal record</p>
-          <h1>About me.</h1>
+          <p class="eyebrow">Personal record</p>
+          <h1>About me</h1>
           <p>This space is reserved for the more personal side of the archive — everyday experiences, interests, journeys, observations, and records outside the Ability collection.</p>
           <span class="coming-soon">Archive begins here</span>
         </section>
@@ -511,7 +514,7 @@
       </nav>
       <main class="detail-wrap">
         <p class="eyebrow">Ability · Category</p>
-        <h1 id="categoryTitle" class="detail-title">CATEGORY</h1>
+        <h1 id="categoryTitle" class="detail-title">Category</h1>
         <div id="projectList" class="project-list"></div>
       </main>
     </div>
@@ -595,7 +598,7 @@
     function openCategory(category, push = true) {
       currentCategory = category;
       activateView("categoryPage");
-      document.getElementById("categoryTitle").textContent = category.toUpperCase();
+      document.getElementById("categoryTitle").textContent = category;
       const list = document.getElementById("projectList");
       const categoryProjects = projects[category] || [];
       list.innerHTML = "";
