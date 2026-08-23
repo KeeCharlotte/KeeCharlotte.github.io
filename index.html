@@ -3,38 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050505">
+  <meta name="theme-color" content="#151515">
   <meta name="description" content="KeeCharlotte — Life portfolio, ability archive, and personal record">
   <title>KeeCharlotte — Life Portfolio</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #050505;
-      --surface: rgba(255,255,255,.055);
-      --surface-strong: rgba(255,255,255,.085);
-      --line: rgba(255,255,255,.12);
-      --line-strong: rgba(255,255,255,.24);
-      --text: #f5f5f7;
-      --muted: #a1a1a6;
-      --muted-2: #6e6e73;
-      --radius-lg: 30px;
-      --radius-md: 22px;
-      --ease: cubic-bezier(.2,.75,.2,1);
+      --frame: #151515;
+      --bg: #14101a;
+      --card: #1a1420;
+      --card-hover: #1e1725;
+      --text: #ede4d8;
+      --muted: #9c8f86;
+      --muted-dark: #6b6058;
+      --rose: #b06a78;
+      --rose-soft: #6f414d;
+      --line: #33272f;
+      --line-strong: #65404a;
+      --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+      --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
+      --radius-outer: 28px;
+      --radius-card: 12px;
+      --ease: cubic-bezier(.2,.72,.2,1);
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; background: var(--bg); }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--frame);
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
+      padding: 20px;
       overflow-x: hidden;
-      background:
-        radial-gradient(circle at 50% -20%, rgba(90,110,255,.13), transparent 34rem),
-        var(--bg);
+      background: var(--frame);
       color: var(--text);
-      font-family: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -42,19 +54,33 @@
     button, a { font: inherit; }
     button { color: inherit; }
     a { color: inherit; text-decoration: none; }
-    ::selection { background: rgba(143,161,255,.28); }
+    ::selection { background: rgba(176,106,120,.32); }
 
-    .view { display: none; min-height: 100vh; }
-    .view.active { display: block; animation: viewIn .55s var(--ease) both; }
+    .view {
+      display: none;
+      min-height: calc(100vh - 40px);
+      overflow: hidden;
+      border-radius: var(--radius-outer);
+      background: var(--bg);
+    }
+
+    .view.active {
+      display: block;
+      animation: viewIn .42s var(--ease) both;
+    }
+
     @keyframes viewIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    .shell {
+      width: min(1352px, calc(100% - 80px));
+      margin: 0 auto;
+    }
 
     .topbar {
-      min-height: 76px;
+      min-height: 74px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -65,352 +91,390 @@
       border: 0;
       padding: 0;
       background: transparent;
-      font-weight: 650;
-      letter-spacing: -.02em;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 20px;
       cursor: pointer;
     }
 
-    .topbar-note {
-      color: var(--muted-2);
+    .topbar-note,
+    .eyebrow {
+      color: var(--muted);
+      font-family: var(--mono);
       font-size: 12px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
+      font-weight: 450;
+      letter-spacing: .13em;
     }
 
-    .portal {
-      min-height: 100vh;
-      position: relative;
-      isolation: isolate;
-      overflow: hidden;
+    .topbar-note { text-transform: uppercase; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      padding: 10px 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color .2s ease, transform .2s ease;
     }
 
-    .portal::before,
-    .portal::after {
-      content: "";
-      position: fixed;
-      z-index: -1;
-      width: 34rem;
-      height: 34rem;
-      border-radius: 999px;
-      filter: blur(90px);
-      opacity: .16;
-      pointer-events: none;
+    .back-link:hover,
+    .back-link:focus-visible {
+      color: var(--text);
+      transform: translateX(-2px);
+      outline: none;
     }
-    .portal::before { top: -15rem; right: -10rem; background: #6d7cff; }
-    .portal::after { bottom: -18rem; left: -12rem; background: #9d67ff; opacity: .10; }
 
     .portal-main {
-      min-height: calc(100vh - 76px);
+      min-height: calc(100vh - 160px);
       display: grid;
       align-content: center;
-      padding: 72px 0 92px;
+      padding: 56px 0 86px;
     }
 
-    .eyebrow {
-      margin: 0 0 18px;
-      color: var(--muted-2);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .20em;
-      text-transform: uppercase;
+    .portal-title,
+    .subpage-title,
+    .detail-title,
+    .about-panel h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      color: var(--text);
     }
 
     .portal-title {
-      max-width: 900px;
       margin: 0;
-      font-size: clamp(64px, 10vw, 138px);
-      line-height: .88;
-      letter-spacing: -.075em;
-      font-weight: 720;
+      font-size: clamp(58px, 8vw, 106px);
+      line-height: .95;
+      letter-spacing: -.025em;
     }
 
     .portal-lede {
-      max-width: 620px;
-      margin: 30px 0 0;
+      max-width: 670px;
+      margin: 16px 0 0;
       color: var(--muted);
-      font-size: clamp(18px, 2vw, 24px);
-      line-height: 1.5;
-      letter-spacing: -.02em;
+      font-family: var(--mono);
+      font-size: clamp(14px, 1.5vw, 18px);
+      line-height: 1.7;
+      letter-spacing: .06em;
     }
 
     .portal-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 64px;
+      gap: 24px;
+      margin-top: 52px;
     }
 
     .portal-card {
-      min-height: 300px;
+      min-height: 176px;
       position: relative;
-      overflow: hidden;
       display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
-      padding: 30px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
-      box-shadow: inset 0 1px rgba(255,255,255,.06), 0 30px 80px rgba(0,0,0,.20);
+      gap: 28px;
+      padding: 32px;
+      border: 2px solid var(--line-strong);
+      border-radius: var(--radius-card);
+      background: var(--card);
       cursor: pointer;
       text-align: left;
-      transition: transform .45s var(--ease), border-color .35s ease, background .35s ease;
+      transition: transform .28s var(--ease), background .25s ease, border-color .25s ease;
     }
-
-    .portal-card::after {
-      content: "";
-      position: absolute;
-      width: 230px;
-      height: 230px;
-      border-radius: 999px;
-      right: -90px;
-      bottom: -110px;
-      filter: blur(4px);
-      opacity: .52;
-      transition: transform .55s var(--ease), opacity .35s ease;
-      pointer-events: none;
-    }
-
-    .portal-card.ability::after { background: radial-gradient(circle at 35% 35%, #c0c9ff, #5865f2 45%, transparent 72%); }
-    .portal-card.about::after { background: radial-gradient(circle at 35% 35%, #fff, #777 42%, transparent 72%); opacity: .30; }
 
     .portal-card:hover,
     .portal-card:focus-visible {
-      transform: translateY(-7px);
-      border-color: var(--line-strong);
-      background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.035));
+      transform: translateY(-3px);
+      border-color: var(--rose);
+      background: var(--card-hover);
       outline: none;
     }
-    .portal-card:hover::after,
-    .portal-card:focus-visible::after { transform: translate(-18px, -16px) scale(1.07); opacity: .70; }
 
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      color: var(--muted-2);
-      font-size: 12px;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-    }
-
-    .arrow {
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255,255,255,.04);
-      font-size: 20px;
-      transition: transform .35s var(--ease), background .25s ease;
-    }
-    .portal-card:hover .arrow { transform: translate(3px, -3px); background: rgba(255,255,255,.10); }
-
-    .card-copy { position: relative; z-index: 1; max-width: 72%; }
     .card-copy h2 {
       margin: 0;
-      font-size: clamp(34px, 4vw, 54px);
-      line-height: 1;
-      letter-spacing: -.055em;
+      font-family: var(--serif);
+      font-size: clamp(32px, 3vw, 44px);
+      font-weight: 400;
+      letter-spacing: -.015em;
     }
+
     .card-copy p {
-      margin: 14px 0 0;
+      margin: 10px 0 0;
       color: var(--muted);
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.55;
     }
 
-    .subpage { padding-bottom: 80px; }
-    .subpage-hero { padding: 84px 0 58px; }
-    .subpage-title {
-      margin: 0;
-      font-size: clamp(54px, 8vw, 104px);
-      line-height: .95;
-      letter-spacing: -.065em;
-    }
-    .subpage-intro {
-      max-width: 620px;
-      margin: 24px 0 0;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.65;
+    .portal-dot,
+    .category-dot {
+      flex: 0 0 auto;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--rose-soft);
+      border-radius: 50%;
     }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      padding: 10px 0;
-      cursor: pointer;
-      transition: color .2s ease, transform .2s ease;
+    .portal-card:hover .portal-dot,
+    .portal-card:focus-visible .portal-dot {
+      border-color: var(--rose);
+      background: var(--rose);
     }
-    .back-link:hover { color: var(--text); transform: translateX(-2px); }
+
+    .subpage { padding-bottom: 52px; }
+
+    .subpage-hero { padding: 46px 0 34px; }
+
+    .eyebrow { margin: 0 0 10px; }
+
+    .subpage-title {
+      margin: 0;
+      font-size: clamp(52px, 7vw, 82px);
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+
+    .subpage-intro {
+      max-width: 680px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.7;
+      letter-spacing: .05em;
+    }
 
     .category-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      padding: 22px 0 80px;
+      gap: 24px;
+      padding: 4px 0 64px;
     }
 
     .category {
-      min-height: 210px;
-      position: relative;
+      min-height: 118px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
-      padding: 26px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: rgba(255,255,255,.032);
+      gap: 24px;
+      padding: 30px 32px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius-card);
+      background: rgba(26,20,32,.68);
       cursor: pointer;
       text-align: left;
-      overflow: hidden;
-      transition: transform .32s var(--ease), border-color .25s ease, background .25s ease;
+      transition: transform .26s var(--ease), background .22s ease, border-color .22s ease;
     }
-    .category:hover,
-    .category:focus-visible {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,.27);
-      background: rgba(255,255,255,.057);
-      outline: none;
-    }
-    .category-number { color: var(--muted-2); font-size: 12px; letter-spacing: .12em; }
-    .category-bottom { position: relative; z-index: 1; }
+
     .category h2 {
       margin: 0;
-      font-size: clamp(22px, 3vw, 34px);
-      letter-spacing: -.035em;
+      color: var(--muted-dark);
+      font-family: var(--serif);
+      font-size: clamp(27px, 2.6vw, 36px);
+      font-weight: 400;
+      letter-spacing: -.015em;
+      transition: color .22s ease;
     }
-    .category p { max-width: 470px; margin: 10px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
 
-    .detail-wrap { padding: 36px 0 100px; }
-    .detail-title {
-      margin: 32px 0 46px;
-      font-size: clamp(44px, 6vw, 76px);
-      line-height: 1;
-      letter-spacing: -.055em;
+    .category.available {
+      border-color: var(--line-strong);
+      background: var(--card);
     }
+
+    .category.available h2 { color: var(--text); }
+
+    .category.available .category-dot {
+      border-color: var(--rose);
+      background: var(--rose);
+    }
+
+    .category:hover,
+    .category:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--rose-soft);
+      background: var(--card-hover);
+      outline: none;
+    }
+
+    .category:hover h2,
+    .category:focus-visible h2 { color: var(--text); }
+
+    .category:hover .category-dot,
+    .category:focus-visible .category-dot { border-color: var(--rose); }
+
+    .detail-wrap { padding: 34px 0 88px; }
+
+    .detail-title {
+      margin: 10px 0 38px;
+      font-size: clamp(50px, 6vw, 78px);
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+
     .project-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 14px;
+      gap: 20px;
     }
+
     .project-card,
     .empty-card,
-    .info-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: rgba(255,255,255,.035);
+    .info-card,
+    .about-panel {
+      border: 2px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--card);
     }
+
     .project-card {
       padding: 28px;
       cursor: pointer;
       text-align: left;
-      transition: transform .3s var(--ease), border-color .25s ease, background .25s ease;
+      transition: transform .26s var(--ease), border-color .22s ease, background .22s ease;
     }
+
     .project-card:hover,
-    .project-card:focus-visible { transform: translateY(-4px); border-color: var(--line-strong); background: rgba(255,255,255,.055); outline: none; }
-    .project-card h3, .empty-card h3 { margin: 0; font-size: 23px; letter-spacing: -.025em; }
-    .project-card p, .empty-card p { margin: 12px 0 0; color: var(--muted); line-height: 1.65; }
+    .project-card:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--rose-soft);
+      background: var(--card-hover);
+      outline: none;
+    }
+
+    .project-card h3,
+    .empty-card h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .project-card p,
+    .empty-card p,
+    .project-description,
+    .about-panel p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .project-card p,
+    .empty-card p { margin: 12px 0 0; }
+
     .empty-card { padding: 32px; }
+
     .status {
       display: inline-flex;
       margin-top: 20px;
       padding: 7px 10px;
-      border: 1px solid var(--line);
+      border: 1px solid var(--rose-soft);
       border-radius: 999px;
+      color: var(--rose);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .project-detail { max-width: 820px; }
+    .project-description { font-size: 17px; }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .info-card { padding: 24px; }
+
+    .info-card h3 {
+      margin: 0 0 10px;
       color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .info-card p { margin: 0; }
+
+    .github-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 28px;
+      padding: 12px 16px;
+      border: 1px solid var(--rose-soft);
+      border-radius: 999px;
+      color: var(--text);
+      background: transparent;
+      font-family: var(--mono);
+      font-size: 12px;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .github-button:hover {
+      border-color: var(--rose);
+      background: rgba(176,106,120,.08);
+    }
+
+    .about-stage {
+      min-height: calc(100vh - 140px);
+      display: grid;
+      align-content: center;
+      padding: 54px 0 86px;
+    }
+
+    .about-panel { padding: clamp(34px, 5vw, 64px); }
+
+    .about-panel h1 {
+      margin: 0;
+      font-size: clamp(56px, 8vw, 94px);
+      line-height: .98;
+      letter-spacing: -.02em;
+    }
+
+    .about-panel p {
+      max-width: 650px;
+      margin: 20px 0 0;
+      font-size: 17px;
+    }
+
+    .coming-soon {
+      display: inline-flex;
+      margin-top: 28px;
+      color: var(--rose);
+      font-family: var(--mono);
       font-size: 11px;
       letter-spacing: .08em;
       text-transform: uppercase;
     }
 
-    .project-detail { max-width: 800px; }
-    .project-detail .detail-title { margin-bottom: 22px; }
-    .project-description { color: var(--muted); font-size: 18px; line-height: 1.75; }
-    .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin-top: 38px; }
-    .info-card { padding: 24px; }
-    .info-card h3 { margin: 0 0 10px; color: var(--muted-2); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
-    .info-card p { margin: 0; line-height: 1.55; }
-    .github-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 28px;
-      padding: 13px 18px;
-      border-radius: 999px;
-      background: #f5f5f7;
-      color: #050505;
-      font-size: 13px;
-      font-weight: 700;
-      transition: transform .25s var(--ease), opacity .2s ease;
-    }
-    .github-button:hover { transform: translateY(-2px); opacity: .88; }
-
-    .about-stage {
-      min-height: calc(100vh - 76px);
-      display: grid;
-      align-content: center;
-      padding: 70px 0 110px;
-    }
-    .about-panel {
-      padding: clamp(30px, 6vw, 72px);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.022));
-    }
-    .about-panel h1 {
-      margin: 0;
-      font-size: clamp(58px, 9vw, 112px);
-      line-height: .94;
-      letter-spacing: -.065em;
-    }
-    .about-panel p {
-      max-width: 620px;
-      margin: 28px 0 0;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.7;
-    }
-    .coming-soon {
-      display: inline-flex;
-      margin-top: 34px;
-      padding: 8px 12px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--muted-2);
-      font-size: 11px;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-    }
-
     footer {
-      padding: 42px 0;
-      color: var(--muted-2);
-      font-size: 12px;
+      padding: 28px 0 34px;
+      color: var(--muted-dark);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .05em;
     }
 
     @media (max-width: 760px) {
-      .shell { width: min(100% - 28px, 1180px); }
-      .topbar { min-height: 66px; }
+      body { padding: 10px; }
+      .view { min-height: calc(100vh - 20px); border-radius: 20px; }
+      .shell { width: min(100% - 32px, 1352px); }
+      .topbar { min-height: 64px; }
       .topbar-note { display: none; }
-      .portal-main { min-height: calc(100vh - 66px); padding: 48px 0 64px; }
-      .portal-title { font-size: clamp(58px, 18vw, 88px); }
-      .portal-lede { margin-top: 22px; }
-      .portal-grid { grid-template-columns: 1fr; margin-top: 44px; }
-      .portal-card { min-height: 230px; padding: 24px; border-radius: 24px; }
-      .card-copy { max-width: 82%; }
-      .subpage-hero { padding: 54px 0 38px; }
-      .category-grid { grid-template-columns: 1fr; }
-      .category { min-height: 180px; }
+      .portal-main { min-height: calc(100vh - 128px); padding: 42px 0 58px; }
+      .portal-lede { font-size: 13px; letter-spacing: .03em; }
+      .portal-grid, .category-grid { grid-template-columns: 1fr; }
+      .portal-grid { gap: 16px; margin-top: 38px; }
+      .portal-card { min-height: 140px; padding: 26px; }
+      .subpage-hero { padding: 38px 0 28px; }
+      .category-grid { gap: 14px; }
+      .category { min-height: 96px; padding: 24px; }
       .info-grid { grid-template-columns: 1fr; }
-      .about-stage { min-height: calc(100vh - 66px); padding: 44px 0 76px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -423,38 +487,41 @@
     }
   </style>
 </head>
+
 <body>
-  <div id="portalPage" class="view active portal">
+  <div id="portalPage" class="view active">
     <div class="shell">
       <nav class="topbar" aria-label="Primary">
         <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
         <span class="topbar-note">Life Portfolio · 2026</span>
       </nav>
+
       <main class="portal-main">
         <div>
           <p class="eyebrow">Personal archive</p>
           <h1 class="portal-title">KeeCharlotte</h1>
-          <p class="portal-lede">A record of what I’ve built and who I’m becoming.</p>
+          <p class="portal-lede">A record of what I’ve built and who I’m becoming</p>
 
           <div class="portal-grid" aria-label="Portfolio sections">
-            <button class="portal-card ability" type="button" onclick="showAbility()">
-              <span class="card-top"><span>Capability archive</span><span class="arrow" aria-hidden="true">↗</span></span>
+            <button class="portal-card" type="button" onclick="showAbility()">
               <span class="card-copy">
                 <h2>Ability</h2>
-                <p>Projects, craft, discipline, knowledge, and the things I can do.</p>
+                <p>Projects, craft, discipline, knowledge, and the things I can do</p>
               </span>
+              <span class="portal-dot" aria-hidden="true"></span>
             </button>
 
-            <button class="portal-card about" type="button" onclick="showAbout()">
-              <span class="card-top"><span>Personal record</span><span class="arrow" aria-hidden="true">↗</span></span>
+            <button class="portal-card" type="button" onclick="showAbout()">
               <span class="card-copy">
                 <h2>About me</h2>
-                <p>The quieter side of the archive — life, interests, experiences, and records.</p>
+                <p>Life, interests, experiences, observations, and personal records</p>
               </span>
+              <span class="portal-dot" aria-hidden="true"></span>
             </button>
           </div>
         </div>
       </main>
+
       <footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
@@ -469,21 +536,42 @@
       <header class="subpage-hero">
         <p class="eyebrow">Capability archive</p>
         <h1 class="subpage-title">Ability</h1>
-        <p class="subpage-intro">Ten dimensions of work, skill, knowledge, and long-term practice.</p>
+        <p class="subpage-intro">Ten dimensions of work, skill, knowledge, and long-term practice</p>
       </header>
 
       <main class="category-grid" aria-label="Ability categories">
-        <button class="category" type="button" onclick="openCategory('Achievements')"><span class="category-number">01</span><span class="category-bottom"><h2>Achievements</h2><p>Milestones, accomplishments and completed works.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Games')"><span class="category-number">02</span><span class="category-bottom"><h2>Games</h2><p>Game development and interactive experiences.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Software')"><span class="category-number">03</span><span class="category-bottom"><h2>Software</h2><p>Systems, tools and software projects.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Music')"><span class="category-number">04</span><span class="category-bottom"><h2>Music</h2><p>Music, composition and sound projects.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Art')"><span class="category-number">05</span><span class="category-bottom"><h2>Art</h2><p>Visual art, design and creative works.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Discipline')"><span class="category-number">06</span><span class="category-bottom"><h2>Discipline</h2><p>Training, practice and self-development.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Fiction')"><span class="category-number">07</span><span class="category-bottom"><h2>Fiction</h2><p>Novels, stories and fictional worlds.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Survival Skills')"><span class="category-number">08</span><span class="category-bottom"><h2>Survival Skills</h2><p>Practical knowledge and survival skills.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Civilizational Mastery')"><span class="category-number">09</span><span class="category-bottom"><h2>Civilizational Mastery</h2><p>Knowledge concerning civilization and its development.</p></span></button>
-        <button class="category" type="button" onclick="openCategory('Cognition')"><span class="category-number">10</span><span class="category-bottom"><h2>Cognition</h2><p>Thinking, learning and cognitive exploration.</p></span></button>
+        <button class="category" type="button" onclick="openCategory('Achievements')">
+          <h2>Achievements</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category available" type="button" onclick="openCategory('Games')">
+          <h2>Games</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category available" type="button" onclick="openCategory('Software')">
+          <h2>Software</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category" type="button" onclick="openCategory('Music')">
+          <h2>Music</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category" type="button" onclick="openCategory('Art')">
+          <h2>Art</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category" type="button" onclick="openCategory('Discipline')">
+          <h2>Discipline</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category" type="button" onclick="openCategory('Fiction')">
+          <h2>Fiction</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category" type="button" onclick="openCategory('Survival Skills')">
+          <h2>Survival Skills</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category" type="button" onclick="openCategory('Civilizational Mastery')">
+          <h2>Civilizational Mastery</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
+        <button class="category" type="button" onclick="openCategory('Cognition')">
+          <h2>Cognition</h2><span class="category-dot" aria-hidden="true"></span>
+        </button>
       </main>
+
       <footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
@@ -494,14 +582,16 @@
         <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
         <button class="back-link" type="button" onclick="showPortal()">← Overview</button>
       </nav>
+
       <main class="about-stage">
         <section class="about-panel">
           <p class="eyebrow">Personal record</p>
           <h1>About me</h1>
-          <p>This space is reserved for the more personal side of the archive — everyday experiences, interests, journeys, observations, and records outside the Ability collection.</p>
+          <p>This space is reserved for the more personal side of the archive — everyday experiences, interests, journeys, observations, and records outside the Ability collection</p>
           <span class="coming-soon">Archive begins here</span>
         </section>
       </main>
+
       <footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
@@ -512,6 +602,7 @@
         <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
         <button class="back-link" type="button" onclick="showAbility()">← Ability</button>
       </nav>
+
       <main class="detail-wrap">
         <p class="eyebrow">Ability · Category</p>
         <h1 id="categoryTitle" class="detail-title">Category</h1>
@@ -526,15 +617,18 @@
         <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
         <button class="back-link" type="button" onclick="goCategory()">← Category</button>
       </nav>
+
       <main class="detail-wrap project-detail">
         <p class="eyebrow">Ability · Project</p>
         <h1 id="projectTitle" class="detail-title">Project</h1>
-        <p id="projectDescription" class="project-description">Project description.</p>
+        <p id="projectDescription" class="project-description">Project description</p>
+
         <div class="info-grid">
           <section class="info-card"><h3>Status</h3><p id="projectStatus">In Development</p></section>
           <section class="info-card"><h3>Technologies</h3><p id="projectTechnology">—</p></section>
         </div>
-        <a id="githubLink" class="github-button" href="#" target="_blank" rel="noopener noreferrer">VIEW SOURCE CODE <span aria-hidden="true">↗</span></a>
+
+        <a id="githubLink" class="github-button" href="#" target="_blank" rel="noopener noreferrer">View source code ↗</a>
       </main>
     </div>
   </div>
@@ -543,14 +637,14 @@
     const projects = {
       Games: [{
         name: "Example RPG",
-        description: "A role-playing game currently under development.",
+        description: "A role-playing game currently under development",
         status: "In Development",
         technology: "C#, Unity",
         github: "https://github.com/KeeCharlotte"
       }],
       Software: [{
         name: "Example Software",
-        description: "A software system currently under development.",
+        description: "A software system currently under development",
         status: "In Development",
         technology: "Python, JavaScript",
         github: "https://github.com/KeeCharlotte"
@@ -604,7 +698,7 @@
       list.innerHTML = "";
 
       if (categoryProjects.length === 0) {
-        list.innerHTML = '<section class="empty-card"><h3>No projects yet</h3><p>This section is currently empty. More works will be added in the future.</p></section>';
+        list.innerHTML = '<section class="empty-card"><h3>No projects yet</h3><p>This section is currently empty. More works will be added in the future</p></section>';
       } else {
         categoryProjects.forEach((project, index) => {
           const element = document.createElement("button");
@@ -614,8 +708,10 @@
 
           const title = document.createElement("h3");
           title.textContent = project.name;
+
           const description = document.createElement("p");
           description.textContent = project.description;
+
           const status = document.createElement("span");
           status.className = "status";
           status.textContent = project.status;
@@ -649,11 +745,13 @@
     function routeFromHash() {
       const hash = window.location.hash || "#home";
       const parts = hash.replace(/^#/, "").split("/");
+
       if (parts[0] === "ability") {
         if (parts[1]) {
           const category = decodeURIComponent(parts[1]);
           if (projects[category]) {
             openCategory(category, false);
+
             if (parts[2] !== undefined && projects[category][Number(parts[2])]) {
               currentCategory = category;
               const project = projects[category][Number(parts[2])];
@@ -665,10 +763,17 @@
               document.getElementById("githubLink").href = project.github;
               document.title = project.name + " — KeeCharlotte";
             }
-          } else showAbility(false);
-        } else showAbility(false);
-      } else if (parts[0] === "about") showAbout(false);
-      else showPortal(false);
+          } else {
+            showAbility(false);
+          }
+        } else {
+          showAbility(false);
+        }
+      } else if (parts[0] === "about") {
+        showAbout(false);
+      } else {
+        showPortal(false);
+      }
     }
 
     window.addEventListener("popstate", routeFromHash);
