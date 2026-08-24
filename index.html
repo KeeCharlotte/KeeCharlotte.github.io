@@ -12,284 +12,151 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,100..900&family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --frame:#151515;
-      --bg:#14101a;
-      --card:#1a1420;
-      --card-hover:#1e1725;
-      --text:#ede4d8;
-      --muted:#9c8f86;
-      --muted-dark:#6b6058;
-      --rose:#b06a78;
-      --rose-soft:#6f414d;
-      --line:#33272f;
-      --line-strong:#65404a;
+    :root{
+      --frame:#151515;--bg:#14101a;--card:#1a1420;--card-hover:#1e1725;
+      --text:#ede4d8;--muted:#9c8f86;--muted-dark:#6b6058;
+      --rose:#b06a78;--rose-soft:#6f414d;--line:#33272f;--line-strong:#65404a;
       --serif:"Fraunces",Georgia,"Times New Roman",serif;
       --sans:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       --mono:"Geist Mono","SFMono-Regular",Consolas,monospace;
-      --radius-outer:28px;
-      --radius-card:12px;
-      --ease:cubic-bezier(.2,.72,.2,1);
+      --radius-outer:28px;--radius-card:12px;--ease:cubic-bezier(.2,.72,.2,1);
     }
 
     *{box-sizing:border-box}
     [hidden]{display:none!important}
     html{scroll-behavior:smooth;background:var(--frame)}
     body{
-      margin:0;min-height:100vh;padding:20px;overflow-x:hidden;
-      background:var(--frame);color:var(--text);font-family:var(--sans);
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+      margin:0;min-height:100vh;padding:20px;overflow-x:hidden;background:var(--frame);
+      color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
     }
     button,a{font:inherit}button{color:inherit}a{color:inherit;text-decoration:none}
     ::selection{background:rgba(176,106,120,.32)}
 
-    .view{
-      display:none;min-height:calc(100vh - 40px);overflow:hidden;
-      border-radius:var(--radius-outer);background:var(--bg);
-    }
+    .view{display:none;min-height:calc(100vh - 40px);overflow:hidden;border-radius:var(--radius-outer);background:var(--bg)}
     .view.active{display:block;animation:viewIn .42s var(--ease) both}
     @keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
     .shell{width:min(1352px,calc(100% - 80px));margin:0 auto}
     .topbar{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{
-      border:0;padding:0;background:transparent;color:var(--text);font-family:var(--serif);
-      font-size:20px;font-weight:700;cursor:pointer;
-    }
-    .topbar-note,.eyebrow,.section-label{
-      color:var(--muted);font-family:var(--mono);font-size:12px;font-weight:450;letter-spacing:.13em;
-    }
-    .topbar-note{text-transform:uppercase}
-    .eyebrow{margin:0 0 10px}
-    .back-link{
-      display:inline-flex;align-items:center;gap:8px;border:0;padding:10px 0;background:transparent;
-      color:var(--muted);cursor:pointer;transition:color .2s ease,transform .2s ease;
-    }
+    .brand{border:0;padding:0;background:transparent;color:var(--text);font-family:var(--serif);font-size:20px;font-weight:700;cursor:pointer}
+    .topbar-note,.eyebrow,.section-label{color:var(--muted);font-family:var(--mono);font-size:12px;font-weight:450;letter-spacing:.13em}
+    .topbar-note{text-transform:uppercase}.eyebrow{margin:0 0 10px}
+    .back-link{display:inline-flex;align-items:center;gap:8px;border:0;padding:10px 0;background:transparent;color:var(--muted);cursor:pointer;transition:color .2s ease,transform .2s ease}
     .back-link:hover,.back-link:focus-visible{color:var(--text);transform:translateX(-2px);outline:none}
 
     .portal-main{min-height:calc(100vh - 160px);display:grid;align-content:center;padding:56px 0 86px}
-    .portal-title,.subpage-title,.detail-title,.about-panel h1{
-      font-family:var(--serif);font-weight:700;color:var(--text);
-    }
+    .portal-title,.subpage-title,.detail-title,.about-panel h1{font-family:var(--serif);font-weight:700;color:var(--text)}
     .portal-title{margin:0;font-size:clamp(58px,8vw,106px);line-height:.95;letter-spacing:-.025em}
-    .portal-lede{
-      max-width:670px;margin:16px 0 0;color:var(--muted);font-family:var(--mono);
-      font-size:clamp(14px,1.5vw,18px);line-height:1.7;letter-spacing:.06em;
-    }
+    .portal-lede{max-width:670px;margin:16px 0 0;color:var(--muted);font-family:var(--mono);font-size:clamp(14px,1.5vw,18px);line-height:1.7;letter-spacing:.06em}
     .portal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:52px}
-    .portal-card{
-      min-height:176px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:32px;
-      border:2px solid var(--line-strong);border-radius:var(--radius-card);background:var(--card);
-      cursor:pointer;text-align:left;transition:transform .28s var(--ease),background .25s ease,border-color .25s ease;
-    }
-    .portal-card:hover,.portal-card:focus-visible{
-      transform:translateY(-3px);border-color:var(--rose);background:var(--card-hover);outline:none;
-    }
-    .card-copy h2{
-      margin:0;font-family:var(--serif);font-size:clamp(32px,3vw,44px);font-weight:700;letter-spacing:-.015em;
-    }
+    .portal-card{min-height:176px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:32px;border:2px solid var(--line-strong);border-radius:var(--radius-card);background:var(--card);cursor:pointer;text-align:left;transition:transform .28s var(--ease),background .25s ease,border-color .25s ease}
+    .portal-card:hover,.portal-card:focus-visible{transform:translateY(-3px);border-color:var(--rose);background:var(--card-hover);outline:none}
+    .card-copy h2{margin:0;font-family:var(--serif);font-size:clamp(32px,3vw,44px);font-weight:700;letter-spacing:-.015em}
     .card-copy p{margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.55}
-    .portal-dot,.category-dot{
-      flex:0 0 auto;width:12px;height:12px;border:2px solid var(--rose-soft);border-radius:50%;
-    }
+    .portal-dot,.category-dot{flex:0 0 auto;width:12px;height:12px;border:2px solid var(--rose-soft);border-radius:50%}
     .portal-card:hover .portal-dot,.portal-card:focus-visible .portal-dot{border-color:var(--rose);background:var(--rose)}
 
-    .subpage{padding-bottom:52px}
-    .subpage-hero{padding:46px 0 34px}
+    .subpage{padding-bottom:52px}.subpage-hero{padding:46px 0 34px}
     .subpage-title{margin:0;font-size:clamp(52px,7vw,82px);line-height:1;letter-spacing:-.02em}
-    .subpage-intro{
-      max-width:680px;margin:12px 0 0;color:var(--muted);font-family:var(--mono);
-      font-size:14px;line-height:1.7;letter-spacing:.05em;
-    }
+    .subpage-intro{max-width:680px;margin:12px 0 0;color:var(--muted);font-family:var(--mono);font-size:14px;line-height:1.7;letter-spacing:.05em}
 
     .category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding:4px 0 64px}
-    .category{
-      min-height:118px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px 32px;
-      border:2px solid var(--line);border-radius:var(--radius-card);background:rgba(26,20,32,.68);
-      cursor:pointer;text-align:left;transition:transform .26s var(--ease),background .22s ease,border-color .22s ease;
-    }
-    .category h2{
-      margin:0;color:var(--muted-dark);font-family:var(--serif);font-size:clamp(27px,2.6vw,36px);
-      font-weight:700;letter-spacing:-.015em;transition:color .22s ease;
-    }
+    .category{min-height:118px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px 32px;border:2px solid var(--line);border-radius:var(--radius-card);background:rgba(26,20,32,.68);cursor:pointer;text-align:left;transition:transform .26s var(--ease),background .22s ease,border-color .22s ease}
+    .category h2{margin:0;color:var(--muted-dark);font-family:var(--serif);font-size:clamp(27px,2.6vw,36px);font-weight:700;letter-spacing:-.015em;transition:color .22s ease}
     .category.available{border-color:var(--line-strong);background:var(--card)}
     .category.available h2{color:var(--text)}
     .category.available .category-dot{border-color:var(--rose);background:var(--rose)}
-    .category:hover,.category:focus-visible{
-      transform:translateY(-2px);border-color:var(--rose-soft);background:var(--card-hover);outline:none;
-    }
+    .category:hover,.category:focus-visible{transform:translateY(-2px);border-color:var(--rose-soft);background:var(--card-hover);outline:none}
     .category:hover h2,.category:focus-visible h2{color:var(--text)}
     .category:hover .category-dot,.category:focus-visible .category-dot{border-color:var(--rose)}
 
-    .detail-wrap{padding:34px 0 88px}
-    .detail-title{margin:10px 0 38px;font-size:clamp(50px,6vw,78px);line-height:1;letter-spacing:-.02em}
+    .detail-wrap{padding:34px 0 88px}.detail-title{margin:10px 0 38px;font-size:clamp(50px,6vw,78px);line-height:1;letter-spacing:-.02em}
     .project-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-    .project-card,.empty-card,.info-card,.about-panel{
-      border:2px solid var(--line);border-radius:var(--radius-card);background:var(--card);
-    }
-    .project-card{
-      padding:28px;cursor:pointer;text-align:left;transition:transform .26s var(--ease),border-color .22s ease,background .22s ease;
-    }
-    .project-card:hover,.project-card:focus-visible{
-      transform:translateY(-2px);border-color:var(--rose-soft);background:var(--card-hover);outline:none;
-    }
-    .project-card h3,.empty-card h3{
-      margin:0;font-family:var(--serif);font-size:28px;font-weight:700;color:var(--text);
-    }
+    .project-card,.empty-card,.info-card,.about-panel{border:2px solid var(--line);border-radius:var(--radius-card);background:var(--card)}
+    .project-card{padding:28px;cursor:pointer;text-align:left;transition:transform .26s var(--ease),border-color .22s ease,background .22s ease}
+    .project-card:hover,.project-card:focus-visible{transform:translateY(-2px);border-color:var(--rose-soft);background:var(--card-hover);outline:none}
+    .project-card h3,.empty-card h3{margin:0;font-family:var(--serif);font-size:28px;font-weight:700;color:var(--text)}
     .project-card p,.empty-card p,.project-description,.about-panel p{color:var(--muted);line-height:1.7}
     .project-card p,.empty-card p{margin:12px 0 0}.empty-card{padding:32px}
-    .status{
-      display:inline-flex;margin-top:20px;padding:7px 10px;border:1px solid var(--rose-soft);border-radius:999px;
-      color:var(--rose);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-    }
+    .status{display:inline-flex;margin-top:20px;padding:7px 10px;border:1px solid var(--rose-soft);border-radius:999px;color:var(--rose);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
     .project-detail{max-width:820px}.project-description{font-size:17px}
-    .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:34px}
-    .info-card{padding:24px}.info-card h3{
-      margin:0 0 10px;color:var(--muted);font-family:var(--mono);font-size:11px;font-weight:500;
-      letter-spacing:.1em;text-transform:uppercase;
-    }
-    .info-card p{margin:0}
-    .github-button{
-      display:inline-flex;align-items:center;gap:9px;margin-top:28px;padding:12px 16px;border:1px solid var(--rose-soft);
-      border-radius:999px;color:var(--text);background:transparent;font-family:var(--mono);font-size:12px;
-      transition:border-color .2s ease,background .2s ease;
-    }
+    .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:34px}.info-card{padding:24px}
+    .info-card h3{margin:0 0 10px;color:var(--muted);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}.info-card p{margin:0}
+    .github-button{display:inline-flex;align-items:center;gap:9px;margin-top:28px;padding:12px 16px;border:1px solid var(--rose-soft);border-radius:999px;color:var(--text);background:transparent;font-family:var(--mono);font-size:12px;transition:border-color .2s ease,background .2s ease}
     .github-button:hover{border-color:var(--rose);background:rgba(176,106,120,.08)}
 
-    .about-stage{min-height:calc(100vh - 140px);display:grid;align-content:center;padding:54px 0 86px}
-    .about-panel{padding:clamp(34px,5vw,64px)}
-    .about-panel h1{margin:0;font-size:clamp(56px,8vw,94px);line-height:.98;letter-spacing:-.02em}
-    .about-panel p{max-width:650px;margin:20px 0 0;font-size:17px}
-    .coming-soon{
-      display:inline-flex;margin-top:28px;color:var(--rose);font-family:var(--mono);font-size:11px;
-      letter-spacing:.08em;text-transform:uppercase;
-    }
+    .about-stage{min-height:calc(100vh - 140px);display:grid;align-content:center;padding:54px 0 86px}.about-panel{padding:clamp(34px,5vw,64px)}
+    .about-panel h1{margin:0;font-size:clamp(56px,8vw,94px);line-height:.98;letter-spacing:-.02em}.about-panel p{max-width:650px;margin:20px 0 0;font-size:17px}
+    .coming-soon{display:inline-flex;margin-top:28px;color:var(--rose);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 
-    .discipline-main{max-width:1040px;padding:48px 0 88px}
-    .discipline-hero{max-width:820px;padding:26px 0 54px}
-    .discipline-hero .detail-title{margin-bottom:22px}
-    .discipline-manifesto{
-      margin:0;max-width:760px;color:var(--text);font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);
-      font-weight:600;line-height:1.3;letter-spacing:-.015em;
-    }
-    .discipline-manifesto-zh{max-width:720px;margin:18px 0 0;color:var(--muted);font-size:15px;line-height:1.8}
+    .discipline-main{max-width:1040px;padding:48px 0 88px}.discipline-hero{max-width:820px;padding:26px 0 54px}.discipline-hero .detail-title{margin-bottom:22px}
+    .discipline-manifesto{margin:0;max-width:760px;color:var(--text);font-family:var(--serif);font-size:clamp(26px,3.2vw,40px);font-weight:600;line-height:1.3;letter-spacing:-.015em}
+    .discipline-manifesto-zh,.secondary-zh{max-width:760px;margin:10px 0 0;color:var(--muted);font-size:13px;line-height:1.8}
     .archive-section{margin-top:8px;border-top:1px solid var(--line);padding-top:34px}
-    .archive-section-title,.period-section-title{
-      margin:0 0 18px;color:var(--rose);font-family:var(--mono);font-size:11px;font-weight:550;
-      letter-spacing:.12em;text-transform:uppercase;
-    }
+    .archive-section-title{margin:0 0 18px;color:var(--rose);font-family:var(--mono);font-size:11px;font-weight:550;letter-spacing:.12em;text-transform:uppercase}
     .period-list{border-top:1px solid var(--line)}
-    .period-item{
-      width:100%;display:grid;grid-template-columns:minmax(190px,.75fr) minmax(0,1.6fr) auto;align-items:center;
-      gap:26px;padding:25px 2px;border:0;border-bottom:1px solid var(--line);background:transparent;
-      cursor:pointer;text-align:left;transition:background .2s ease,padding .25s var(--ease);
-    }
-    .period-item:hover,.period-item:focus-visible{
-      padding-left:14px;padding-right:14px;background:rgba(176,106,120,.055);outline:none;
-    }
-    .period-date{color:var(--text);font-family:var(--mono);font-size:13px;letter-spacing:.035em}
-    .period-context{color:var(--muted);font-size:14px;line-height:1.5}
-    .period-arrow{color:var(--rose);font-family:var(--mono);font-size:17px;transition:transform .2s ease}
+    .period-item{width:100%;display:grid;grid-template-columns:minmax(190px,.75fr) minmax(0,1.6fr) auto;align-items:center;gap:26px;padding:25px 2px;border:0;border-bottom:1px solid var(--line);background:transparent;cursor:pointer;text-align:left;transition:background .2s ease,padding .25s var(--ease)}
+    .period-item:hover,.period-item:focus-visible{padding-left:14px;padding-right:14px;background:rgba(176,106,120,.055);outline:none}
+    .period-date{color:var(--text);font-family:var(--mono);font-size:13px;letter-spacing:.035em}.period-context{color:var(--muted);font-size:14px;line-height:1.5}.period-arrow{color:var(--rose);font-family:var(--mono);font-size:17px;transition:transform .2s ease}
     .period-item:hover .period-arrow,.period-item:focus-visible .period-arrow{transform:translateX(4px)}
-    .archive-summary{
-      display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px;color:var(--muted-dark);
-      font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-    }
+    .archive-summary{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px;color:var(--muted-dark);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
 
     .period-detail{max-width:1040px;padding:36px 0 94px}
-    .period-meta-bar{
-      display:flex;justify-content:space-between;gap:28px;padding-bottom:20px;border-bottom:1px solid var(--line);
-      color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-    }
-    .period-heading{padding:44px 0 50px}
-    .period-heading h1{
-      max-width:900px;margin:0;color:var(--text);font-family:var(--serif);font-size:clamp(42px,6vw,72px);
-      font-weight:700;line-height:1.05;letter-spacing:-.025em;
-    }
-    .period-heading p{
-      margin:13px 0 0;color:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.045em;line-height:1.65;
-    }
-    .routine-block,.reflection-block,.period-pending{border-top:1px solid var(--line);padding-top:30px}
-    .routine-list{max-width:760px;margin-top:8px}
-    .routine-row{position:relative;display:grid;grid-template-columns:72px 22px minmax(0,1fr);gap:14px;min-height:82px}
-    .routine-time{padding-top:1px;color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:.04em}
-    .routine-marker{position:relative;display:flex;justify-content:center}
-    .routine-marker::before{
-      content:"";position:absolute;top:3px;width:9px;height:9px;border-radius:50%;background:var(--rose);
-      box-shadow:0 0 0 3px rgba(176,106,120,.10);
-    }
-    .routine-marker::after{
-      content:"";position:absolute;top:17px;bottom:-3px;width:1px;background:var(--rose-soft);opacity:.7;
-    }
-    .routine-row:last-child .routine-marker::after{display:none}
-    .routine-copy{padding-bottom:25px}
-    .routine-copy h3{
-      margin:0;color:var(--text);font-family:var(--serif);font-size:23px;font-weight:700;line-height:1.15;
-    }
-    .routine-copy p{margin:7px 0 0;color:var(--muted);font-size:14px;line-height:1.65}
-    .reflection-block{margin-top:22px;min-height:100px}
-    .period-pending{color:var(--muted);font-size:15px;line-height:1.75}
+    .period-meta-bar{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+    .period-purpose{color:var(--text);font-family:var(--serif);font-size:23px;font-weight:700;line-height:1.15}
+    .period-meta-period{color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+    .period-heading{padding:44px 0 50px}.period-heading h1{max-width:900px;margin:0;color:var(--text);font-family:var(--serif);font-size:clamp(42px,6vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.025em}
+    .period-heading p{margin:13px 0 0;color:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.045em;line-height:1.65}
+    .routine-block,.transformation-block{border-top:1px solid var(--line);padding-top:30px}
+    .period-section-title{margin:0 0 22px;color:var(--rose);font-family:var(--mono);font-size:16px;font-weight:550;letter-spacing:.08em}
+    .routine-list{max-width:800px;margin-top:8px}.routine-row{position:relative;display:grid;grid-template-columns:72px 22px minmax(0,1fr);gap:14px;min-height:94px}
+    .routine-time{padding-top:1px;color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:.04em}.routine-marker{position:relative;display:flex;justify-content:center}
+    .routine-marker::before{content:"";position:absolute;top:3px;width:9px;height:9px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 3px rgba(176,106,120,.10)}
+    .routine-marker::after{content:"";position:absolute;top:17px;bottom:-3px;width:1px;background:var(--rose-soft);opacity:.7}.routine-row:last-child .routine-marker::after{display:none}
+    .routine-copy{padding-bottom:28px}.routine-copy h3{margin:0;color:var(--text);font-family:var(--serif);font-size:23px;font-weight:700;line-height:1.15}
+    .routine-copy .primary-en{margin:7px 0 0;color:var(--text);font-size:14px;line-height:1.65}.routine-copy .secondary-zh{margin-top:3px}
+
+    .transformation-block{margin-top:28px}.transformation-grid{display:grid;gap:34px;max-width:900px;padding-bottom:38px}
+    .transformation-item{padding-bottom:30px;border-bottom:1px solid var(--line)}.transformation-item:last-child{border-bottom:0;padding-bottom:0}
+    .transformation-item h3{margin:0;color:var(--text);font-family:var(--serif);font-size:clamp(25px,3vw,34px);font-weight:700;line-height:1.2}
+    .transformation-item .title-zh{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+    .transformation-item .primary-en{margin:16px 0 0;color:var(--text);font-size:16px;line-height:1.8;max-width:860px}
+    .transformation-item .secondary-zh{margin-top:8px;max-width:860px}
+    .period-outcome{display:flex;flex-wrap:wrap;gap:8px 0;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.055em;text-transform:uppercase}
+    .period-outcome span:not(:last-child)::after{content:"│";margin:0 15px;color:var(--muted-dark)}
 
     footer{padding:28px 0 34px;color:var(--muted-dark);font-family:var(--mono);font-size:11px;letter-spacing:.05em}
 
     @media(max-width:760px){
       body{padding:10px}.view{min-height:calc(100vh - 20px);border-radius:20px}.shell{width:min(100% - 32px,1352px)}
-      .topbar{min-height:64px}.topbar-note{display:none}.portal-main{min-height:calc(100vh - 128px);padding:42px 0 58px}
-      .portal-lede{font-size:13px;letter-spacing:.03em}.portal-grid,.category-grid{grid-template-columns:1fr}
-      .portal-grid{gap:16px;margin-top:38px}.portal-card{min-height:140px;padding:26px}.subpage-hero{padding:38px 0 28px}
-      .category-grid{gap:14px}.category{min-height:96px;padding:24px}.info-grid{grid-template-columns:1fr}
-      .discipline-main,.period-detail{padding-top:28px}.discipline-hero{padding-bottom:38px}
-      .period-item{grid-template-columns:1fr auto;gap:8px 18px;padding:20px 0}
-      .period-context{grid-column:1/2}.period-arrow{grid-column:2;grid-row:1/span 2}
-      .period-meta-bar{flex-direction:column;gap:8px}.period-heading{padding:34px 0 40px}
-      .routine-row{grid-template-columns:58px 18px minmax(0,1fr);gap:10px}
+      .topbar{min-height:64px}.topbar-note{display:none}.portal-main{min-height:calc(100vh - 128px);padding:42px 0 58px}.portal-lede{font-size:13px;letter-spacing:.03em}
+      .portal-grid,.category-grid{grid-template-columns:1fr}.portal-grid{gap:16px;margin-top:38px}.portal-card{min-height:140px;padding:26px}.subpage-hero{padding:38px 0 28px}.category-grid{gap:14px}.category{min-height:96px;padding:24px}.info-grid{grid-template-columns:1fr}
+      .discipline-main,.period-detail{padding-top:28px}.discipline-hero{padding-bottom:38px}.period-item{grid-template-columns:1fr auto;gap:8px 18px;padding:20px 0}.period-context{grid-column:1/2}.period-arrow{grid-column:2;grid-row:1/span 2}
+      .period-meta-bar{flex-direction:column;align-items:flex-start;gap:10px}.period-heading{padding:34px 0 40px}.routine-row{grid-template-columns:58px 18px minmax(0,1fr);gap:10px}
+      .period-outcome{flex-direction:column;gap:8px}.period-outcome span:not(:last-child)::after{content:"";margin:0}
     }
 
-    @media(prefers-reduced-motion:reduce){
-      *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
   </style>
 </head>
 
 <body>
   <div id="portalPage" class="view active">
     <div class="shell">
-      <nav class="topbar" aria-label="Primary">
-        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <span class="topbar-note">Life Portfolio · 2026</span>
-      </nav>
-      <main class="portal-main">
-        <div>
-          <p class="eyebrow">Personal archive</p>
-          <h1 class="portal-title">KeeCharlotte</h1>
-          <p class="portal-lede">A record of what I’ve built and who I’m becoming</p>
-          <div class="portal-grid" aria-label="Portfolio sections">
-            <button class="portal-card" type="button" onclick="showAbility()">
-              <span class="card-copy"><h2>Ability</h2><p>Projects, craft, discipline, knowledge, and the things I can do</p></span>
-              <span class="portal-dot" aria-hidden="true"></span>
-            </button>
-            <button class="portal-card" type="button" onclick="showAbout()">
-              <span class="card-copy"><h2>About me</h2><p>Life, interests, experiences, observations, and personal records</p></span>
-              <span class="portal-dot" aria-hidden="true"></span>
-            </button>
-          </div>
+      <nav class="topbar" aria-label="Primary"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><span class="topbar-note">Life Portfolio · 2026</span></nav>
+      <main class="portal-main"><div><p class="eyebrow">Personal archive</p><h1 class="portal-title">KeeCharlotte</h1><p class="portal-lede">A record of what I’ve built and who I’m becoming</p>
+        <div class="portal-grid" aria-label="Portfolio sections">
+          <button class="portal-card" type="button" onclick="showAbility()"><span class="card-copy"><h2>Ability</h2><p>Projects, craft, discipline, knowledge, and the things I can do</p></span><span class="portal-dot" aria-hidden="true"></span></button>
+          <button class="portal-card" type="button" onclick="showAbout()"><span class="card-copy"><h2>About me</h2><p>Life, interests, experiences, observations, and personal records</p></span><span class="portal-dot" aria-hidden="true"></span></button>
         </div>
-      </main>
-      <footer>© 2026 KeeCharlotte</footer>
+      </div></main><footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
 
   <div id="abilityPage" class="view subpage">
     <div class="shell">
-      <nav class="topbar" aria-label="Ability navigation">
-        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="backToPortal()">← Overview</button>
-      </nav>
-      <header class="subpage-hero">
-        <p class="eyebrow">Capability archive</p>
-        <h1 class="subpage-title">Ability</h1>
-        <p class="subpage-intro">Ten dimensions of work, skill, knowledge, and long-term practice</p>
-      </header>
+      <nav class="topbar" aria-label="Ability navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToPortal()">← Overview</button></nav>
+      <header class="subpage-hero"><p class="eyebrow">Capability archive</p><h1 class="subpage-title">Ability</h1><p class="subpage-intro">Ten dimensions of work, skill, knowledge, and long-term practice</p></header>
       <main class="category-grid" aria-label="Ability categories">
         <button class="category" type="button" onclick="openCategory('Achievements')"><h2>Achievements</h2><span class="category-dot" aria-hidden="true"></span></button>
         <button class="category available" type="button" onclick="openCategory('Games')"><h2>Games</h2><span class="category-dot" aria-hidden="true"></span></button>
@@ -301,148 +168,98 @@
         <button class="category" type="button" onclick="openCategory('Survival Skills')"><h2>Survival Skills</h2><span class="category-dot" aria-hidden="true"></span></button>
         <button class="category" type="button" onclick="openCategory('Civilizational Mastery')"><h2>Civilizational Mastery</h2><span class="category-dot" aria-hidden="true"></span></button>
         <button class="category" type="button" onclick="openCategory('Cognition')"><h2>Cognition</h2><span class="category-dot" aria-hidden="true"></span></button>
-      </main>
-      <footer>© 2026 KeeCharlotte</footer>
+      </main><footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
 
   <div id="aboutPage" class="view subpage">
-    <div class="shell">
-      <nav class="topbar" aria-label="About navigation">
-        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="backToPortal()">← Overview</button>
-      </nav>
-      <main class="about-stage">
-        <section class="about-panel">
-          <p class="eyebrow">Personal record</p>
-          <h1>About me</h1>
-          <p>This space is reserved for the more personal side of the archive — everyday experiences, interests, journeys, observations, and records outside the Ability collection</p>
-          <span class="coming-soon">Archive begins here</span>
-        </section>
-      </main>
-      <footer>© 2026 KeeCharlotte</footer>
+    <div class="shell"><nav class="topbar" aria-label="About navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToPortal()">← Overview</button></nav>
+      <main class="about-stage"><section class="about-panel"><p class="eyebrow">Personal record</p><h1>About me</h1><p>This space is reserved for the more personal side of the archive — everyday experiences, interests, journeys, observations, and records outside the Ability collection</p><span class="coming-soon">Archive begins here</span></section></main><footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
 
   <div id="disciplinePage" class="view subpage">
     <div class="shell">
-      <nav class="topbar" aria-label="Discipline navigation">
-        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="backToAbility()">← Ability</button>
-      </nav>
+      <nav class="topbar" aria-label="Discipline navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToAbility()">← Ability</button></nav>
       <main class="discipline-main">
         <section class="discipline-hero">
           <p class="eyebrow">Ability · Discipline</p>
           <h1 class="detail-title">Discipline</h1>
-          <p class="discipline-manifesto">Discipline is not restriction. It is a system for directing energy and attention.</p>
-          <p class="discipline-manifesto-zh">自律並非限制，而是優化精力與維持專注的系統。這裡紀錄不同階段的作息規則與習慣實驗。</p>
+          <p class="discipline-manifesto">This section provides a complete record of the daily routine that has been put into practice.</p>
+          <p class="discipline-manifesto-zh">這裡完整記錄已實施的作息規劃</p>
         </section>
         <section class="archive-section" aria-labelledby="practicePeriodsTitle">
           <h2 id="practicePeriodsTitle" class="archive-section-title">Practice Periods</h2>
           <div class="period-list">
             <button class="period-item" type="button" onclick="openDisciplinePeriod('2022-08-2022-11')">
-              <span class="period-date">2022/08 — 2022/11</span>
-              <span class="period-context">High School · Early-Riser Protocol</span>
-              <span class="period-arrow" aria-hidden="true">→</span>
-            </button>
-            <button class="period-item" type="button" onclick="openDisciplinePeriod('2026-02-2026-08')">
-              <span class="period-date">2026/02 — 2026/08</span>
-              <span class="period-context">System Development · Self-Learning</span>
-              <span class="period-arrow" aria-hidden="true">→</span>
+              <span class="period-date">2022/08 — 2022/11</span><span class="period-context">High School · Second Year</span><span class="period-arrow" aria-hidden="true">→</span>
             </button>
           </div>
-          <div class="archive-summary"><span>2 periods</span><span>Last updated · Aug 2026</span></div>
+          <div class="archive-summary"><span>1 period</span><span>Last updated · Aug 2026</span></div>
         </section>
-      </main>
-      <footer>© 2026 KeeCharlotte</footer>
+      </main><footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
 
   <div id="disciplinePeriodPage" class="view subpage">
     <div class="shell">
-      <nav class="topbar" aria-label="Discipline period navigation">
-        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="backToDiscipline()">← Discipline</button>
-      </nav>
+      <nav class="topbar" aria-label="Discipline period navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToDiscipline()">← Discipline</button></nav>
       <main class="period-detail">
-        <div id="disciplinePeriodMeta" class="period-meta-bar"></div>
-        <header class="period-heading">
-          <h1 id="disciplinePeriodTitle">Practice Period</h1>
-          <p id="disciplinePeriodSubtitle"></p>
-        </header>
-        <section id="disciplineRoutineSection" class="routine-block">
-          <h2 class="period-section-title">— Routine</h2>
-          <div id="disciplineRoutineList" class="routine-list"></div>
+        <div class="period-meta-bar"><span class="period-purpose">Purpose : Just for fun.</span><span class="period-meta-period">Period · Aug 2022 — Nov 2022</span></div>
+        <header class="period-heading"><h1>High School · Second Year</h1><p>A Four-Month Routine Adjustment</p></header>
+
+        <section class="routine-block">
+          <h2 class="period-section-title">Routine <span lang="zh-Hant">作息表</span></h2>
+          <div class="routine-list">
+            <div class="routine-row"><div class="routine-time">05:00</div><div class="routine-marker" aria-hidden="true"></div><div class="routine-copy"><h3>Wake</h3><p class="primary-en">Brush teeth and wash face</p><p class="secondary-zh">刷牙洗臉</p></div></div>
+            <div class="routine-row"><div class="routine-time">05:10</div><div class="routine-marker" aria-hidden="true"></div><div class="routine-copy"><h3>Meditation</h3><p class="primary-en">20 mins of meditation</p><p class="secondary-zh">20 分鐘冥想</p></div></div>
+            <div class="routine-row"><div class="routine-time">05:30</div><div class="routine-marker" aria-hidden="true"></div><div class="routine-copy"><h3>Running</h3><p class="primary-en">30 mins of running</p><p class="secondary-zh">30 分鐘跑步</p></div></div>
+            <div class="routine-row"><div class="routine-time">06:00</div><div class="routine-marker" aria-hidden="true"></div><div class="routine-copy"><h3>Cold Shower</h3><p class="primary-en">15 mins of cold shower</p><p class="secondary-zh">15 分鐘沖冷水澡</p></div></div>
+            <div class="routine-row"><div class="routine-time">06:15</div><div class="routine-marker" aria-hidden="true"></div><div class="routine-copy"><h3>Deep Work</h3><p class="primary-en">Breakfast / Plan the day’s tasks / Intensive morning study</p><p class="secondary-zh">早餐 / 擬定當日待辦 / 晨間高強度讀書</p></div></div>
+          </div>
         </section>
-        <section id="disciplinePendingSection" class="period-pending" hidden>
-          <p>Detailed routine has not been added to the archive yet.</p>
-        </section>
-        <section id="disciplineReflectionSection" class="reflection-block">
-          <h2 class="period-section-title">04 — Reflection</h2>
+
+        <section class="transformation-block">
+          <h2 class="period-section-title">Transformation <span lang="zh-Hant">轉化</span></h2>
+          <div class="transformation-grid">
+            <article class="transformation-item">
+              <h3>Mental &amp; Emotion</h3><p class="title-zh">精神與情緒狀態</p>
+              <p class="primary-en">After waking up, I felt more alert and motivated to act. My mindset became more optimistic, and it became easier to feel satisfied. My mood became much calmer; the intensity of stress, anger, nervousness, and fear decreased substantially, and I became more aware of the positive details in everyday life. I gained a stronger sense of control and direction in life, and seeing myself improve increased my self-confidence.</p>
+              <p class="secondary-zh">起床後比較有精神、有動力做事，心態轉變為更加樂觀，更容易滿足，心情變得非常平靜，不論是壓力、生氣、緊張、害怕的程度都大幅減少，並且更容易發現日常生活周遭的美好。擁有生活掌控感及目標感，能夠感受到自己正在變好而提升自信心。</p>
+            </article>
+
+            <article class="transformation-item">
+              <h3>Physical &amp; Energy</h3><p class="title-zh">生理與精力狀態</p>
+              <p class="primary-en">At around 8:30 p.m. each day, I would naturally start to feel sleepy. During the rest of the day, I generally had steady energy and rarely felt drowsy. Both my physical stamina and overall energy noticeably improved.</p>
+              <p class="secondary-zh">每天到約晚上八點半就會自動想睡覺，其餘時間都有精力，不會輕易想睡，體能、精力都有感受到提升。</p>
+            </article>
+
+            <article class="transformation-item">
+              <h3>Cognitive Output &amp; Focus</h3><p class="title-zh">專注與學習產出</p>
+              <p class="primary-en">My ability to focus improved noticeably. I could stay concentrated on a single task for longer periods and start difficult tasks more easily, which substantially improved my previous tendency to procrastinate. Waking very early also made the day feel longer, making it easier to begin tasks that required large blocks of time.</p>
+              <p class="secondary-zh">專注力明顯提升，能夠持續一段時間專注在一件事情上，並且可以輕易開始做困難的事，大幅改善之前的拖延習慣。由於早上很早起，也覺得時間變多了，能夠更容易開始做需要大量時間的事情。</p>
+            </article>
+          </div>
+
+          <div class="period-outcome" aria-label="Outcome summary"><span>Status · Achieved</span><span>Duration · ~120 Days</span><span>Period · 2022/08 ~ 2022/11</span></div>
         </section>
       </main>
     </div>
   </div>
 
   <div id="categoryPage" class="view subpage">
-    <div class="shell">
-      <nav class="topbar" aria-label="Category navigation">
-        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="backToAbility()">← Ability</button>
-      </nav>
-      <main class="detail-wrap">
-        <p class="eyebrow">Ability · Category</p>
-        <h1 id="categoryTitle" class="detail-title">Category</h1>
-        <div id="projectList" class="project-list"></div>
-      </main>
+    <div class="shell"><nav class="topbar" aria-label="Category navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToAbility()">← Ability</button></nav>
+      <main class="detail-wrap"><p class="eyebrow">Ability · Category</p><h1 id="categoryTitle" class="detail-title">Category</h1><div id="projectList" class="project-list"></div></main>
     </div>
   </div>
 
   <div id="projectPage" class="view subpage">
-    <div class="shell">
-      <nav class="topbar" aria-label="Project navigation">
-        <button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button>
-        <button class="back-link" type="button" onclick="backToCategory()">← Category</button>
-      </nav>
-      <main class="detail-wrap project-detail">
-        <p class="eyebrow">Ability · Project</p>
-        <h1 id="projectTitle" class="detail-title">Project</h1>
-        <p id="projectDescription" class="project-description">Project description</p>
-        <div class="info-grid">
-          <section class="info-card"><h3>Status</h3><p id="projectStatus">In Development</p></section>
-          <section class="info-card"><h3>Technologies</h3><p id="projectTechnology">—</p></section>
-        </div>
-        <a id="githubLink" class="github-button" href="#" target="_blank" rel="noopener noreferrer">View source code ↗</a>
-      </main>
+    <div class="shell"><nav class="topbar" aria-label="Project navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToCategory()">← Category</button></nav>
+      <main class="detail-wrap project-detail"><p class="eyebrow">Ability · Project</p><h1 id="projectTitle" class="detail-title">Project</h1><p id="projectDescription" class="project-description">Project description</p><div class="info-grid"><section class="info-card"><h3>Status</h3><p id="projectStatus">In Development</p></section><section class="info-card"><h3>Technologies</h3><p id="projectTechnology">—</p></section></div><a id="githubLink" class="github-button" href="#" target="_blank" rel="noopener noreferrer">View source code ↗</a></main>
     </div>
   </div>
 
   <script>
-    const disciplinePeriods={
-      "2022-08-2022-11":{
-        status:"Archived",
-        period:"Aug 2022 — Nov 2022",
-        title:"High School · Early-Riser Protocol",
-        subtitle:"4-Month Circadian & Energy Optimization Experiment",
-        routine:[
-          {time:"05:00",action:"Wake",detail:"刷牙洗臉"},
-          {time:"05:10",action:"Meditation",detail:"20 mins 冥想"},
-          {time:"05:30",action:"Running",detail:"30 mins 跑步"},
-          {time:"06:00",action:"Cold Shower",detail:"15 mins 沖冷水澡"},
-          {time:"06:15",action:"Deep Work",detail:"早餐 / 擬定當日待辦 / 晨間高強度讀書"}
-        ],
-        showReflection:true
-      },
-      "2026-02-2026-08":{
-        status:"",
-        period:"Feb 2026 — Aug 2026",
-        title:"System Development · Self-Learning",
-        subtitle:"",
-        routine:[],
-        showReflection:false
-      }
-    };
-
     const projects={
       Games:[{name:"Example RPG",description:"A role-playing game currently under development",status:"In Development",technology:"C#, Unity",github:"https://github.com/KeeCharlotte"}],
       Software:[{name:"Example Software",description:"A software system currently under development",status:"In Development",technology:"Python, JavaScript",github:"https://github.com/KeeCharlotte"}],
@@ -453,105 +270,33 @@
     const views=["portalPage","abilityPage","aboutPage","disciplinePage","disciplinePeriodPage","categoryPage","projectPage"];
 
     function currentHash(){return window.location.hash||"#home"}
-    function activateView(id){
-      views.forEach(viewId=>document.getElementById(viewId).classList.toggle("active",viewId===id));
-      window.scrollTo({top:0,behavior:"auto"});
-    }
-    function setHash(hash){
-      if(currentHash()!==hash){history.pushState({route:hash,from:currentHash()},"",hash)}
-    }
-    function makeText(tag,className,text){
-      const element=document.createElement(tag);if(className)element.className=className;element.textContent=text;return element;
-    }
+    function activateView(id){views.forEach(viewId=>document.getElementById(viewId).classList.toggle("active",viewId===id));window.scrollTo({top:0,behavior:"auto"})}
+    function setHash(hash){if(currentHash()!==hash)history.pushState({route:hash,from:currentHash()},"",hash)}
+    function makeText(tag,className,text){const element=document.createElement(tag);if(className)element.className=className;element.textContent=text;return element}
 
     function showPortal(push=true){activateView("portalPage");if(push)setHash("#home");document.title="KeeCharlotte — Life Portfolio"}
     function showAbility(push=true){activateView("abilityPage");if(push)setHash("#ability");document.title="Ability — KeeCharlotte"}
     function showAbout(push=true){activateView("aboutPage");if(push)setHash("#about");document.title="About me — KeeCharlotte"}
-    function showDiscipline(push=true){
-      currentCategory="Discipline";activateView("disciplinePage");if(push)setHash("#ability/Discipline");document.title="Discipline — KeeCharlotte";
-    }
-
-    function openDisciplinePeriod(slug,push=true){
-      const record=disciplinePeriods[slug];
-      if(!record){showDiscipline(push);return}
-      currentCategory="Discipline";activateView("disciplinePeriodPage");
-
-      const meta=document.getElementById("disciplinePeriodMeta");meta.replaceChildren();
-      if(record.status)meta.appendChild(makeText("span","","Status · "+record.status));
-      meta.appendChild(makeText("span","","Period · "+record.period));
-
-      document.getElementById("disciplinePeriodTitle").textContent=record.title;
-      const subtitle=document.getElementById("disciplinePeriodSubtitle");
-      subtitle.textContent=record.subtitle;subtitle.hidden=!record.subtitle;
-
-      const routineSection=document.getElementById("disciplineRoutineSection");
-      const routineList=document.getElementById("disciplineRoutineList");
-      const pendingSection=document.getElementById("disciplinePendingSection");
-      const reflectionSection=document.getElementById("disciplineReflectionSection");
-      routineList.replaceChildren();
-
-      if(record.routine.length){
-        routineSection.hidden=false;pendingSection.hidden=true;
-        record.routine.forEach(item=>{
-          const row=document.createElement("div");row.className="routine-row";
-          const time=makeText("div","routine-time",item.time);
-          const marker=document.createElement("div");marker.className="routine-marker";marker.setAttribute("aria-hidden","true");
-          const copy=document.createElement("div");copy.className="routine-copy";
-          copy.append(makeText("h3","",item.action),makeText("p","",item.detail));
-          row.append(time,marker,copy);routineList.appendChild(row);
-        });
-      }else{
-        routineSection.hidden=true;pendingSection.hidden=false;
-      }
-      reflectionSection.hidden=!record.showReflection;
-      if(push)setHash("#ability/Discipline/"+slug);
-      document.title=record.title+" — KeeCharlotte";
-    }
+    function showDiscipline(push=true){currentCategory="Discipline";activateView("disciplinePage");if(push)setHash("#ability/Discipline");document.title="Discipline — KeeCharlotte"}
+    function openDisciplinePeriod(push=true){currentCategory="Discipline";activateView("disciplinePeriodPage");if(push)setHash("#ability/Discipline/2022-08-2022-11");document.title="High School · Second Year — KeeCharlotte"}
 
     function openCategory(category,push=true){
-      currentCategory=category;
-      if(category==="Discipline"){showDiscipline(push);return}
+      currentCategory=category;if(category==="Discipline"){showDiscipline(push);return}
       activateView("categoryPage");document.getElementById("categoryTitle").textContent=category;
       const list=document.getElementById("projectList");const categoryProjects=projects[category]||[];list.replaceChildren();
-      if(!categoryProjects.length){
-        const empty=document.createElement("section");empty.className="empty-card";
-        empty.append(makeText("h3","","No projects yet"),makeText("p","","This section is currently empty. More works will be added in the future"));
-        list.appendChild(empty);
-      }else{
-        categoryProjects.forEach((project,index)=>{
-          const element=document.createElement("button");element.className="project-card";element.type="button";element.onclick=()=>openProject(index);
-          element.append(makeText("h3","",project.name),makeText("p","",project.description),makeText("span","status",project.status));
-          list.appendChild(element);
-        });
-      }
+      if(!categoryProjects.length){const empty=document.createElement("section");empty.className="empty-card";empty.append(makeText("h3","","No projects yet"),makeText("p","","This section is currently empty. More works will be added in the future"));list.appendChild(empty)}
+      else categoryProjects.forEach((project,index)=>{const element=document.createElement("button");element.className="project-card";element.type="button";element.onclick=()=>openProject(index);element.append(makeText("h3","",project.name),makeText("p","",project.description),makeText("span","status",project.status));list.appendChild(element)});
       if(push)setHash("#ability/"+encodeURIComponent(category));document.title=category+" — KeeCharlotte";
     }
 
-    function renderProject(project){
-      activateView("projectPage");
-      document.getElementById("projectTitle").textContent=project.name;
-      document.getElementById("projectDescription").textContent=project.description;
-      document.getElementById("projectStatus").textContent=project.status;
-      document.getElementById("projectTechnology").textContent=project.technology;
-      document.getElementById("githubLink").href=project.github;
-      document.title=project.name+" — KeeCharlotte";
-    }
-    function openProject(index){
-      const project=projects[currentCategory]?.[index];if(!project){openCategory(currentCategory);return}
-      renderProject(project);setHash("#ability/"+encodeURIComponent(currentCategory)+"/"+index);
-    }
+    function renderProject(project){activateView("projectPage");document.getElementById("projectTitle").textContent=project.name;document.getElementById("projectDescription").textContent=project.description;document.getElementById("projectStatus").textContent=project.status;document.getElementById("projectTechnology").textContent=project.technology;document.getElementById("githubLink").href=project.github;document.title=project.name+" — KeeCharlotte"}
+    function openProject(index){const project=projects[currentCategory]?.[index];if(!project){openCategory(currentCategory);return}renderProject(project);setHash("#ability/"+encodeURIComponent(currentCategory)+"/"+index)}
 
-    function backOrFallback(expectedFrom,fallback){
-      if(history.state?.from===expectedFrom){history.back();return}fallback();
-    }
+    function backOrFallback(expectedFrom,fallback){if(history.state?.from===expectedFrom){history.back();return}fallback()}
     function backToPortal(){backOrFallback("#home",()=>showPortal())}
     function backToAbility(){backOrFallback("#ability",()=>showAbility())}
     function backToDiscipline(){backOrFallback("#ability/Discipline",()=>showDiscipline())}
-    function backToCategory(){
-      const target=currentCategory?"#ability/"+encodeURIComponent(currentCategory):null;
-      if(target&&history.state?.from===target){history.back();return}
-      if(currentCategory)openCategory(currentCategory);else showAbility();
-    }
+    function backToCategory(){const target=currentCategory?"#ability/"+encodeURIComponent(currentCategory):null;if(target&&history.state?.from===target){history.back();return}if(currentCategory)openCategory(currentCategory);else showAbility()}
 
     function routeFromHash(){
       const parts=currentHash().replace(/^#/,"").split("/");
@@ -559,25 +304,20 @@
         if(!parts[1]){showAbility(false);return}
         const category=decodeURIComponent(parts[1]);
         if(category==="Discipline"){
-          if(parts[2]&&disciplinePeriods[parts[2]])openDisciplinePeriod(parts[2],false);else showDiscipline(false);
+          if(parts[2]==="2022-08-2022-11")openDisciplinePeriod(false);else showDiscipline(false);
           return;
         }
         if(!Object.prototype.hasOwnProperty.call(projects,category)){showAbility(false);return}
         currentCategory=category;openCategory(category,false);
-        if(parts[2]!==undefined){
-          const index=Number(parts[2]);
-          if(Number.isInteger(index)&&projects[category][index]){currentCategory=category;renderProject(projects[category][index])}
-        }
+        if(parts[2]!==undefined){const index=Number(parts[2]);if(Number.isInteger(index)&&projects[category][index]){currentCategory=category;renderProject(projects[category][index])}}
         return;
       }
       if(parts[0]==="about"){showAbout(false);return}
       showPortal(false);
     }
 
-    const initialHash=currentHash();
-    history.replaceState({route:initialHash,from:history.state?.from??null},"",initialHash);
-    window.addEventListener("popstate",routeFromHash);
-    routeFromHash();
+    const initialHash=currentHash();history.replaceState({route:initialHash,from:history.state?.from??null},"",initialHash);
+    window.addEventListener("popstate",routeFromHash);routeFromHash();
   </script>
 </body>
 </html>
