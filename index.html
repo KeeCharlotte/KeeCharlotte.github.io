@@ -60,8 +60,11 @@
     .subpage-title{margin:0;font-size:clamp(52px,7vw,82px);line-height:1;letter-spacing:-.02em}
     .subpage-intro{max-width:680px;margin:12px 0 0;color:var(--muted);font-family:var(--mono);font-size:14px;line-height:1.7;letter-spacing:.05em}
 
-    .category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding:4px 0 64px}
-    .category{min-height:118px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px 32px;border:2px solid var(--line);border-radius:var(--radius-card);background:rgba(26,20,32,.68);cursor:pointer;text-align:left;transition:transform .26s var(--ease),background .22s ease,border-color .22s ease}
+    .ability-groups{display:grid;gap:48px;padding:4px 0 64px}
+    .ability-group{display:grid;gap:16px}
+    .ability-group-title{margin:0;color:var(--rose);font-family:var(--mono);font-size:12px;font-weight:550;letter-spacing:.12em;text-transform:uppercase}
+    .category-grid{display:grid;grid-template-columns:1fr;gap:14px;padding:0}
+    .category{min-height:104px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 32px;border:2px solid var(--line);border-radius:var(--radius-card);background:rgba(26,20,32,.68);cursor:pointer;text-align:left;transition:transform .26s var(--ease),background .22s ease,border-color .22s ease}
     .category h2{margin:0;color:var(--muted-dark);font-family:var(--serif);font-size:clamp(27px,2.6vw,36px);font-weight:700;letter-spacing:-.015em;transition:color .22s ease}
     .category.available{border-color:var(--line-strong);background:var(--card)}
     .category.available h2{color:var(--text)}
@@ -130,7 +133,8 @@
     @media(max-width:760px){
       body{padding:10px}.view{min-height:calc(100vh - 20px);border-radius:20px}.shell{width:min(100% - 32px,1352px)}
       .topbar{min-height:64px}.topbar-note{display:none}.portal-main{min-height:calc(100vh - 128px);padding:42px 0 58px}.portal-lede{font-size:13px;letter-spacing:.03em}
-      .portal-grid,.category-grid{grid-template-columns:1fr}.portal-grid{gap:16px;margin-top:38px}.portal-card{min-height:140px;padding:26px}.subpage-hero{padding:38px 0 28px}.category-grid{gap:14px}.category{min-height:96px;padding:24px}.info-grid{grid-template-columns:1fr}
+      .portal-grid{grid-template-columns:1fr;gap:16px;margin-top:38px}.portal-card{min-height:140px;padding:26px}.subpage-hero{padding:38px 0 28px}
+      .ability-groups{gap:38px}.category-grid{gap:12px}.category{min-height:92px;padding:22px 24px}.info-grid{grid-template-columns:1fr}
       .discipline-main,.period-detail{padding-top:28px}.discipline-hero{padding-bottom:38px}.period-item{grid-template-columns:1fr auto;gap:8px 18px;padding:20px 0}.period-context{grid-column:1/2}.period-arrow{grid-column:2;grid-row:1/span 2}
       .period-meta-bar{flex-direction:column;align-items:flex-start;gap:10px}.period-heading{padding:34px 0 40px}.routine-row{grid-template-columns:58px 18px minmax(0,1fr);gap:10px}
       .period-outcome{flex-direction:column;gap:8px}.period-outcome span:not(:last-child)::after{content:"";margin:0}
@@ -157,17 +161,28 @@
     <div class="shell">
       <nav class="topbar" aria-label="Ability navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToPortal()">← Overview</button></nav>
       <header class="subpage-hero"><p class="eyebrow">Capability archive</p><h1 class="subpage-title">Ability</h1><p class="subpage-intro">Ten dimensions of work, skill, knowledge, and long-term practice</p></header>
-      <main class="category-grid" aria-label="Ability categories">
-        <button class="category" type="button" onclick="openCategory('Achievements')"><h2>Achievements</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category available" type="button" onclick="openCategory('Games')"><h2>Games</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category available" type="button" onclick="openCategory('Software')"><h2>Software</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category" type="button" onclick="openCategory('Music')"><h2>Music</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category" type="button" onclick="openCategory('Art')"><h2>Art</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category available" type="button" onclick="openCategory('Discipline')"><h2>Discipline</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category" type="button" onclick="openCategory('Fiction')"><h2>Fiction</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category" type="button" onclick="openCategory('Survival Skills')"><h2>Survival Skills</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category" type="button" onclick="openCategory('Civilizational Mastery')"><h2>Civilizational Mastery</h2><span class="category-dot" aria-hidden="true"></span></button>
-        <button class="category" type="button" onclick="openCategory('Cognition')"><h2>Cognition</h2><span class="category-dot" aria-hidden="true"></span></button>
+      <main class="ability-groups" aria-label="Ability categories">
+        <section class="ability-group" aria-labelledby="independentWorkTitle">
+          <h2 id="independentWorkTitle" class="ability-group-title">0% AI Involvement</h2>
+          <div class="category-grid">
+            <button class="category" type="button" onclick="openCategory('Fiction')"><h2>Fiction</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category" type="button" onclick="openCategory('Survival Skills')"><h2>Survival Skills</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category available" type="button" onclick="openCategory('Discipline')"><h2>Discipline</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category" type="button" onclick="openCategory('Cognition')"><h2>Cognition</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category" type="button" onclick="openCategory('Civilizational Mastery')"><h2>Civilizational Mastery</h2><span class="category-dot" aria-hidden="true"></span></button>
+          </div>
+        </section>
+
+        <section class="ability-group" aria-labelledby="aiAssistedTitle">
+          <h2 id="aiAssistedTitle" class="ability-group-title">AI-Assisted</h2>
+          <div class="category-grid">
+            <button class="category" type="button" onclick="openCategory('Achievements')"><h2>Achievements</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category available" type="button" onclick="openCategory('Games')"><h2>Games</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category available" type="button" onclick="openCategory('Software')"><h2>Software</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category" type="button" onclick="openCategory('Music')"><h2>Music</h2><span class="category-dot" aria-hidden="true"></span></button>
+            <button class="category" type="button" onclick="openCategory('Art')"><h2>Art</h2><span class="category-dot" aria-hidden="true"></span></button>
+          </div>
+        </section>
       </main><footer>© 2026 KeeCharlotte</footer>
     </div>
   </div>
@@ -224,19 +239,19 @@
           <div class="transformation-grid">
             <article class="transformation-item">
               <h3>Mental &amp; Emotion</h3><p class="title-zh">精神與情緒狀態</p>
-              <p class="primary-en">After waking up, I felt more alert and motivated to act. My mindset became more optimistic, and it became easier to feel satisfied. My mood became much calmer; the intensity of stress, anger, nervousness, and fear decreased substantially, and I became more aware of the positive details in everyday life. I gained a stronger sense of control and direction in life, and seeing myself improve increased my self-confidence.</p>
+              <p class="primary-en">Greater alertness and motivation were noticeable after waking. Overall outlook became more optimistic, with a stronger tendency to feel satisfied with everyday life. Emotional responses also became calmer, with substantially lower levels of stress, anger, nervousness, and fear. Positive details in the surrounding environment became easier to notice. A stronger sense of control and direction in daily life also developed, while the perception of continued improvement contributed to greater self-confidence.</p>
               <p class="secondary-zh">起床後比較有精神、有動力做事，心態轉變為更加樂觀，更容易滿足，心情變得非常平靜，不論是壓力、生氣、緊張、害怕的程度都大幅減少，並且更容易發現日常生活周遭的美好。擁有生活掌控感及目標感，能夠感受到自己正在變好而提升自信心。</p>
             </article>
 
             <article class="transformation-item">
               <h3>Physical &amp; Energy</h3><p class="title-zh">生理與精力狀態</p>
-              <p class="primary-en">At around 8:30 p.m. each day, I would naturally start to feel sleepy. During the rest of the day, I generally had steady energy and rarely felt drowsy. Both my physical stamina and overall energy noticeably improved.</p>
+              <p class="primary-en">Sleepiness began to occur naturally at around 8:30 p.m. each day. Energy remained relatively stable throughout the rest of the day, with daytime drowsiness becoming uncommon. Both physical stamina and overall energy levels showed a noticeable improvement.</p>
               <p class="secondary-zh">每天到約晚上八點半就會自動想睡覺，其餘時間都有精力，不會輕易想睡，體能、精力都有感受到提升。</p>
             </article>
 
             <article class="transformation-item">
               <h3>Cognitive Output &amp; Focus</h3><p class="title-zh">專注與學習產出</p>
-              <p class="primary-en">My ability to focus improved noticeably. I could stay concentrated on a single task for longer periods and start difficult tasks more easily, which substantially improved my previous tendency to procrastinate. Waking very early also made the day feel longer, making it easier to begin tasks that required large blocks of time.</p>
+              <p class="primary-en">Sustained attention improved noticeably, allowing longer periods of focus on a single task. Difficult tasks also became easier to initiate, substantially reducing the previous tendency to procrastinate. Earlier waking created a greater sense of available time during the day, making it easier to begin activities that required longer uninterrupted periods.</p>
               <p class="secondary-zh">專注力明顯提升，能夠持續一段時間專注在一件事情上，並且可以輕易開始做困難的事，大幅改善之前的拖延習慣。由於早上很早起，也覺得時間變多了，能夠更容易開始做需要大量時間的事情。</p>
             </article>
           </div>
