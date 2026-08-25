@@ -19,16 +19,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Pillow
-        run: python -m pip install --quiet pillow
-
-      - name: Apply Fiction refinement
+      - name: Apply non-image Fiction refinements
         run: python scripts/refine_fiction.py
+
+      - name: Check JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          source = Path('index.html').read_text(encoding='utf-8')
+          match = re.search(r'<script>(.*?)</script>', source, re.S)
+          if not match:
+              raise SystemExit('script block not found')
+          Path('/tmp/site.js').write_text(match.group(1), encoding='utf-8')
+          PY
+          node --check /tmp/site.js
 
       - name: Commit refined Fiction page
         run: |
           git config user.name "KeeCharlotte"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html assets/unreachable-sincerity-cover.png
+          git add index.html
           git commit -m "Refine Fiction work presentation"
           git push origin main
