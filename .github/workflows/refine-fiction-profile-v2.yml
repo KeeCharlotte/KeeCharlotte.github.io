@@ -1,0 +1,93 @@
+name: Refine Fiction profile v2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/refine-fiction-profile-v2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply requested Fiction refinements
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_author = '.fiction-profile-author{color:var(--text);font-weight:500}'
+          new_author = '.fiction-profile-author{color:var(--text);font-family:var(--serif);font-size:21px;font-weight:700;letter-spacing:0}'
+          if old_author not in text:
+              raise SystemExit('Author style anchor not found')
+          text = text.replace(old_author, new_author, 1)
+
+          old_thesis_css = '.fiction-thesis{margin:auto 0 0;padding:30px 0 2px;border-top:1px solid var(--line)}.fiction-thesis-zh{margin:0;color:var(--text);font-family:var(--serif);font-size:clamp(22px,2.8vw,32px);'
+          new_thesis_css = '.fiction-thesis{margin:18px 0 0;padding:18px 0 2px;border-top:0}.fiction-thesis-zh{margin:0;color:var(--text);font-family:var(--serif);font-size:clamp(20px,2.8vw,30px);'
+          if old_thesis_css not in text:
+              raise SystemExit('Thesis CSS anchor not found')
+          text = text.replace(old_thesis_css, new_thesis_css, 1)
+
+          old_mobile = '.fiction-thesis{margin-top:28px}'
+          new_mobile = '.fiction-thesis{margin-top:16px}'
+          if old_mobile in text:
+              text = text.replace(old_mobile, new_mobile, 1)
+
+          thesis_line = '          thesisZh:"有些事情，用說的就能輕易理解。\\n但更多的是，就算通過言語也無法完全表達的情感。",'
+          thesis_with_en = thesis_line + '\n          thesisEn:"Some things can be easily understood through words.\\nBut many more are feelings that words can never fully express.",'
+          if thesis_line not in text:
+              raise SystemExit('Chinese thesis data not found')
+          text = text.replace(thesis_line, thesis_with_en, 1)
+
+          synopsis_pattern = re.compile(r'          synopsis:`明知這份關係終將截止，\\\n明知有人會因此而受傷，\\\n明知—\\\n錯了，我根本什麼都不知道。\\\n尋找著逃避的藉口，因為害怕改變而不斷說服自己。\\\n但總有一天，抉擇之時終將來臨。\\\n緊握著彼此的心意，遵循著各自的想法。\\\n過往的傷疤已被撫平，未來的晨曦即將到來。\\\n有些事情，用說的就能輕易理解。\\\n但更多的是，就算通過言語也無法完全表達的情感。`,')
+          synopsis_new = '          synopsis:"明知這份關係終將截止，\\n明知有人會因此而受傷，\\n明知—\\n錯了，我根本什麼都不知道。\\n尋找著逃避的藉口，因為害怕改變而不斷說服自己。\\n但總有一天，抉擇之時終將來臨。\\n緊握著彼此的心意，遵循著各自的想法。\\n過往的傷疤已被撫平，未來的晨曦即將到來。\\n有些事情，用說的就能輕易理解。\\n但更多的是，就算通過言語也無法完全表達的情感。",'
+          text, count = synopsis_pattern.subn(lambda m: synopsis_new, text, count=1)
+          if count != 1:
+              raise SystemExit(f'Synopsis replacement count was {count}')
+
+          required = [
+              'font-size:21px;font-weight:700',
+              '.fiction-thesis{margin:18px 0 0;padding:18px 0 2px;border-top:0}',
+              'font-size:clamp(20px,2.8vw,30px)',
+              'thesisEn:"Some things can be easily understood through words.\\nBut many more are feelings that words can never fully express."',
+              'synopsis:"明知這份關係終將截止，\\n明知有人會因此而受傷，\\n明知—\\n錯了，我根本什麼都不知道。'
+          ]
+          for item in required:
+              if item not in text:
+                  raise SystemExit(f'Missing expected result: {item}')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Verify JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          source = Path('index.html').read_text(encoding='utf-8')
+          match = re.search(r'<script>(.*?)</script>', source, re.S)
+          if not match:
+              raise SystemExit('script block not found')
+          Path('/tmp/site.js').write_text(match.group(1), encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+
+      - name: Commit changes
+        run: |
+          git config user.name "KeeCharlotte"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Refine Fiction profile spacing and synopsis"
+          git push origin main
