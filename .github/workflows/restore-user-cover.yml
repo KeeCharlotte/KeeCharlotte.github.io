@@ -1,0 +1,66 @@
+name: Restore uploaded fiction cover
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/restore-user-cover.yml
+
+permissions:
+  contents: write
+
+jobs:
+  restore-cover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore the user-uploaded PNG and wire it into Fiction
+        run: |
+          mkdir -p assets
+          git show 16cb57eb546417ddd6eeb4d6f69340ffcf4077df:"assets/封面.png" > assets/unreachable-sincerity-cover.png
+          python - <<'PY'
+          from pathlib import Path
+
+          image = Path('assets/unreachable-sincerity-cover.png')
+          data = image.read_bytes()
+          if not data.startswith(b'\x89PNG\r\n\x1a\n'):
+              raise SystemExit('Recovered file is not a valid PNG')
+          if len(data) < 10000:
+              raise SystemExit(f'Recovered PNG is unexpectedly small: {len(data)} bytes')
+
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
+          old = 'cover:"assets/unreachable-sincerity-cover.jpg"'
+          new = 'cover:"assets/unreachable-sincerity-cover.png"'
+          if old not in text:
+              raise SystemExit('Expected JPG cover reference was not found')
+          text = text.replace(old, new, 1)
+          index.write_text(text, encoding='utf-8')
+          print(f'Restored PNG bytes: {len(data)}')
+          PY
+
+      - name: Verify JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          source = Path('index.html').read_text(encoding='utf-8')
+          match = re.search(r'<script>(.*?)</script>', source, re.S)
+          if not match:
+              raise SystemExit('script block not found')
+          Path('/tmp/site.js').write_text(match.group(1), encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+
+      - name: Commit restored cover
+        run: |
+          git config user.name "KeeCharlotte"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html assets/unreachable-sincerity-cover.png
+          git commit -m "Use uploaded PNG cover for Unreachable Sincerity"
+          git push origin main
