@@ -1,0 +1,117 @@
+name: Remove Cognition related concepts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/remove-cognition-related-concepts.yml
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove theory attribution metadata from Cognition
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          # Remove the explanatory note about related concepts.
+          text, note_count = re.subn(
+              r'<p class="cognition-reference-note">.*?</p>',
+              '',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if note_count != 1:
+              raise SystemExit(f'Expected 1 Cognition reference note, removed {note_count}')
+
+          # Remove related-concept CSS that will no longer be used.
+          for selector in (
+              'cognition-reference-note',
+              'cognition-related',
+              'cognition-related-label',
+              'cognition-tag',
+          ):
+              text, count = re.subn(r'\.' + re.escape(selector) + r'\{[^{}]*\}', '', text)
+              if count != 1:
+                  raise SystemExit(f'Expected 1 CSS rule for {selector}, removed {count}')
+
+          # Remove all concept/theory tags from Cognition data only.
+          start = text.index('    const cognitionThemes={')
+          end = text.index('\n\n    const fictionWorks=', start)
+          block = text[start:end]
+          block = re.sub(r',tags:\[[^\]]*\]', '', block)
+          block = re.sub(r'\n\s*tags:\[[^\]]*\],', '', block)
+          if 'tags:[' in block:
+              raise SystemExit('Cognition tags remain after cleanup')
+          text = text[:start] + block + text[end:]
+
+          # Remove the renderer and both call sites.
+          text, fn_count = re.subn(
+              r'\n\s*function appendCognitionTags\(target,tags\)\{.*?\}\n',
+              '\n',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if fn_count != 1:
+              raise SystemExit(f'Expected appendCognitionTags function once, removed {fn_count}')
+
+          for call in (
+              'appendCognitionTags(intro,theme.tags);',
+              'appendCognitionTags(body,reflection.tags);',
+          ):
+              if call not in text:
+                  raise SystemExit(f'Missing expected call: {call}')
+              text = text.replace(call, '', 1)
+
+          forbidden = [
+              'Related concepts',
+              'cognition-related',
+              'cognition-tag',
+              '「關聯概念」',
+              'appendCognitionTags',
+          ]
+          for item in forbidden:
+              if item in text:
+                  raise SystemExit(f'Forbidden Related concepts artifact remains: {item}')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Verify JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          text = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script>(.*?)</script>', text, flags=re.S)
+          code = '\n'.join(scripts)
+          with tempfile.NamedTemporaryFile('w', suffix='.js', delete=False, encoding='utf-8') as f:
+              f.write(code)
+              name = f.name
+          subprocess.run(['node', '--check', name], check=True)
+          PY
+
+      - name: Commit Cognition cleanup
+        run: |
+          git config user.name "KeeCharlotte"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Remove Cognition related concepts"
+          git push
