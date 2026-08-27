@@ -1,0 +1,88 @@
+name: Fix Cognition line breaks
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/fix-cognition-linebreaks.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Make Cognition line breaks explicit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old_css = '.cognition-thought{max-width:760px;margin:18px 0 0;color:var(--text);font-size:17px;line-height:1.95;white-space:pre-line}'
+          new_css = '.cognition-thought{max-width:760px;margin:18px 0 0;color:var(--text);font-size:17px;line-height:1.95;white-space:pre-wrap}'
+          if old_css not in s:
+              raise SystemExit('Expected cognition-thought CSS not found')
+          s = s.replace(old_css, new_css, 1)
+
+          old_helper = 'function makeText(tag,className,text){const element=document.createElement(tag);if(className)element.className=className;element.textContent=text;return element}'
+          new_helper = 'function makeText(tag,className,text){const element=document.createElement(tag);if(className)element.className=className;element.textContent=text;return element}function normalizeCognitionBreaks(text){return String(text??"").replace(/\\\\n/g,"\\n")}'
+          if old_helper not in s:
+              raise SystemExit('Expected makeText helper not found')
+          s = s.replace(old_helper, new_helper, 1)
+
+          old_thought = 'makeText("p","cognition-thought",reflection.thought)'
+          new_thought = 'makeText("p","cognition-thought",normalizeCognitionBreaks(reflection.thought))'
+          if old_thought not in s:
+              raise SystemExit('Expected Cognition thought renderer not found')
+          s = s.replace(old_thought, new_thought, 1)
+
+          old_chain = 'theory.chain.forEach(item=>chain.appendChild(makeText("div","cognition-chain-step",item)))'
+          new_chain = 'theory.chain.forEach(item=>chain.appendChild(makeText("div","cognition-chain-step",normalizeCognitionBreaks(item))))'
+          if old_chain not in s:
+              raise SystemExit('Expected Cognition chain renderer not found')
+          s = s.replace(old_chain, new_chain, 1)
+
+          required = [
+              'white-space:pre-wrap',
+              'function normalizeCognitionBreaks',
+              'normalizeCognitionBreaks(reflection.thought)',
+              'normalizeCognitionBreaks(item)',
+          ]
+          for item in required:
+              if item not in s:
+                  raise SystemExit(f'Missing repaired line-break behavior: {item}')
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Verify JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          text = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script>(.*?)</script>', text, flags=re.S)
+          code = '\n'.join(scripts)
+          with tempfile.NamedTemporaryFile('w', suffix='.js', delete=False, encoding='utf-8') as f:
+              f.write(code)
+              name = f.name
+          subprocess.run(['node', '--check', name], check=True)
+          PY
+
+      - name: Commit line break repair
+        run: |
+          git config user.name "KeeCharlotte"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix Cognition line break rendering"
+          git push
