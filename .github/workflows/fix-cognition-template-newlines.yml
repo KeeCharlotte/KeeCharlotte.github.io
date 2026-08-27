@@ -19,29 +19,49 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Preserve Cognition template literal newlines
+      - name: Render Cognition newlines as BR elements
         run: |
           python - <<'PY'
           from pathlib import Path
 
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
-          start = text.index('    const cognitionThemes={')
-          end = text.index('\n\n    const fictionWorks=', start)
-          block = text[start:end]
 
-          before = block.count('\\\n')
-          if before == 0:
-              raise SystemExit('No Cognition backslash-newline continuations found')
+          old_css = '.cognition-thought{max-width:760px;margin:18px 0 0;color:var(--text);font-size:17px;line-height:1.95;white-space:pre-wrap}'
+          new_css = '.cognition-thought{max-width:760px;margin:18px 0 0;color:var(--text);font-size:17px;line-height:1.95;white-space:normal}'
+          if old_css not in text:
+              raise SystemExit('Expected Cognition thought CSS not found')
+          text = text.replace(old_css, new_css, 1)
 
-          block = block.replace('\\\n', '\n')
+          old_helper = 'function makeText(tag,className,text){const element=document.createElement(tag);if(className)element.className=className;element.textContent=text;return element}function normalizeCognitionBreaks(text){const value=String(text??"");return value.split(String.fromCharCode(92)+"n").join(String.fromCharCode(10))}'
+          new_helper = 'function makeText(tag,className,text){const element=document.createElement(tag);if(className)element.className=className;element.textContent=text;return element}function normalizeCognitionBreaks(text){const value=String(text??"");return value.split(String.fromCharCode(92)+"n").join(String.fromCharCode(10))}function makeCognitionMultiline(tag,className,text){const element=document.createElement(tag);if(className)element.className=className;const lines=normalizeCognitionBreaks(text).replace(/\\r\\n?/g,"\\n").split("\\n");lines.forEach((line,index)=>{if(index)element.appendChild(document.createElement("br"));element.appendChild(document.createTextNode(line))});return element}'
+          if old_helper not in text:
+              raise SystemExit('Expected Cognition helper block not found')
+          text = text.replace(old_helper, new_helper, 1)
 
-          if '\\\n' in block:
-              raise SystemExit('Backslash-newline continuation remains in Cognition data')
+          old_chain = 'theory.chain.forEach(item=>chain.appendChild(makeText("div","cognition-chain-step",normalizeCognitionBreaks(item))))'
+          new_chain = 'theory.chain.forEach(item=>chain.appendChild(makeCognitionMultiline("div","cognition-chain-step",item)))'
+          if old_chain not in text:
+              raise SystemExit('Expected chain renderer not found')
+          text = text.replace(old_chain, new_chain, 1)
 
-          text = text[:start] + block + text[end:]
+          old_thought = 'makeText("p","cognition-thought",normalizeCognitionBreaks(reflection.thought))'
+          new_thought = 'makeCognitionMultiline("div","cognition-thought",reflection.thought)'
+          if old_thought not in text:
+              raise SystemExit('Expected thought renderer not found')
+          text = text.replace(old_thought, new_thought, 1)
+
+          required = [
+              'function makeCognitionMultiline',
+              'document.createElement("br")',
+              'makeCognitionMultiline("div","cognition-thought",reflection.thought)',
+              'makeCognitionMultiline("div","cognition-chain-step",item)',
+          ]
+          for item in required:
+              if item not in text:
+                  raise SystemExit(f'Missing explicit line-break renderer: {item}')
+
           path.write_text(text, encoding='utf-8')
-          print(f'Removed {before} JavaScript line continuations from Cognition data')
           PY
 
       - name: Verify JavaScript syntax
@@ -58,19 +78,16 @@ jobs:
           subprocess.run(['node', '--check', name], check=True)
           PY
 
-      - name: Verify Cognition newline preservation
+      - name: Verify explicit break semantics
         run: |
           python - <<'PY'
           from pathlib import Path
           text = Path('index.html').read_text(encoding='utf-8')
-          start = text.index('    const cognitionThemes={')
-          end = text.index('\n\n    const fictionWorks=', start)
-          block = text[start:end]
-          if '\\\n' in block:
-              raise SystemExit('Cognition still contains JavaScript line continuations')
-          if 'white-space:pre-wrap' not in text:
-              raise SystemExit('Cognition pre-wrap CSS is missing')
-          print('Cognition template literal newlines will be preserved by CSS')
+          if 'document.createElement("br")' not in text:
+              raise SystemExit('BR renderer missing')
+          if 'makeText("p","cognition-thought",normalizeCognitionBreaks(reflection.thought))' in text:
+              raise SystemExit('Old whitespace-dependent renderer remains')
+          print('Cognition line breaks are now explicit DOM BR elements')
           PY
 
       - name: Commit fix
@@ -79,5 +96,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Preserve Cognition paragraph line breaks"
+          git commit -m "Render Cognition line breaks explicitly"
           git push
