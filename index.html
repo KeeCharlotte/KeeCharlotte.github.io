@@ -54,7 +54,7 @@
   <div id="categoryPage" class="view subpage"><div class="shell"><nav class="topbar" aria-label="Category navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToAbility()">← Ability</button></nav><main class="detail-wrap"><p id="categoryEyebrow" class="eyebrow">Ability · Category</p><h1 id="categoryTitle" class="detail-title">Category</h1><div id="projectList" class="project-list"></div></main></div></div>
   <div id="projectPage" class="view subpage"><div class="shell"><nav class="topbar" aria-label="Project navigation"><button class="brand" type="button" onclick="showPortal()">KeeCharlotte</button><button class="back-link" type="button" onclick="backToCategory()">← Category</button></nav><main class="detail-wrap project-detail"><p class="eyebrow">Ability · Project</p><h1 id="projectTitle" class="detail-title">Project</h1><p id="projectDescription" class="project-description">Project description</p><div class="info-grid"><section class="info-card"><h3>Status</h3><p id="projectStatus">In Development</p></section><section class="info-card"><h3>Technologies</h3><p id="projectTechnology">—</p></section></div><a id="githubLink" class="github-button" href="#" target="_blank" rel="noopener noreferrer">View source code ↗</a></main></div></div>
   <script>
-    const projects={Games:[{name:"Example RPG",description:"A role-playing game currently under development",status:"In Development",technology:"C#, Unity",github:"https://github.com/KeeCharlotte"}],Software:[{name:"Example Software",description:"A software system currently under development",status:"In Development",technology:"Python, JavaScript",github:"https://github.com/KeeCharlotte"}],Achievements:[],Music:[],Art:[],Discipline:[],Fiction:[],"Survival Skills":[],"Civilizational Mastery":[],Cognition:[]};
+    const projects={Games:[{name:"Civilization Rebuild",description:"A Civilization-Building Game based on real-world rules"\n"基於真實世界規則的文明建立遊戲",status:"In Development",technology:"C#, Unity",github:"https://github.com/KeeCharlotte"}],Software:[{name:"AAAS_TW",description:"An Evidence-Driven Accounting System under development",status:"In Development",technology:"Python, JavaScript",github:"https://github.com/KeeCharlotte"}],Achievements:[],Music:[],Art:[],Discipline:[],Fiction:[],"Survival Skills":[],"Civilizational Mastery":[],Cognition:[]};
 
     const cognitionThemeOrder=["personality-destiny","worldview","emotion-reason","meaning-freedom","self-integration","human-ethics"];
     const cognitionThemes={
@@ -136,25 +136,25 @@
           thesisEn:"Some things can be easily understood through words.\nBut many more are feelings that words can never fully express.",
           synopsis:"明知這份關係終將截止，\n明知有人會因此而受傷，\n明知—\n錯了，我根本什麼都不知道。\n尋找著逃避的藉口，因為害怕改變而不斷說服自己。\n但總有一天，抉擇之時終將來臨。\n緊握著彼此的心意，遵循著各自的想法。\n過往的傷疤已被撫平，未來的晨曦即將到來。\n有些事情，用說的就能輕易理解。\n但更多的是，就算通過言語也無法完全表達的情感。",
           characters:[
-            {name:"凡木悠 浩矢",meta:"男 · 17歲",text:`我只是一個平凡普通的高中生，喜歡喝奶茶。\
-沒有朋友。朋友什麼的，都只是生存的手段罷了。\
-等到某天毫無利益之時，會被毫不猶豫地拋棄。\
-成績中下，體能中下，外貌中下。\
-當個不起眼的石頭也不錯。\
+            {name:"凡木悠 浩矢",meta:"男 · 17歲",text:`我只是一個平凡普通的高中生，喜歡喝奶茶。\n
+沒有朋友。朋友什麼的，都只是生存的手段罷了。\n
+等到某天毫無利益之時，會被毫不猶豫地拋棄。\n
+成績中下，體能中下，外貌中下。\n
+當個不起眼的石頭也不錯。\n
 但是...上天似乎不打算讓我安穩度過高中...`},
-            {name:"流星碧 結衣",meta:"女 · 17歲",text:`嗨嗨! 大家好啊~ 我是結衣!\
-我喜歡...巧克力棒! 對，巧克力棒最棒了!\
-淺野是我最好的朋友。\
-我平常喜歡跟朋友出去玩，吃好吃的~\
-別看我這樣，其實我功課挺好的喔~! 哈哈哈!\
+            {name:"流星碧 結衣",meta:"女 · 17歲",text:`嗨嗨! 大家好啊~ 我是結衣!\n
+我喜歡...巧克力棒! 對，巧克力棒最棒了!\n
+淺野是我最好的朋友。\n
+我平常喜歡跟朋友出去玩，吃好吃的~\n
+別看我這樣，其實我功課挺好的喔~! 哈哈哈!\n
 好期待高中生活!`},
-            {name:"鬱香雪 淺野",meta:"女 · 17歲",text:`...我是淺野。\
-跟我扯上關係的人下場通常都不太好。\
-但無所謂，反正我也習慣了。\
-我最討厭表裡不一的人。\
-掛著噁心的笑容，背地裡卻在批評、嘲笑。\
-至少，討厭一個人就該有討厭的樣子。\
-不需要裝得多親近，也不需要假裝關心。\
+            {name:"鬱香雪 淺野",meta:"女 · 17歲",text:`...我是淺野。\n
+跟我扯上關係的人下場通常都不太好。\n
+但無所謂，反正我也習慣了。\n
+我最討厭表裡不一的人。\n
+掛著噁心的笑容，背地裡卻在批評、嘲笑。\n
+至少，討厭一個人就該有討厭的樣子。\n
+不需要裝得多親近，也不需要假裝關心。\n
 我反而比較喜歡那種人。`}
           ]
         }
