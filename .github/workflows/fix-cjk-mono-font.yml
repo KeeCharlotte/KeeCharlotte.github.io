@@ -1,0 +1,58 @@
+name: Fix CJK mono font fallback
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/fix-cjk-mono-font.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add Traditional Chinese fallback to mono stack
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = '--mono:"Geist Mono","SFMono-Regular",Consolas,monospace;'
+          new = '--mono:"Geist Mono","Noto Sans TC","SFMono-Regular",Consolas,monospace;'
+          if old not in s:
+              raise SystemExit('Expected mono font stack not found')
+          s = s.replace(old, new, 1)
+          if new not in s:
+              raise SystemExit('Mono CJK fallback was not applied')
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Verify JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s = Path('index.html').read_text(encoding='utf-8')
+          m = re.search(r'<script>([\s\S]*)</script>', s)
+          if not m:
+              raise SystemExit('Inline script not found')
+          Path('/tmp/site.js').write_text(m.group(1), encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+
+      - name: Commit font fallback fix
+        run: |
+          git config user.name "KeeCharlotte"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Complete Traditional Chinese font fallback"
+          git push origin main
