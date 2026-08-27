@@ -1,0 +1,44 @@
+name: Refine Cognition typography
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/refine-cognition-typography.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply Cognition refinements
+        run: python scripts/refine_cognition_typography.py
+
+      - name: Verify JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          source = Path('index.html').read_text(encoding='utf-8')
+          match = re.search(r'<script>(.*?)</script>', source, re.S)
+          if not match:
+              raise SystemExit('script block not found')
+          Path('/tmp/site.js').write_text(match.group(1), encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+
+      - name: Commit changes
+        run: |
+          git config user.name "KeeCharlotte"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Refine Cognition typography and layout"
+          git push origin main
