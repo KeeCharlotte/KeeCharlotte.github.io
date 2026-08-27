@@ -1,0 +1,83 @@
+name: Fix Cognition template newlines
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/fix-cognition-template-newlines.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preserve Cognition template literal newlines
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+          start = text.index('    const cognitionThemes={')
+          end = text.index('\n\n    const fictionWorks=', start)
+          block = text[start:end]
+
+          before = block.count('\\\n')
+          if before == 0:
+              raise SystemExit('No Cognition backslash-newline continuations found')
+
+          block = block.replace('\\\n', '\n')
+
+          if '\\\n' in block:
+              raise SystemExit('Backslash-newline continuation remains in Cognition data')
+
+          text = text[:start] + block + text[end:]
+          path.write_text(text, encoding='utf-8')
+          print(f'Removed {before} JavaScript line continuations from Cognition data')
+          PY
+
+      - name: Verify JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          text = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script>(.*?)</script>', text, flags=re.S)
+          code = '\n'.join(scripts)
+          with tempfile.NamedTemporaryFile('w', suffix='.js', delete=False, encoding='utf-8') as f:
+              f.write(code)
+              name = f.name
+          subprocess.run(['node', '--check', name], check=True)
+          PY
+
+      - name: Verify Cognition newline preservation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('index.html').read_text(encoding='utf-8')
+          start = text.index('    const cognitionThemes={')
+          end = text.index('\n\n    const fictionWorks=', start)
+          block = text[start:end]
+          if '\\\n' in block:
+              raise SystemExit('Cognition still contains JavaScript line continuations')
+          if 'white-space:pre-wrap' not in text:
+              raise SystemExit('Cognition pre-wrap CSS is missing')
+          print('Cognition template literal newlines will be preserved by CSS')
+          PY
+
+      - name: Commit fix
+        run: |
+          git config user.name "KeeCharlotte"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Preserve Cognition paragraph line breaks"
+          git push
