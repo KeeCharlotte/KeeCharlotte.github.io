@@ -48,6 +48,10 @@ replacements = [
         '''priority:{num:"01.7",titleEn:"Priority Assessment",titleZh:"判斷目前最大威脅",introEn:"Combine the six assessments and decide what deserves attention first."''',
         '''priority:{num:"01.6",titleEn:"Priority Assessment",titleZh:"判斷目前最大威脅",introEn:"Combine the five assessments and decide what deserves attention first."'''
     ),
+    (
+        '''環境、身體、位置、資源與獲救可能都會改變，因此完成重要行動或情況明顯變化後，要重新跑一次評估。''',
+        '''環境、身體、位置與資源都會改變，因此完成重要行動或情況明顯變化後，要重新跑一次評估。'''
+    ),
 ]
 
 for old, new in replacements:
