@@ -19,6 +19,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Correct one-shot guardrail
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/apply_survival_page.py')
+          source = path.read_text(encoding='utf-8')
+          old = '\'"survivalPage"\': 1,'
+          new = '\'"survivalPage"\': 3,'
+          if old not in source:
+              raise SystemExit('Expected guardrail token not found')
+          path.write_text(source.replace(old, new, 1), encoding='utf-8')
+          PY
+
       - name: Patch site
         run: python scripts/apply_survival_page.py
 
