@@ -1,0 +1,72 @@
+name: Apply Project Copy and Start Dates
+
+on:
+  push:
+    paths:
+      - "scripts/refine_project_copy_and_start.py"
+      - ".github/workflows/apply-project-copy-start.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply copy and dates
+        run: python scripts/refine_project_copy_and_start.py
+
+      - name: Validate embedded JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          start = html.index('<script>') + len('<script>')
+          end = html.rindex('</script>')
+          Path('/tmp/site.js').write_text(html[start:end], encoding='utf-8')
+          PY
+          node --check /tmp/site.js
+
+      - name: Validate project copy and dates
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          required = [
+              'A record of the software systems I am building and refining.',
+              '這裡紀錄我目前開發與持續改進的軟體系統。',
+              'A financial control system prototype built around traceable decisions and verifiable evidence.',
+              '以可追溯決策與可驗證證據為核心的財務控制系統原型。',
+              'start:"Jul 2026"',
+              'start:"Feb 2026"',
+              'className="project-work-start"',
+              'makeText("span","fiction-meta-label","Start")'
+          ]
+          missing = [item for item in required if item not in html]
+          if missing:
+              raise SystemExit(f'Missing required markers: {missing}')
+          old = [
+              'A record of the software I am currently developing.',
+              'An Evidence-Driven Accounting System under development',
+              '開發中的證據導向會計系統'
+          ]
+          leftovers = [item for item in old if item in html]
+          if leftovers:
+              raise SystemExit(f'Old copy still present: {leftovers}')
+          print('Project copy and start dates validation passed.')
+          PY
+
+      - name: Commit final site and remove migration files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm -f scripts/refine_project_copy_and_start.py .github/workflows/apply-project-copy-start.yml
+          git commit -m "feat: refine Software copy and add project start dates"
+          git push
