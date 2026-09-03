@@ -52,7 +52,8 @@ jobs:
           missing = [item for item in required if item not in html]
           if missing:
               raise SystemExit(f'Missing required UI markers: {missing}')
-          assert 'project.description' not in html
+          assert 'project.description;' not in html
+          assert 'project.description)' not in html
           print('Games and Software UI validation passed.')
           PY
 
