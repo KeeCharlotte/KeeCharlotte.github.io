@@ -35,6 +35,13 @@ jobs:
                   raise SystemExit(f'{label}: expected exactly 1 match, found {count}')
               text = text.replace(old, new, 1)
 
+          def replace_all(old, new, label, min_count=1):
+              global text
+              count = text.count(old)
+              if count < min_count:
+                  raise SystemExit(f'{label}: expected at least {min_count} match(es), found {count}')
+              text = text.replace(old, new)
+
           def sub_once(pattern, repl, label, flags=0):
               global text
               text2, count = re.subn(pattern, repl, text, count=1, flags=flags)
@@ -69,7 +76,7 @@ jobs:
               if text.count(item) != 1:
                   raise SystemExit(f'Routine English description mismatch: {item}')
               text = text.replace(item, '', 1)
-          replace_once('Purpose : Just for fun.', 'Purpose: Just for fun.', 'Discipline purpose punctuation')
+          replace_all('Purpose : Just for fun.', 'Purpose: Just for fun.', 'Discipline purpose punctuation')
           replace_once('Mental &amp; Emotion', 'Mental &amp; Emotional State', 'Discipline English heading')
 
           # 4. Chinese punctuation and site-wide terminology consistency.
@@ -79,11 +86,11 @@ jobs:
 
           # 6. Survival Skills: remove lost-person/rescue framing from Location & Time.
           location_block = '''      location:{num:"01.4",titleEn:"Location & Time",titleZh:"位置與時間",introEn:"Understand your position relative to terrain, direction, and remaining usable time.",sections:[
-            {title:"建立周遭空間基準",items:["觀察太陽位置、陰影、坡向、水流方向、稜線、谷地、海岸或其他穩定自然地標，建立對周遭地形的方向感。","辨認水源、遮蔽處、材料來源、危險區域與可通行地形彼此之間的位置關係，而不是只記住單一地點。","把確定觀察到的地形資訊與推測分開，並在移動後持續更新對周遭環境的空間模型。"]},
-            {title:"評估移動的目的與回返成本",items:["移動前先確認目的：要取得什麼、解決什麼問題，以及是否有更近或代價更低的選項。","利用自然地標維持方向與路徑關係，避免移動後失去水源、庇護位置或重要材料的位置資訊。","把坡度、地表、距離、體力消耗與回程需求一起計算；到達目的地不代表仍有能力安全回到需要使用資源的位置。"]},
-            {title:"把時間放進決策",items:["估計剩餘日照，並觀察天候與氣溫是否會在短時間內明顯改變。","需要移動、找材料、取水或搭建庇護的工作都會消耗日照與體力；不能把時間視為無限資源。","同一項行動在白天、黃昏、夜間或天候即將改變時可能具有完全不同的成本與風險。"]}
-          ],principle:"位置資訊的價值在於支援行動、資源利用與安全回返，而不只是回答『我在哪裡』。每次移動都應知道方向、目的、成本與剩餘可用時間，並持續更新對周遭地形的空間模型。"},'''
-          sub_once(r'      location:\{num:"01\.4".*?\n      \},?\n?      resources:', location_block + '\n      resources:', 'Survival Location & Time block', flags=re.S)
+        {title:"建立周遭空間基準",items:["觀察太陽位置、陰影、坡向、水流方向、稜線、谷地、海岸或其他穩定自然地標，建立對周遭地形的方向感。","辨認水源、遮蔽處、材料來源、危險區域與可通行地形彼此之間的位置關係，而不是只記住單一地點。","把確定觀察到的地形資訊與推測分開，並在移動後持續更新對周遭環境的空間模型。"]},
+        {title:"評估移動的目的與回返成本",items:["移動前先確認目的：要取得什麼、解決什麼問題，以及是否有更近或代價更低的選項。","利用自然地標維持方向與路徑關係，避免移動後失去水源、庇護位置或重要材料的位置資訊。","把坡度、地表、距離、體力消耗與回程需求一起計算；到達目的地不代表仍有能力安全回到需要使用資源的位置。"]},
+        {title:"把時間放進決策",items:["估計剩餘日照，並觀察天候與氣溫是否會在短時間內明顯改變。","需要移動、找材料、取水或搭建庇護的工作都會消耗日照與體力；不能把時間視為無限資源。","同一項行動在白天、黃昏、夜間或天候即將改變時可能具有完全不同的成本與風險。"]}
+      ],principle:"位置資訊的價值在於支援行動、資源利用與安全回返，而不只是回答『我在哪裡』。每次移動都應知道方向、目的、成本與剩餘可用時間，並持續更新對周遭地形的空間模型。"},'''
+          sub_once(r'      location:\{num:"01\.4".*?\],principle:".*?"\},\n      resources:', location_block + '\n      resources:', 'Survival Location & Time block', flags=re.S)
 
           # Replace the rescue-oriented NPS reference with a broad survival doctrine reference.
           r2 = '<a class="survival-reference" href="https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/ARN12086_ATP%203-50x21%20FINAL%20WEB%202.pdf" target="_blank" rel="noopener noreferrer"><span class="survival-reference-id">R2</span><span class="survival-reference-title">U.S. Department of the Army · ATP 3-50.21 Survival<span class="survival-reference-meta">生存心理、生存醫療、水、食物、庇護、火、工具與導航等基礎生存技能。</span></span><span class="survival-reference-arrow">↗</span></a>'
