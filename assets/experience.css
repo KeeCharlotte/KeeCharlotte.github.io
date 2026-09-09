@@ -1,0 +1,234 @@
+/* Portfolio experience: navigation, reading rhythm, and quiet surfaces.
+   Loaded after the original styles; editorial content remains in index.html. */
+:root {
+  --serif: "Fraunces", "Noto Serif TC", "Noto Serif CJK TC", Georgia, "Times New Roman", serif;
+  --sans: "Geist", "Noto Sans TC", "Noto Sans CJK TC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", "Noto Sans TC", "Noto Sans CJK TC", "SFMono-Regular", Consolas, monospace;
+  --reading-width: 752px;
+  --navigation-height: 64px;
+  --muted: #b0a3a7;
+  --muted-dark: #a0929c;
+  --muted-readable: #a99ca6;
+  --line: #38303f;
+  --line-strong: #62516f;
+  --focus: #c9b3e7;
+}
+html { scroll-behavior: auto; scroll-padding-top: calc(var(--navigation-height) + 24px); }
+body { overflow-x: visible; }
+.view { overflow: visible; }
+.view.active { animation: none; }
+.shell { width: min(1160px, calc(100% - 80px)); }
+main, main > *, .card-copy, .fiction-title, .project-work-heading { min-width: 0; }
+h1, h2, h3, p, a, .category-title, .fiction-meta-value { overflow-wrap: break-word; }
+img { max-width: 100%; }
+.topbar {
+  position: sticky; top: 0; z-index: 30;
+  min-height: var(--navigation-height); gap: 16px;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  box-shadow: 0 -20px 0 var(--bg);
+}
+#portalPage .topbar { position: relative; border-bottom-color: transparent; box-shadow: none; }
+.brand { display: inline-flex; align-items: center; min-height: 44px; font-size: 20px; }
+.back-link { min-height: 44px; padding: 10px 2px; font-size: 15px; line-height: 1.5; text-align: right; }
+.brand:hover, .back-link:hover { color: var(--text); }
+.skip-link { position: fixed; z-index: 100; top: 8px; left: 16px; padding: 12px 18px; background: var(--bg); border: 2px solid var(--focus); border-radius: 6px; transform: translateY(-180%); }
+.skip-link:focus { transform: none; }
+.breadcrumbs { padding: 22px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; list-style: none; margin: 0; padding: 0; }
+.breadcrumbs li { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.breadcrumbs li + li::before { content: '›'; color: var(--muted-dark); }
+.breadcrumbs a { display: inline-flex; align-items: center; min-height: 36px; text-underline-offset: 4px; }
+.breadcrumbs a:hover { color: var(--text); text-decoration: underline; }
+.breadcrumbs [aria-current='page'] { color: var(--text); }
+.page-return { margin-top: 52px; padding-top: 22px; border-top: 1px solid var(--line); }
+.page-return a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--muted); font-size: 15px; }
+.page-return a:hover { color: var(--text); }
+
+/* Cover, directory, and article intentionally use different densities. */
+.portal-main { grid-template-columns: minmax(0, 1fr); padding: 64px 0 88px; }
+.portal-main > div { min-width: 0; }
+.portal-title { font-size: clamp(40px, 8vw, 106px); line-height: 1.02; }
+.portal-lede { font-family: var(--sans); font-size: clamp(16px, 1.6vw, 19px); letter-spacing: 0; line-height: 1.75; }
+.portal-grid { gap: 20px; margin-top: 44px; }
+.portal-card { min-height: 172px; padding: 28px 30px; border-width: 1px; gap: 24px; }
+.card-copy .card-title { font-size: clamp(30px, 3vw, 40px); }
+.card-copy p { max-width: 38ch; margin-top: 12px; line-height: 1.65; }
+.entry-arrow { flex: 0 0 auto; color: var(--rose); font: 22px/1 var(--sans); transition: transform .18s ease; }
+.subpage { padding-bottom: 16px; }
+.subpage-hero { padding: 40px 0 28px; }
+.subpage-title { font-size: clamp(44px, 5.8vw, 68px); }
+.subpage-intro { font-family: var(--sans); letter-spacing: 0; font-size: 17px; line-height: 1.7; }
+.ability-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 14px; padding-bottom: 40px; }
+.category { min-height: 90px; padding: 18px 24px; gap: 18px; border-width: 1px; }
+.category.available { border-color: var(--line); }
+.category .category-title { font-size: clamp(25px, 2.35vw, 30px); color: var(--text); line-height: 1.2; }
+.category-copy { min-width: 0; }
+.category-state { display: block; margin-top: 7px; font: 13px/1.5 var(--sans); color: var(--muted); }
+.discipline-main, .cognition-main, .survival-main, .survival-category-main { max-width: 1040px; padding: 36px 0 56px; }
+.discipline-hero, .cognition-hero, .survival-hero { padding: 14px 0 36px; }
+.detail-title { font-size: clamp(40px, 5.6vw, 68px); line-height: 1.12; }
+.discipline-manifesto, .cognition-manifesto, .survival-lede { max-width: var(--reading-width); font-family: var(--sans); font-weight: 400; font-size: clamp(19px, 2.1vw, 25px); line-height: 1.65; letter-spacing: 0; }
+.discipline-manifesto-zh, .cognition-manifesto-zh, .survival-lede-zh { font-size: 16px; line-height: 1.8; }
+.archive-section, .cognition-index-section { padding-top: 26px; }
+.eyebrow, .section-label, .archive-section-title, .ability-group-title { font-size: 13px; letter-spacing: .07em; }
+.archive-summary, .cognition-index-summary, .cognition-card-type, .cognition-card-count { font-size: 13px; letter-spacing: .025em; line-height: 1.6; }
+.cognition-card-top { flex-wrap: wrap; gap: 6px 16px; }
+.cognition-theme-card { padding: 24px; min-height: 190px; }
+.cognition-theme-card.developing { min-height: 176px; border-color: var(--line-strong); }
+.cognition-card-title { margin-top: 18px; font-size: clamp(26px, 2.5vw, 32px); }
+.cognition-card-summary { margin-top: 12px; }
+.cognition-card-arrow { right: 24px; bottom: 24px; }
+
+/* Flexible metadata replaces the rigid four-column project row. */
+.fiction-work { border-width: 1px; padding: 24px; min-height: 0; gap: 20px 24px; }
+.fiction-work.completed { border-color: var(--line-strong); }
+.fiction-work:not(.project-work) { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'title arrow' 'meta status'; }
+.fiction-title { grid-area: title; }
+.fiction-work > .entry-arrow { grid-area: arrow; justify-self: end; }
+.fiction-work:not(.project-work) > .fiction-meta { grid-area: meta; }
+.fiction-work:not(.project-work) > .fiction-status { grid-area: status; align-self: end; }
+.fiction-meta { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.fiction-meta-label { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.fiction-meta-value { font-size: 14px; letter-spacing: 0; }
+.fiction-status { font-size: 13px; letter-spacing: 0; line-height: 1.6; }
+.fiction-title .fiction-work-title, .project-work-heading .project-work-title { font-size: clamp(26px, 2.7vw, 32px); line-height: 1.2; }
+.project-work { grid-template-columns: minmax(0, .75fr) minmax(0, 1.35fr) 24px; grid-template-areas: 'heading description arrow' 'metadata metadata arrow'; }
+.project-work-heading { grid-area: heading; align-content: start; }
+.project-work-description { grid-area: description; }
+.project-work-description-zh { font-size: 15px; }
+.project-meta { grid-area: metadata; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; border-top: 1px solid var(--line); padding-top: 16px; }
+.project-work-start { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.project-work-start .fiction-meta-label { margin: 0; }
+.project-work .fiction-status { white-space: normal; }
+.project-card, .empty-card, .about-panel { border-width: 1px; }
+.info-grid { gap: 24px; padding: 24px 0; border-block: 1px solid var(--line); }
+.info-card { border: 0; border-radius: 0; background: transparent; padding: 0; min-width: 0; }
+.info-card h3 { font-size: 13px; letter-spacing: .04em; }
+.info-card p { line-height: 1.7; overflow-wrap: anywhere; }
+.about-panel { padding: clamp(28px, 5vw, 56px); }
+.about-panel h1 { font-size: clamp(42px, 7vw, 80px); overflow-wrap: normal; }
+
+/* A bounded reading column, with a rail only when the page needs it. */
+.reading-main { max-width: var(--reading-width); padding: 32px 0 56px; }
+.reading-copy { min-width: 0; max-width: var(--reading-width); }
+.reading-main.has-toc { display: grid; grid-template-columns: minmax(0, var(--reading-width)) 200px; gap: 48px; max-width: 1000px; align-items: start; }
+.reading-main .period-heading, .reading-main .cognition-detail-heading { padding: 30px 0 36px; }
+.reading-main h1 { font-size: clamp(36px, 5.1vw, 60px); line-height: 1.18; }
+.reading-main h2, .reading-main h3 { line-height: 1.35; }
+.reading-main :is(.project-description, .cognition-thought, .fiction-synopsis, .fiction-character-text, .transformation-item .primary-en, .transformation-item .secondary-zh, .survival-content-section p, .survival-content-section li, .cognition-theory-copy, .cognition-theory-step p, .cognition-theory-change p) { max-width: 100%; font-size: 17px; line-height: 1.85; letter-spacing: 0; }
+.reading-main :is(.project-description, .fiction-character-text, .transformation-item .secondary-zh, .cognition-theory-copy, .cognition-theory-change p) { color: var(--text); }
+.reading-main .secondary-zh { font-size: 16px; line-height: 1.8; }
+.reading-main .period-purpose { font-size: 19px; line-height: 1.4; }
+.period-meta-bar { align-items: baseline; flex-wrap: wrap; gap: 10px 24px; }
+.fiction-hero-grid { grid-template-columns: minmax(160px, 210px) minmax(0, 1fr); gap: 28px; }
+.fiction-cover { aspect-ratio: 2 / 3; object-fit: contain; background: var(--card); }
+.fiction-profile-head { flex-wrap: wrap; gap: 8px 16px; }
+.fiction-profile { border: 0; background: transparent; padding: 8px 0; }
+.fiction-thesis-zh { font-size: clamp(20px, 2vw, 25px); line-height: 1.65; }
+.fiction-detail-body { gap: 48px; }
+.fiction-empty, .fiction-full-link { min-height: 0; padding: 16px 0; border: 0; border-radius: 0; background: transparent; }
+.unpublished-note { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+.fiction-full-link-value { display: none; }
+.cognition-theory-intro { border: 0; border-left: 2px solid var(--rose); border-radius: 0; padding: 22px 24px; }
+.cognition-chain { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.cognition-chain-step { padding: 12px 8px; font-size: 13px; }
+.survival-category-intro, .survival-detail-intro, .cognition-detail-heading p, .period-heading p { font-family: var(--sans); letter-spacing: 0; font-size: 16px; line-height: 1.8; }
+.survival-node-num, .survival-reference-id { font-size: 13px; }
+.survival-node-zh, .survival-reference-meta, .survival-disclaimer { font-size: 14px; line-height: 1.8; }
+.survival-reference-title { font-size: 16px; }
+.survival-reference { gap: 12px; }
+.survival-subnode .entry-arrow { display: block; margin-top: 14px; font-size: 18px; }
+.survival-priority-node .entry-arrow { display: inline-block; margin-top: 12px; }
+
+.toc-rail { position: sticky; top: calc(var(--navigation-height) + 24px); align-self: start; max-height: calc(100vh - var(--navigation-height) - 48px); overflow-y: auto; padding: 4px 0 8px; }
+.toc-heading { margin: 0 0 14px; color: var(--muted); font: 12px/1.6 var(--mono); letter-spacing: .06em; }
+.toc-list { list-style: none; margin: 0; padding: 0; }
+.toc-list a { display: block; border-left: 1px solid var(--line); padding: 9px 12px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.toc-list a:hover { color: var(--text); }
+.toc-list a[aria-current='location'] { color: var(--text); border-left: 2px solid var(--rose); padding-left: 11px; }
+.toc-mobile { display: none; margin: 0 0 32px; border-block: 1px solid var(--line); }
+.toc-mobile summary { cursor: pointer; padding: 13px 0; font-size: 15px; color: var(--muted); }
+.toc-mobile[open] { padding-bottom: 16px; }
+.reading-main [data-chapter] { scroll-margin-top: calc(var(--navigation-height) + 24px); }
+footer { font-size: 13px; padding: 28px 0; letter-spacing: .025em; }
+
+/* Feedback does not depend on hover and never changes surrounding layout. */
+a:focus-visible, button:focus-visible, summary:focus-visible,
+.portal-card:focus-visible, .category:focus-visible, .fiction-work:focus-visible,
+.cognition-theme-card:focus-visible, .period-item:focus-visible,
+.survival-major-node:focus-visible, .survival-subnode:focus-visible,
+.survival-priority-node:focus-visible, .back-link:focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 4px;
+}
+:where(h1, h2, main)[tabindex='-1']:focus { outline: none; }
+:where(.portal-card, .category, .fiction-work, .cognition-theme-card, .survival-major-node, .survival-subnode, .survival-priority-node) { transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+:where(.portal-card, .category, .fiction-work):hover > .entry-arrow { transform: translateX(3px); }
+:where(.portal-card, .category, .fiction-work, .cognition-theme-card, .survival-major-node, .survival-subnode, .survival-priority-node):active { background: #302439; transform: none; }
+@media (hover: none) {
+  .portal-card:hover, .category:hover, .fiction-work:hover, .cognition-theme-card:hover,
+  .survival-major-node:hover, .survival-subnode:hover, .survival-priority-node:hover { transform: none; }
+}
+@media (max-width: 1080px) {
+  .reading-main.has-toc { display: block; max-width: var(--reading-width); }
+  .toc-rail { display: none; }
+  .toc-mobile { display: block; }
+  .project-work { grid-template-columns: minmax(0, 1fr) 24px; grid-template-areas: 'heading arrow' 'description description' 'metadata metadata'; }
+}
+@media (max-width: 760px) {
+  :root { --navigation-height: 60px; }
+  body { padding: 6px; }
+  .view { min-height: calc(100svh - 12px); border-radius: 16px; }
+  .shell { width: calc(100% - 36px); }
+  .topbar { gap: 12px; }
+  .brand { font-size: 18px; }
+  .back-link { max-width: 56%; font-size: 14px; }
+  .breadcrumbs { padding-top: 12px; }
+  .breadcrumbs li { display: none; }
+  .breadcrumbs li:nth-last-child(3), .breadcrumbs li:nth-last-child(2) { display: inline-flex; }
+  .breadcrumbs li:nth-last-child(3)::before { content: none; }
+  .breadcrumbs li:nth-last-child(2):first-child::before { content: none; }
+  .portal-main { min-height: calc(100svh - 140px); padding: 46px 0 56px; }
+  .portal-grid { grid-template-columns: minmax(0, 1fr); margin-top: 32px; gap: 14px; }
+  .portal-card { min-height: 144px; padding: 22px; gap: 16px; }
+  .card-copy p { font-size: 15px; }
+  .subpage-hero { padding-top: 32px; }
+  .subpage-intro { font-size: 16px; }
+  .ability-groups { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .category { min-height: 82px; padding: 20px; }
+  .category .category-title { font-size: 26px; }
+  .discipline-main, .cognition-main, .survival-main, .survival-category-main { padding-top: 26px; }
+  .fiction-work { padding: 22px; gap: 18px; }
+  .fiction-work:not(.project-work) { grid-template-areas: 'title arrow' 'meta meta' 'status status'; }
+  .fiction-work:not(.project-work) > .fiction-status { justify-self: start; }
+  .fiction-meta { gap: 12px 22px; }
+  .cognition-theme-card { padding: 22px; }
+  .cognition-theme-card.developing { grid-column: auto; }
+  .reading-main { padding: 22px 0 40px; }
+  .reading-main .period-heading, .reading-main .cognition-detail-heading { padding: 26px 0 30px; }
+  .reading-main :is(.project-description, .cognition-thought, .fiction-synopsis, .fiction-character-text, .transformation-item .primary-en, .transformation-item .secondary-zh, .survival-content-section p, .survival-content-section li, .cognition-theory-copy, .cognition-theory-step p, .cognition-theory-change p) { font-size: 16px; line-height: 1.85; }
+  .fiction-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .fiction-cover-wrap { width: min(210px, 100%); margin: 0 auto; }
+  .fiction-character-voice, .cognition-reflection { grid-template-columns: 24px minmax(0, 1fr); gap: 12px; }
+  .fiction-detail-body { gap: 36px; }
+  .cognition-chain { grid-template-columns: minmax(0, 1fr); }
+  .survival-subnode { padding: 18px 20px; }
+  .survival-major-node { grid-template-columns: 26px minmax(0, 1fr) 18px; padding: 20px; gap: 12px; }
+  .survival-major-title { font-size: 28px; }
+  .page-return { margin-top: 36px; }
+}
+@media (max-width: 540px) {
+  .info-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .info-card { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 12px; }
+  .info-card h3 { margin: 4px 0 0; }
+  .about-stage { padding: 36px 0 56px; }
+  .about-panel { padding: 24px; }
+  .survival-category-title, .survival-detail-title { font-size: 36px; line-height: 1.2; }
+  .survival-reference { grid-template-columns: 26px minmax(0, 1fr) 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+@media (forced-colors: active) {
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline-color: Highlight; }
+  .toc-list a[aria-current='location'] { border-color: Highlight; }
+}
