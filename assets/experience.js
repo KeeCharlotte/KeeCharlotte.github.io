@@ -141,7 +141,7 @@
       back.href = info.parent.route; back.dataset.route = info.parent.route; back.dataset.up = 'true';
       back.textContent = '← ' + info.parent.label;
     }
-    view.querySelectorAll('.portal-card, .category, .fiction-work, .survival-subnode, .survival-priority-node').forEach(arrow);
+    view.querySelectorAll('.category, .fiction-work, .survival-subnode, .survival-priority-node').forEach(arrow);
     view.querySelectorAll('.category').forEach(card => {
       if (card.querySelector('.category-copy')) return;
       const copy = el('span', 'category-copy');
@@ -205,19 +205,11 @@
     let copy = main.querySelector(':scope > .reading-copy');
     if (!copy) { copy = el('div', 'reading-copy'); copy.append(...main.childNodes); main.append(copy); }
     main.querySelectorAll('.toc-rail, .toc-mobile, .page-return').forEach(node => node.remove());
-    if (view.id === 'fictionDetailPage') {
-      const body = byId('fictionDetailBody');
-      if (!body.children.length) body.append(el('p', 'unpublished-note', 'Details are not available yet. · 內容尚未開放'));
-      body.querySelectorAll('.fiction-empty').forEach(node => {
-        node.replaceChildren(el('p', 'unpublished-note', 'Excerpt not available yet. · 片段尚未開放'));
-        node.closest('.fiction-section').classList.add('is-unpublished');
-      });
-      body.querySelectorAll('.fiction-full-link-copy').forEach(node => {
-        node.textContent = 'Full version not available yet. · 完整版尚未開放';
-        node.closest('.fiction-section').classList.add('is-unpublished');
-      });
-    }
-    chapterHeadings = [...copy.querySelectorAll('h2')].filter(heading => !heading.closest('.is-unpublished'));
+    // Keep the original empty sections, but omit them from chapter navigation.
+    chapterHeadings = [...copy.querySelectorAll('h2')].filter(heading => {
+      const section = heading.closest('.fiction-section');
+      return !section?.querySelector('.fiction-empty, .fiction-full-link');
+    });
     chapterHeadings.forEach((heading, index) => {
       if (!heading.id) heading.id = view.id + '-section-' + (index + 1);
       heading.dataset.chapter = 'true'; heading.tabIndex = -1;
