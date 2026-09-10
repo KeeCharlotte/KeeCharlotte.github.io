@@ -141,14 +141,7 @@
       back.href = info.parent.route; back.dataset.route = info.parent.route; back.dataset.up = 'true';
       back.textContent = '← ' + info.parent.label;
     }
-    view.querySelectorAll('.category, .fiction-work, .survival-subnode, .survival-priority-node').forEach(arrow);
-    view.querySelectorAll('.category').forEach(card => {
-      if (card.querySelector('.category-copy')) return;
-      const copy = el('span', 'category-copy');
-      copy.append(card.querySelector('.category-title'));
-      if (!card.classList.contains('available')) copy.append(el('span', 'category-state', 'No entries yet · 尚無項目'));
-      card.prepend(copy);
-    });
+    view.querySelectorAll('.fiction-work, .survival-subnode, .survival-priority-node').forEach(arrow);
     view.querySelectorAll('.project-work').forEach(card => {
       if (card.querySelector('.project-meta')) return;
       const meta = el('span', 'project-meta');
