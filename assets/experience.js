@@ -2,6 +2,16 @@
    content fetch is required. Existing hashes remain valid. */
 (() => {
   'use strict';
+  // Software metadata shared by cards, detail pages, and breadcrumbs.
+  Object.assign(projects.Software[0], {
+    name: 'Veritrail',
+    engineeringName: 'AAAS-TW',
+    descriptionEn: 'A financial evidence and continuous-control workspace prototype for accountants, bookkeepers, and SMEs. It connects source documents, drafts, human review, controlled posting, reconciliation, and evidence exports. Currently limited to synthetic-data workflows in local/test environments; not production-ready.',
+    descriptionZh: '面向會計師、記帳士與中小企業的財務證據與持續控制工作台原型，串接來源文件、草稿、人工覆核、受控過帳、對帳與佐證匯出。目前限本機／測試環境的合成資料流程，尚未正式上線。',
+    status: 'Prototype',
+    technology: 'Python / Flask · PostgreSQL · HTML / CSS / JavaScript · Docker',
+    github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio'
+  });
   const detailViews = new Set(['fictionDetailPage', 'disciplinePeriodPage',
     'cognitionDetailPage', 'survivalDetailPage', 'projectPage']);
   const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
@@ -114,10 +124,27 @@
     }
     main.replaceChildren(...ordered); // Preserve the old desktop row order on every device.
   }
+  function addProjectAlias(title, project) {
+    if (!title || !project?.engineeringName || title.querySelector('[data-engineering-name]')) return;
+    const alias = el('span', 'project-work-zh', project.engineeringName);
+    alias.dataset.engineeringName = 'true';
+    // Reuse the original secondary-label style; only place this label on its own line.
+    alias.style.display = 'block';
+    alias.style.marginTop = '6px';
+    alias.style.fontFamily = 'var(--sans)';
+    title.append(document.createTextNode(' '), alias);
+  }
   function prepareLinks(view, info) {
     const fixed = { showPortal: '#home', showAbility: '#ability', showAbout: '#about' };
     const cognitionCards = [...view.querySelectorAll('.cognition-theme-card')];
     const projectCards = [...view.querySelectorAll('.project-work')];
+    projectCards.forEach((card, index) => {
+      addProjectAlias(card.querySelector('.project-work-title'), projects[info.category]?.[index]);
+    });
+    if (view.id === 'projectPage') {
+      const index = Number(info.route.split('/').at(-1));
+      addProjectAlias(byId('projectTitle'), projects[info.category]?.[index]);
+    }
     view.querySelectorAll('button').forEach(button => {
       let route = '';
       let up = false;
