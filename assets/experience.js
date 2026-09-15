@@ -12,6 +12,12 @@
     descriptionZh: '面向會計師、記帳士與中小企業的財務證據與持續控制工作台原型，串接來源文件、草稿、人工覆核、受控過帳、對帳與佐證匯出。目前限本機／測試環境的合成資料流程，尚未正式上線。',
     status: 'In Development',
     technology: 'Python / Flask · PostgreSQL · HTML / CSS / JavaScript · Docker',
+    technologyGroups: [
+      { label: 'Backend', value: 'Python · Flask' },
+      { label: 'Database', value: 'PostgreSQL' },
+      { label: 'Frontend', value: 'HTML · CSS · JavaScript' },
+      { label: 'Deployment', value: 'Docker' }
+    ],
     github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio'
   });
   const detailViews = new Set(['fictionDetailPage', 'disciplinePeriodPage',
@@ -136,6 +142,25 @@
     alias.style.fontFamily = 'var(--sans)';
     title.append(document.createTextNode(' '), alias);
   }
+  function renderProjectTechnologies(project) {
+    const value = byId('projectTechnology');
+    const card = value.closest('.info-card');
+    const grid = card.closest('.info-grid');
+    const groups = Array.isArray(project?.technologyGroups) ? project.technologyGroups : [];
+    // The project view is shared: clear groups before showing another project.
+    card.querySelector('.technology-list')?.remove();
+    grid.classList.toggle('has-technology-groups', groups.length > 0);
+    card.classList.toggle('technology-card', groups.length > 0);
+    value.hidden = groups.length > 0;
+    if (!groups.length) return;
+    const list = el('dl', 'technology-list');
+    groups.forEach(group => {
+      const row = el('div', 'technology-row');
+      row.append(el('dt', '', group.label), el('dd', '', group.value));
+      list.append(row);
+    });
+    card.append(list);
+  }
   function prepareLinks(view, info) {
     const fixed = { showPortal: '#home', showAbility: '#ability', showAbout: '#about' };
     const cognitionCards = [...view.querySelectorAll('.cognition-theme-card')];
@@ -146,7 +171,9 @@
     });
     if (view.id === 'projectPage') {
       const index = Number(info.route.split('/').at(-1));
-      addProjectAlias(byId('projectTitle'), projects[info.category]?.[index]);
+      const project = projects[info.category]?.[index];
+      addProjectAlias(byId('projectTitle'), project);
+      renderProjectTechnologies(project);
     }
     view.querySelectorAll('button').forEach(button => {
       let route = '';

@@ -83,6 +83,29 @@ img { max-width: 100%; }
 .info-card { min-width: 0; }
 .info-card p { line-height: 1.7; overflow-wrap: anywhere; }
 
+/* Group long technology lists without changing the existing card appearance. */
+#projectPage .info-grid.has-technology-groups {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+#projectPage .technology-card { grid-column: 1 / -1; }
+.technology-list { display: grid; gap: 16px; margin: 0; }
+.technology-row {
+  display: grid; grid-template-columns: 112px minmax(0, 1fr);
+  align-items: baseline; gap: 8px 24px;
+}
+.technology-row dt {
+  margin: 0; color: var(--muted); font-family: var(--sans);
+  font-size: 14px; font-weight: 400; line-height: 1.7;
+}
+.technology-row dd {
+  min-width: 0; margin: 0; color: var(--text); font-family: var(--sans);
+  font-size: 16px; line-height: 1.7; overflow-wrap: normal; word-break: normal;
+}
+@media (max-width: 540px) {
+  #projectPage .info-grid.has-technology-groups { grid-template-columns: minmax(0, 1fr); }
+  .technology-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
 /* Bounded reading column and chapter navigation. */
 .reading-main { max-width: var(--reading-width); padding: 32px 0 56px; }
 .reading-copy { min-width: 0; max-width: var(--reading-width); }
