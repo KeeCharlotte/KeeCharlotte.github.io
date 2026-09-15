@@ -6,11 +6,11 @@
   Object.assign(projects.Software[0], {
     name: 'Veritrail',
     engineeringName: 'AAAS-TW',
-    summaryEn: 'A traceable accounting and financial evidence workspace prototype.',
-    summaryZh: '可追溯的會計與財務證據工作台原型。',
+    summaryEn: 'A traceable accounting and financial evidence workspace.',
+    summaryZh: '可追溯的會計與財務證據工作台。',
     descriptionEn: 'A financial evidence and continuous-control workspace prototype for accountants, bookkeepers, and SMEs. It connects source documents, drafts, human review, controlled posting, reconciliation, and evidence exports. Currently limited to synthetic-data workflows in local/test environments; not production-ready.',
     descriptionZh: '面向會計師、記帳士與中小企業的財務證據與持續控制工作台原型，串接來源文件、草稿、人工覆核、受控過帳、對帳與佐證匯出。目前限本機／測試環境的合成資料流程，尚未正式上線。',
-    status: 'Prototype',
+    status: 'In Development',
     technology: 'Python / Flask · PostgreSQL · HTML / CSS / JavaScript · Docker',
     github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio'
   });
@@ -143,8 +143,6 @@
     projectCards.forEach((card, index) => {
       const project = projects[info.category]?.[index];
       addProjectAlias(card.querySelector('.project-work-title'), project);
-      if (project?.summaryEn) card.querySelector('.project-work-description-en').textContent = project.summaryEn;
-      if (project?.summaryZh) card.querySelector('.project-work-description-zh').textContent = project.summaryZh;
     });
     if (view.id === 'projectPage') {
       const index = Number(info.route.split('/').at(-1));
