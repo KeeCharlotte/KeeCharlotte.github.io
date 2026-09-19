@@ -20,6 +20,22 @@
     ],
     github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio'
   });
+  // Main-game metadata; the frozen Babylon build remains a separate reference.
+  Object.assign(projects.Games[0], {
+    name: 'Civilization Rebuilt',
+    summaryEn: 'A first-person simulation of rebuilding civilization from nature.',
+    summaryZh: '從自然材料出發，逐步重建文明的第一人稱模擬遊戲。',
+    descriptionEn: 'A first-person civilization-building simulation grounded in real-world cause and effect. Players begin with natural materials, learning through observation and experimentation to create tools and develop repeatable ways to survive.',
+    descriptionZh: '以真實世界因果規則為基礎的第一人稱文明模擬遊戲。玩家從自然材料出發，透過觀察、試驗與推理製作工具，逐步建立可持續運作的生存能力與文明。',
+    start: 'May 2026',
+    technology: 'Unity 6 · C# · URP · Blender',
+    technologyGroups: [
+      { label: 'Game Engine', value: 'Unity 6' },
+      { label: 'Programming', value: 'C#' },
+      { label: 'Rendering', value: 'Universal Render Pipeline (URP)' },
+      { label: '3D Assets', value: 'Blender' }
+    ]
+  });
   const detailViews = new Set(['fictionDetailPage', 'disciplinePeriodPage',
     'cognitionDetailPage', 'survivalDetailPage', 'projectPage']);
   const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
