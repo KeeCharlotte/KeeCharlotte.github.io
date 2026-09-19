@@ -34,7 +34,9 @@
       { label: 'Programming', value: 'C#' },
       { label: 'Rendering', value: 'Universal Render Pipeline (URP)' },
       { label: '3D Assets', value: 'Blender' }
-    ]
+    ],
+    github: 'https://github.com/KeeCharlotte/Civilization-Rebuilt-Portfolio',
+    sourceLabel: 'View project'
   });
   const detailViews = new Set(['fictionDetailPage', 'disciplinePeriodPage',
     'cognitionDetailPage', 'survivalDetailPage', 'projectPage']);
@@ -190,6 +192,7 @@
       const project = projects[info.category]?.[index];
       addProjectAlias(byId('projectTitle'), project);
       renderProjectTechnologies(project);
+      byId('githubLink').textContent = (project?.sourceLabel || 'View source code') + ' ↗';
     }
     view.querySelectorAll('button').forEach(button => {
       let route = '';
