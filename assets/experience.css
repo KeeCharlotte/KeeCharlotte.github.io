@@ -62,11 +62,30 @@ img { max-width: 100%; }
 
 /* Metadata can wrap; the original card borders and backgrounds are retained. */
 .fiction-work { padding: 24px; min-height: 0; gap: 20px 24px; }
-.fiction-work:not(.project-work) { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'title arrow' 'meta status'; }
 .fiction-title { grid-area: title; }
 .fiction-work > .entry-arrow { grid-area: arrow; justify-self: end; }
-.fiction-work:not(.project-work) > .fiction-meta { grid-area: meta; }
-.fiction-work:not(.project-work) > .fiction-status { grid-area: status; align-self: end; }
+/* Fiction has its own row grid; do not change the shared Games/Software cards. */
+#fictionPage .fiction-work {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) 112px 18px;
+  grid-template-areas: 'title meta status arrow';
+  align-items: center; gap: 20px 24px; min-height: 136px; padding: 26px 30px;
+}
+#fictionPage .fiction-title { grid-area: title; min-width: 0; }
+#fictionPage .fiction-work-title { font-size: clamp(28px, 2.6vw, 36px); line-height: 1.3; }
+#fictionPage .fiction-title-en { font-size: 15px; line-height: 1.6; }
+#fictionPage .fiction-meta {
+  grid-area: meta; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start; justify-items: stretch; width: 100%; min-width: 0;
+  gap: 12px; padding: 0; border: 0;
+}
+#fictionPage .fiction-meta-item { width: 100%; min-width: 0; padding: 0; text-align: center; }
+#fictionPage .fiction-meta-label { font-size: 13px; line-height: 1.5; letter-spacing: .025em; white-space: nowrap; }
+#fictionPage .fiction-meta-value { font-size: 15px; line-height: 1.6; white-space: nowrap; }
+#fictionPage .fiction-status {
+  grid-area: status; justify-self: end; align-self: center;
+  font-size: 14px; white-space: nowrap;
+}
+#fictionPage .fiction-work > .entry-arrow { grid-area: arrow; align-self: center; }
 .fiction-meta { display: flex; flex-wrap: wrap; gap: 12px 28px; }
 .fiction-meta-label { font-size: 12px; letter-spacing: .04em; }
 .fiction-meta-value { font-size: 14px; letter-spacing: 0; }
@@ -145,6 +164,11 @@ img { max-width: 100%; }
 main[tabindex='-1']:focus, h1[tabindex='-1']:focus, [data-chapter]:focus { outline: none; }
 
 @media (max-width: 1080px) {
+  #fictionPage .fiction-work {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) 112px 18px;
+    column-gap: 16px; padding: 24px;
+  }
+  #fictionPage .fiction-meta { gap: 4px; }
   .reading-main.has-toc { display: block; max-width: var(--reading-width); }
   .toc-rail { display: none; }
   .toc-mobile { display: block; }
@@ -165,8 +189,6 @@ main[tabindex='-1']:focus, h1[tabindex='-1']:focus, [data-chapter]:focus { outli
   .ability-groups { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .discipline-main, .cognition-main, .survival-main, .survival-category-main { padding-top: 26px; }
   .fiction-work { padding: 22px; gap: 18px; }
-  .fiction-work:not(.project-work) { grid-template-areas: 'title arrow' 'meta meta' 'status status'; }
-  .fiction-work:not(.project-work) > .fiction-status { justify-self: start; }
   .fiction-meta { gap: 12px 22px; }
   .cognition-theme-card { padding: 22px; }
   .cognition-theme-card.developing { grid-column: auto; }
@@ -185,4 +207,27 @@ main[tabindex='-1']:focus, h1[tabindex='-1']:focus, [data-chapter]:focus { outli
 @media (max-width: 540px) {
   .survival-category-title, .survival-detail-title { font-size: 36px; line-height: 1.2; }
   .survival-reference { grid-template-columns: 26px minmax(0, 1fr) 18px; }
+}
+
+/* Keep dates side by side even when a narrow window needs a second row. */
+@media (max-width: 880px) {
+  #fictionPage .fiction-work {
+    grid-template-columns: minmax(0, 1fr) 112px 18px;
+    grid-template-areas: 'title status arrow' 'meta meta meta';
+    gap: 20px 16px; padding: 24px;
+  }
+  #fictionPage .fiction-meta { padding-top: 18px; border-top: 1px solid var(--line); }
+}
+@media (max-width: 540px) {
+  #fictionPage .fiction-work {
+    grid-template-columns: minmax(0, 1fr) 18px;
+    grid-template-areas: 'title arrow' 'meta meta' 'status status';
+    gap: 16px 12px; padding: 20px 18px;
+  }
+  #fictionPage .fiction-meta { gap: 4px; padding-top: 16px; }
+  #fictionPage .fiction-meta-label {
+    min-height: 2.8em; font-size: 12px; line-height: 1.4;
+    letter-spacing: 0; white-space: normal;
+  }
+  #fictionPage .fiction-meta-value { font-size: 14px; }
 }
