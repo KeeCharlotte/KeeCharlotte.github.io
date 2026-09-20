@@ -19,17 +19,49 @@
       { label: 'Deployment', value: 'Docker' }
     ],
     overview: {
-      focusTitle: 'Project highlights · 專案重點',
-      highlights: [
-        { title: '數字能追查來源', text: '從分錄回到相關文件、草稿與處理歷程，而不只看最後一個數字。' },
-        { title: '修改與核准有清楚界線', text: '資料修改、獨立覆核與過帳分開處理；新版資料需要對應新版的確認與核准。' },
-        { title: '結果能交付，也能回查', text: '將分錄、對帳與佐證連到可交付的檔案與紀錄，保留後續查閱的依據。' }
-      ],
+      workflowTitle: 'Workflow & controls · 流程與控制',
+      workflowIntro: '從來源文件到帳務交付，串起資料依據、版本變更與操作責任；必要條件不成立時，流程停止，而不是勉強產生結果。',
       workflow: [
-        { title: '來源與草稿', text: '保留文件依據，建立待確認的帳務內容。' },
-        { title: '覆核與過帳', text: '經獨立確認與核准，再進入受控過帳。' },
-        { title: '對帳與交付', text: '處理配對與異常，匯出分錄及相關佐證。' }
+        {
+          title: '來源接收與依據留存',
+          text: '將來源文件與後續處理建立關聯，保留查閱、版本與內容核對依據，讓帳務結果能回到原始資料。',
+          control: '有資料，不等於已有可信依據。'
+        },
+        {
+          title: '草稿形成與政策檢查',
+          text: '檢查交易資料、科目語意、金額與適用政策，再形成候選分錄；必要條件不足時要求補足。',
+          control: '借貸平衡，不等於會計判斷正確。',
+          branch: { label: '資料不足', text: '停止並要求補足，不以預設值或猜測繞過必要條件。' }
+        },
+        {
+          title: '獨立覆核與補件重審',
+          text: '由準備者以外的人確認與覆核；補件時保留舊版、建立新版，再重新完成確認與核准。',
+          control: '內容變了，核准也要重新成立。',
+          branch: { label: '覆核退回', text: '補件建立新版 → 重新確認與覆核，不沿用舊核准。' }
+        },
+        {
+          title: '受控過帳與帳務更正',
+          text: '過帳前重查來源、核准、科目、政策、權限與期間；更正以沖回或替代方式處理，保留原始關聯。',
+          control: '已過帳內容，不以直接覆寫消除歷史。',
+          branch: { label: '過帳後有誤', text: '另建更正案件 → 核准後沖回或替代，保留原紀錄與處理關聯。' }
+        },
+        {
+          title: '對帳與異常處理',
+          text: '配對提案經獨立確認；未解決差異進入例外處理，結案須有相應佐證，也保留重開歷程。',
+          control: '配對不等於確認，標記不等於問題已解決。'
+        },
+        {
+          title: '結果匯出與佐證交付',
+          text: '將帳務結果連同相關歷程與佐證整理交付，分開記錄檔案建立、授權下載與獨立交付狀態。',
+          control: '產生檔案，不等於完成交付。'
+        }
       ],
+      workflowControls: [
+        '組織資料與操作權限隔離',
+        '來源、版本與處理歷程追溯',
+        '操作重試不重複產生帳務影響'
+      ],
+      workflowNote: '以上為系統流程與控制設計；各情境的支援及驗證範圍請見公開專案。',
       example: {
         heading: 'Case study · 合成資料案例',
         title: '草稿修改後，重新覆核再過帳',
@@ -243,23 +275,62 @@
       node.setAttribute('aria-labelledby', id); node.append(h); overview.append(node);
       return node;
     };
-    const focus = section('project-focus', detail.focusTitle);
-    const highlights = el('div', 'project-highlights');
-    detail.highlights.forEach(item => {
-      const row = el('div', 'project-highlight'); row.lang = 'zh-Hant';
-      row.append(el('h3', 'project-item-title', item.title), paragraph(item.text));
-      highlights.append(row);
-    });
-    focus.append(highlights);
+    if (detail.highlights?.length) {
+      const focus = section('project-focus', detail.focusTitle);
+      const highlights = el('div', 'project-highlights');
+      detail.highlights.forEach(item => {
+        const row = el('div', 'project-highlight'); row.lang = 'zh-Hant';
+        row.append(el('h3', 'project-item-title', item.title), paragraph(item.text));
+        highlights.append(row);
+      });
+      focus.append(highlights);
+    }
     if (detail.workflow?.length) {
-      const flow = section('project-workflow', 'Workflow · 流程概覽');
+      const flow = section('project-workflow', detail.workflowTitle || 'Workflow · 流程概覽');
+      const detailed = Boolean(detail.workflowIntro);
+      if (detailed) {
+        flow.classList.add('project-controlled-workflow');
+        const intro = paragraph(detail.workflowIntro); intro.classList.add('project-workflow-intro');
+        flow.append(intro);
+        // Keep earlier links to the merged highlights section working.
+        if (!detail.highlights?.length) {
+          flow.id = 'project-focus'; flow.dataset.chapter = 'true'; flow.tabIndex = -1;
+        }
+      }
       const steps = el('ol', 'project-workflow'); steps.lang = 'zh-Hant';
-      detail.workflow.forEach(item => {
+      steps.classList.toggle('project-workflow-detailed', detailed);
+      steps.setAttribute('role', 'list');
+      detail.workflow.forEach((item, index) => {
         const step = el('li');
-        step.append(el('h3', 'project-item-title', item.title), paragraph(item.text));
+        const copy = detailed ? el('div', 'project-workflow-copy') : step;
+        if (detailed) {
+          const number = el('span', 'project-step-number', String(index + 1).padStart(2, '0'));
+          number.setAttribute('aria-hidden', 'true'); step.append(number, copy);
+        }
+        copy.append(el('h3', 'project-item-title', item.title), paragraph(item.text));
+        if (item.control) {
+          const control = el('p', 'project-workflow-control');
+          control.append(el('strong', '', item.control)); copy.append(control);
+        }
+        if (item.branch) {
+          const branch = el('p', 'project-workflow-branch');
+          branch.append(el('strong', '', item.branch.label + '：'), document.createTextNode(item.branch.text));
+          copy.append(branch);
+        }
         steps.append(step);
       });
       flow.append(steps);
+      if (detail.workflowControls?.length) {
+        const controls = el('div', 'project-workflow-controls'); controls.lang = 'zh-Hant';
+        controls.append(el('h3', 'project-item-title', '貫穿整個流程的控制'));
+        const list = el('ul', 'project-control-list'); list.setAttribute('role', 'list');
+        detail.workflowControls.forEach(text => list.append(el('li', '', text)));
+        controls.append(list); flow.append(controls);
+      }
+      if (detail.workflowNote) {
+        const note = el('p', 'project-example-note', detail.workflowNote); note.lang = 'zh-Hant';
+        flow.append(note);
+      }
     }
     const example = section('project-example', detail.example.heading);
     const exampleTitle = el('h3', 'project-item-title', detail.example.title); exampleTitle.lang = 'zh-Hant';

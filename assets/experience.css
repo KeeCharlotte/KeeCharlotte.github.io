@@ -275,3 +275,55 @@ main[tabindex='-1']:focus, h1[tabindex='-1']:focus, [data-chapter]:focus { outli
   #projectPage .project-workflow { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   #projectPage .project-workflow li:not(:last-child)::after { content: '↓'; left: 0; right: auto; top: auto; bottom: -29px; }
 }
+
+/* The accounting workflow exposes controls without turning each step into a card. */
+#projectPage .project-controlled-workflow .project-workflow-intro {
+  margin: 0 0 28px; color: var(--text);
+}
+#projectPage .project-workflow.project-workflow-detailed {
+  grid-template-columns: minmax(0, 1fr); gap: 0;
+}
+#projectPage .project-workflow-detailed > li {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr);
+  gap: 0 20px; padding: 0 0 30px;
+}
+#projectPage .project-workflow-detailed > li:last-child { padding-bottom: 0; }
+#projectPage .project-workflow-detailed > li:not(:last-child)::after {
+  content: ''; left: 17px; right: auto; top: 34px; bottom: 8px;
+  width: 1px; background: var(--line); pointer-events: none;
+}
+#projectPage .project-step-number {
+  color: var(--rose); font-family: var(--mono); font-size: 14px;
+  line-height: 30px; text-align: center; font-variant-numeric: tabular-nums;
+}
+#projectPage .project-workflow-copy { min-width: 0; }
+#projectPage .project-workflow-detailed .project-item-title { font-size: 22px; }
+#projectPage .project-workflow-control {
+  margin: 9px 0 0; color: var(--text); font-family: var(--sans);
+  font-size: 16px; line-height: 1.8;
+}
+#projectPage .project-workflow-control strong { font-weight: 600; }
+#projectPage .project-workflow-branch {
+  margin: 10px 0 0; padding-left: 12px; border-left: 2px solid var(--rose-soft);
+  color: var(--muted); font-family: var(--sans); font-size: 14px; line-height: 1.8;
+}
+#projectPage .project-workflow-branch strong { color: var(--rose); font-weight: 500; }
+#projectPage .project-workflow-controls {
+  margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+#projectPage .project-workflow-controls .project-item-title { font-size: 18px; }
+#projectPage .project-control-list {
+  display: flex; flex-wrap: wrap; gap: 8px 0;
+  list-style: none; margin: 12px 0 0; padding: 0;
+  color: var(--muted); font-family: var(--sans); font-size: 14px; line-height: 1.8;
+}
+#projectPage .project-control-list li { padding-right: 16px; }
+#projectPage .project-control-list li + li { padding-left: 16px; border-left: 1px solid var(--line); }
+@media (max-width: 600px) {
+  #projectPage .project-workflow-detailed > li { grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; }
+  #projectPage .project-workflow-detailed > li:not(:last-child)::after { left: 13px; }
+  #projectPage .project-workflow-detailed .project-item-title { font-size: 20px; }
+  #projectPage .project-control-list { display: grid; gap: 8px; }
+  #projectPage .project-control-list li { padding: 0; }
+  #projectPage .project-control-list li + li { padding-left: 0; border-left: 0; }
+}
