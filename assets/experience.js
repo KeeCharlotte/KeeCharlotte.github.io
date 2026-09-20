@@ -2,14 +2,14 @@
    content fetch is required. Existing hashes remain valid. */
 (() => {
   'use strict';
-  // Software metadata shared by cards, detail pages, and breadcrumbs.
+  // Project metadata shared by cards, detail pages, and breadcrumbs.
   Object.assign(projects.Software[0], {
     name: 'Veritrail',
     engineeringName: 'AAAS-TW',
     summaryEn: 'A traceable accounting and financial evidence workspace.',
     summaryZh: '可追溯的會計與財務證據工作台。',
-    descriptionEn: 'A financial evidence and continuous-control workspace prototype for accountants, bookkeepers, and SMEs. It connects source documents, drafts, human review, controlled posting, reconciliation, and evidence exports. Currently limited to synthetic-data workflows in local/test environments; not production-ready.',
-    descriptionZh: '面向會計師、記帳士與中小企業的財務證據與持續控制工作台原型，串接來源文件、草稿、人工覆核、受控過帳、對帳與佐證匯出。目前限本機／測試環境的合成資料流程，尚未正式上線。',
+    descriptionEn: 'A traceable workspace connecting source documents, human review, and accounting results.',
+    descriptionZh: '帳跡把來源文件、人工覆核與帳務結果連在一起，讓每個數字都有可追查的依據。',
     status: 'In Development',
     technology: 'Python / Flask · PostgreSQL · HTML / CSS / JavaScript · Docker',
     technologyGroups: [
@@ -18,6 +18,30 @@
       { label: 'Frontend', value: 'HTML · CSS · JavaScript' },
       { label: 'Deployment', value: 'Docker' }
     ],
+    overview: {
+      focusTitle: 'Project highlights · 專案重點',
+      highlights: [
+        { title: '數字能追查來源', text: '從分錄回到相關文件、草稿與處理歷程，而不只看最後一個數字。' },
+        { title: '修改與核准有清楚界線', text: '資料修改、獨立覆核與過帳分開處理；新版資料需要對應新版的確認與核准。' },
+        { title: '結果能交付，也能回查', text: '將分錄、對帳與佐證連到可交付的檔案與紀錄，保留後續查閱的依據。' }
+      ],
+      workflow: [
+        { title: '來源與草稿', text: '保留文件依據，建立待確認的帳務內容。' },
+        { title: '覆核與過帳', text: '經獨立確認與核准，再進入受控過帳。' },
+        { title: '對帳與交付', text: '處理配對與異常，匯出分錄及相關佐證。' }
+      ],
+      example: {
+        heading: 'Case study · 合成資料案例',
+        title: '草稿修改後，重新覆核再過帳',
+        text: '一筆草稿退回補件後建立新版，重新完成獨立確認與核准，再由第三個帳號過帳並匯出分錄。舊版與退回歷程仍然保留，修改資料不沿用舊核准。',
+        note: '2026-09-12 的歷史版本合成資料案例，不代表真實客戶成果或正式營運驗收。'
+      },
+      role: [
+        '我負責提出問題、界定需求與範圍，並要求 AI 依目標修改。',
+        '程式、文件、測試與修復由 AI 產出，測試由 AI 執行；這不等於我已親自重跑或獨立驗證整套系統。'
+      ],
+      more: '查看實作案例、功能範圍與最新專案狀態。'
+    },
     github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio',
     sourceLabel: 'View project'
   });
@@ -26,8 +50,8 @@
     name: 'Civilization Rebuilt',
     summaryEn: 'A first-person simulation of rebuilding civilization from nature.',
     summaryZh: '從自然材料出發，逐步重建文明的第一人稱模擬遊戲。',
-    descriptionEn: 'A first-person civilization-building simulation grounded in real-world cause and effect. Players begin with natural materials, learning through observation and experimentation to create tools and develop repeatable ways to survive.',
-    descriptionZh: '以真實世界因果規則為基礎的第一人稱文明模擬遊戲。玩家從自然材料出發，透過觀察、試驗與推理製作工具，逐步建立可持續運作的生存能力與文明。',
+    descriptionEn: 'A first-person simulation of rebuilding civilization through observation and experimentation.',
+    descriptionZh: '從自然材料出發，透過觀察、試驗與推理，逐步重建文明的第一人稱模擬遊戲。',
     start: 'May 2026',
     technology: 'Unity 6 · C# · URP · Blender',
     technologyGroups: [
@@ -36,6 +60,25 @@
       { label: 'Rendering', value: 'Universal Render Pipeline (URP)' },
       { label: '3D Assets', value: 'Blender' }
     ],
+    overview: {
+      focusTitle: 'Design focus · 設計重點',
+      highlights: [
+        { title: '親手操作材料', text: '設計保留拿取、搬運與放置時的形狀、重量和接觸關係，不把材料只當作清單中的名稱。' },
+        { title: '從觀察形成方法', text: '讓玩家先遇到問題，再比較材料、位置與做法，透過嘗試和修正理解條件，而非直接取得配方答案。' },
+        { title: '讓成功成為可靠能力', text: '不只追求碰巧完成一次，而是理解方法何時成立，再逐步走向工具、製造與文明發展。' }
+      ],
+      example: {
+        heading: 'Design scenario · 設計情境',
+        title: '第一次面對寒冷',
+        text: '天色逐漸轉暗，玩家需要決定先登高觀察附近地形，還是先搬運材料、安排停留的位置。探索可能帶來更好的判斷，但也會消耗準備時間；眼前方便的位置，也不一定適合整夜休息。',
+        note: '這是呈現選擇與取捨的設計情境，不是已驗收的遊玩成果或固定攻略。'
+      },
+      role: [
+        '我負責遊戲方向、世界與玩法取捨，並根據實際操作回饋調整需求。',
+        'AI 參與研究整理、程式實作、製作工具與文件工作；人工操作回饋與自動檢查分開看待。'
+      ],
+      more: '查看研究、設計紀錄與最新開發進度。'
+    },
     github: 'https://github.com/KeeCharlotte/Civilization-Rebuilt-Portfolio',
     sourceLabel: 'View project'
   });
@@ -151,15 +194,79 @@
     }
     main.replaceChildren(...ordered); // Preserve the old desktop row order on every device.
   }
-  function addProjectAlias(title, project) {
-    if (!title || !project?.engineeringName || title.querySelector('[data-engineering-name]')) return;
-    const alias = el('span', 'project-work-zh', project.engineeringName);
-    alias.dataset.engineeringName = 'true';
+  function addProjectAlias(title, project, includeChinese = false) {
+    const text = project?.engineeringName || (includeChinese ? project?.nameZh : '');
+    if (!title || !text || title.querySelector('[data-project-alias]')) return;
+    const alias = el('span', 'project-work-zh', text);
+    alias.dataset.projectAlias = 'true';
     // Reuse the original secondary-label style; only place this label on its own line.
     alias.style.display = 'block';
     alias.style.marginTop = '6px';
     alias.style.fontFamily = 'var(--sans)';
     title.append(document.createTextNode(' '), alias);
+  }
+  // Stable project introductions; live progress and detailed evidence stay in the public repositories.
+  function renderProjectOverview(view, project) {
+    const grid = byId('projectStatus').closest('.info-grid');
+    const technology = byId('projectTechnology').closest('.info-card');
+    const title = byId('projectTitle');
+    if (!view.querySelector('.project-intro')) {
+      const eyebrow = title.previousElementSibling;
+      const header = el('header', 'project-intro');
+      eyebrow.before(header);
+      header.append(eyebrow, title, byId('projectDescriptionEn'), byId('projectDescriptionZh'));
+    }
+    let overview = byId('projectOverview');
+    if (!overview) {
+      overview = el('div', 'project-overview'); overview.id = 'projectOverview';
+      grid.insertBefore(overview, technology);
+    }
+    let more = byId('projectReadMore');
+    if (!more) {
+      more = el('p', 'project-read-more'); more.id = 'projectReadMore'; more.lang = 'zh-Hant';
+      byId('githubLink').before(more);
+    }
+    const detail = project?.overview;
+    // Rebuild only this shared detail region so project switches cannot retain another project's copy.
+    overview.replaceChildren();
+    overview.hidden = !detail; more.hidden = !detail;
+    more.textContent = detail?.more || '';
+    byId('githubLink').classList.toggle('has-project-context', Boolean(detail));
+    if (!detail) return;
+    const paragraph = text => {
+      const p = el('p', 'project-section-copy', text); p.lang = 'zh-Hant'; return p;
+    };
+    const section = (id, heading) => {
+      const node = el('section', 'project-section');
+      const h = el('h2', 'project-section-title', heading); h.id = id;
+      h.dataset.tocLabel = heading.split(' · ').at(-1);
+      node.setAttribute('aria-labelledby', id); node.append(h); overview.append(node);
+      return node;
+    };
+    const focus = section('project-focus', detail.focusTitle);
+    const highlights = el('div', 'project-highlights');
+    detail.highlights.forEach(item => {
+      const row = el('div', 'project-highlight'); row.lang = 'zh-Hant';
+      row.append(el('h3', 'project-item-title', item.title), paragraph(item.text));
+      highlights.append(row);
+    });
+    focus.append(highlights);
+    if (detail.workflow?.length) {
+      const flow = section('project-workflow', 'Workflow · 流程概覽');
+      const steps = el('ol', 'project-workflow'); steps.lang = 'zh-Hant';
+      detail.workflow.forEach(item => {
+        const step = el('li');
+        step.append(el('h3', 'project-item-title', item.title), paragraph(item.text));
+        steps.append(step);
+      });
+      flow.append(steps);
+    }
+    const example = section('project-example', detail.example.heading);
+    const exampleTitle = el('h3', 'project-item-title', detail.example.title); exampleTitle.lang = 'zh-Hant';
+    const note = el('p', 'project-example-note', detail.example.note); note.lang = 'zh-Hant';
+    example.append(exampleTitle, paragraph(detail.example.text), note);
+    const role = section('project-role', 'My role · 我的角色');
+    detail.role.forEach(text => role.append(paragraph(text)));
   }
   function renderProjectTechnologies(project) {
     const value = byId('projectTechnology');
@@ -191,7 +298,8 @@
     if (view.id === 'projectPage') {
       const index = Number(info.route.split('/').at(-1));
       const project = projects[info.category]?.[index];
-      addProjectAlias(byId('projectTitle'), project);
+      addProjectAlias(byId('projectTitle'), project, true);
+      renderProjectOverview(view, project);
       renderProjectTechnologies(project);
       byId('githubLink').textContent = (project?.sourceLabel || 'View source code') + ' ↗';
     }
@@ -249,7 +357,7 @@
     const list = el('ol', 'toc-list');
     headings.forEach(heading => {
       const li = el('li');
-      const a = routeLink(heading.textContent.trim(), info.route + '?section=' + heading.id);
+      const a = routeLink(heading.dataset.tocLabel || heading.textContent.trim(), info.route + '?section=' + heading.id);
       a.dataset.chapterLink = heading.id;
       li.append(a); list.append(li);
     });

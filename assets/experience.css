@@ -43,12 +43,12 @@ img { max-width: 100%; }
 .entry-arrow { flex: 0 0 auto; color: var(--rose); font: 22px/1 var(--sans); }
 .subpage-hero { padding: 40px 0 28px; }
 .subpage-title { font-size: clamp(44px, 5.8vw, 68px); }
+.discipline-manifesto, .cognition-manifesto, .survival-lede { max-width: var(--reading-width); font-family: var(--sans); font-weight: 400; font-size: clamp(19px, 2.1vw, 25px); line-height: 1.65; letter-spacing: 0; }
 .subpage-intro { font-family: var(--sans); letter-spacing: 0; font-size: 17px; line-height: 1.7; }
 .ability-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 14px 24px; padding-bottom: 40px; }
 .discipline-main, .cognition-main, .survival-main, .survival-category-main { max-width: 1040px; padding: 36px 0 56px; }
 .discipline-hero, .cognition-hero, .survival-hero { padding: 14px 0 36px; }
 .detail-title { font-size: clamp(40px, 5.6vw, 68px); line-height: 1.12; }
-.discipline-manifesto, .cognition-manifesto, .survival-lede { max-width: var(--reading-width); font-family: var(--sans); font-weight: 400; font-size: clamp(19px, 2.1vw, 25px); line-height: 1.65; letter-spacing: 0; }
 .discipline-manifesto-zh, .cognition-manifesto-zh, .survival-lede-zh { font-size: 16px; line-height: 1.8; }
 .archive-section, .cognition-index-section { padding-top: 26px; }
 .archive-section-title, .ability-group-title { font-size: 13px; letter-spacing: .07em; }
@@ -230,4 +230,48 @@ main[tabindex='-1']:focus, h1[tabindex='-1']:focus, [data-chapter]:focus { outli
     letter-spacing: 0; white-space: normal;
   }
   #fictionPage .fiction-meta-value { font-size: 14px; }
+}
+
+/* Project introductions share the original palette and information-card appearance. */
+#projectPage .project-overview {
+  grid-column: 1 / -1; min-width: 0;
+  display: grid; gap: 32px; margin: 20px 0 16px;
+}
+#projectPage .project-section { min-width: 0; padding-top: 26px; border-top: 1px solid var(--line); }
+#projectPage .project-section-title {
+  margin: 0 0 22px; color: var(--rose); font-family: var(--mono);
+  font-size: 14px; font-weight: 500; line-height: 1.6; letter-spacing: .035em;
+}
+#projectPage .project-highlights { display: grid; gap: 24px; }
+#projectPage .project-item-title {
+  margin: 0; color: var(--text); font-family: var(--serif);
+  font-size: 22px; font-weight: 600; line-height: 1.4;
+}
+#projectPage .project-section-copy {
+  margin: 8px 0 0; color: var(--muted); font-family: var(--sans);
+  font-size: 16px; line-height: 1.85;
+}
+#projectPage .project-workflow {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px;
+  margin: 0; padding: 0; list-style: none;
+}
+#projectPage .project-workflow li { min-width: 0; position: relative; }
+#projectPage .project-workflow .project-item-title { font-size: 19px; }
+#projectPage .project-workflow li:not(:last-child)::after {
+  content: '→'; position: absolute; right: -24px; top: 2px;
+  color: var(--rose); font-family: var(--sans); font-size: 18px;
+}
+#projectPage .project-example-note {
+  margin: 12px 0 0; color: var(--muted); font-size: 14px; line-height: 1.8;
+}
+#projectPage .project-read-more { margin: 26px 0 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+#projectPage .github-button.has-project-context { margin-top: 12px; }
+@media (max-width: 600px) {
+  #projectPage .topbar { flex-wrap: wrap; row-gap: 0; }
+  #projectPage .topbar .back-link { margin-left: auto; }
+  #projectPage .project-overview { gap: 28px; margin-top: 14px; }
+  #projectPage .project-section { padding-top: 22px; }
+  #projectPage .project-section-title { margin-bottom: 18px; }
+  #projectPage .project-workflow { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  #projectPage .project-workflow li:not(:last-child)::after { content: '↓'; left: 0; right: auto; top: auto; bottom: -29px; }
 }
