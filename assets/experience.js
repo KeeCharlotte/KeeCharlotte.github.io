@@ -18,7 +18,8 @@
       { label: 'Frontend', value: 'HTML · CSS · JavaScript' },
       { label: 'Deployment', value: 'Docker' }
     ],
-    github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio'
+    github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio',
+    sourceLabel: 'View project'
   });
   // Main-game metadata; the frozen Babylon build remains a separate reference.
   Object.assign(projects.Games[0], {
@@ -418,7 +419,7 @@
   window.addEventListener('scroll', () => {
     if (!scrollFrame) scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; updateChapterPosition(); });
     clearTimeout(saveTimer); saveTimer = setTimeout(() => remember(), 180);
-  }, { passive: true });
+  });
   window.addEventListener('pagehide', () => remember());
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') remember(); });
   let resizeTimer;
