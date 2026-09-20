@@ -1,3 +1,4 @@
 # KeeCharlotte
 ## Personal Portfolio Website
-visit: 
+visit:  https://keecharlotte.github.io/#home
+
