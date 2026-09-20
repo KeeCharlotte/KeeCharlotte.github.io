@@ -419,7 +419,7 @@
   window.addEventListener('scroll', () => {
     if (!scrollFrame) scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; updateChapterPosition(); });
     clearTimeout(saveTimer); saveTimer = setTimeout(() => remember(), 180);
-  });
+  }, { passive: true });
   window.addEventListener('pagehide', () => remember());
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') remember(); });
   let resizeTimer;
