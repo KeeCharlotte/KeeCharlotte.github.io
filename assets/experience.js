@@ -4,7 +4,7 @@
   'use strict';
   // Project metadata shared by cards, detail pages, and breadcrumbs.
   Object.assign(projects.Software[0], {
-    name: 'Veritrail',
+    name: 'LedgerTrail',
     engineeringName: 'AAAS-TW',
     summaryEn: 'A traceable accounting and financial evidence workspace.',
     summaryZh: '可追溯的會計與財務證據工作台。',
@@ -74,7 +74,7 @@
       ],
       more: '查看實作案例、功能範圍與最新專案狀態。'
     },
-    github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio',
+    github: 'https://github.com/KeeCharlotte/LedgerTrail-Portfolio',
     sourceLabel: 'View project'
   });
   // Main-game metadata; the frozen Babylon build remains a separate reference.
