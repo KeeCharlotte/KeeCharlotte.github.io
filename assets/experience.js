@@ -74,7 +74,7 @@
       ],
       more: '查看實作案例、功能範圍與最新專案狀態。'
     },
-    github: 'https://github.com/KeeCharlotte/Veritrail-Portfolio',
+    github: 'https://github.com/KeeCharlotte/LedgerTrail-Portfolio',
     sourceLabel: 'View project'
   });
   // Main-game metadata; the frozen Babylon build remains a separate reference.
