@@ -2,15 +2,17 @@
    content fetch is required. Existing hashes remain valid. */
 (() => {
   'use strict';
+  // Pin the site's dated claims to an already-public portfolio snapshot.
+  const ledgerTrailSnapshot = 'https://github.com/KeeCharlotte/LedgerTrail-Portfolio/blob/d20a0ddcdc7c400f2566fad9a05e9af81f1a9662/';
   // Project metadata shared by cards, detail pages, and breadcrumbs.
   Object.assign(projects.Software[0], {
     name: 'LedgerTrail',
-    engineeringName: 'AAAS-TW',
-    summaryEn: 'A traceable accounting and financial evidence workspace.',
-    summaryZh: '可追溯的會計與財務證據工作台。',
-    descriptionEn: 'A traceable workspace connecting source documents, human review, and accounting results.',
-    descriptionZh: '帳跡把來源文件、人工覆核與帳務結果連在一起，讓每個數字都有可追查的依據。',
-    status: 'In Development',
+    engineeringName: 'AAAS-TW / AAAS',
+    summaryEn: 'An accounting workspace spanning review, posting, corrections, and evidence.',
+    summaryZh: '串起來源、覆核、過帳、更正與交付，並管理組織權限及版本依據。',
+    descriptionEn: 'An AI-assisted accounting systems project connecting workflows, database controls, and traceable evidence.',
+    descriptionZh: '帳跡面向會計師／記帳士主導的中小企業流程，讓人查到數字的依據、處理者、使用版本與未解問題。完整系統保留私人，公開政策模組只是其中一個實作樣本。',
+    status: 'Local / synthetic prototype',
     technology: 'Python / Flask · PostgreSQL · HTML / CSS / JavaScript · Docker',
     technologyGroups: [
       { label: 'Backend', value: 'Python · Flask' },
@@ -19,63 +21,63 @@
       { label: 'Deployment', value: 'Docker' }
     ],
     overview: {
+      scope: {
+        heading: 'System scope · 系統全貌',
+        items: [
+          { title: '12 個功能領域', text: '涵蓋身分與平台治理、來源、草稿、覆核、過帳更正、對帳、交付、證據、工作台、恢復、AI 控制及外部接入；實作、受限與待完成項目分開列示。' },
+          { title: '727 個 SQL 目錄項目', text: '涵蓋會計、安全治理、證據及維運。這是生成目錄的物件統計，包含停用與相容資產，不是 727 個可用功能，也不是部署中的實測物件數。' },
+          { title: '1,838 個不重複 Python 案例', text: '0c15ee9 修復基準記錄互補環境取得 PASS；其中 29 套隔離 PostgreSQL 模組記錄 298 項通過。數字不相加，也不代表最新版本重新驗收。' }
+        ],
+        note: '2026-09-29 盤點，對照公開作品集 0.4.0／d20a0dd，系統盤點來源 2bc586c。完整系統測試數沿用庫內紀錄，本次未重跑或取得全部原始 JUnit。',
+        link: { label: '查看系統架構與統計口徑', url: ledgerTrailSnapshot + 'docs/ARCHITECTURE.md' }
+      },
       workflowTitle: 'Workflow & controls · 流程與控制',
-      workflowIntro: '從來源文件到帳務交付，串起資料依據、版本變更與操作責任；必要條件不成立時，流程停止，而不是勉強產生結果。',
+      workflowIntro: '工作台與 API 連接領域服務、PostgreSQL、背景工作及證據查詢。下列是主要操作流程，不是所有元件都依序執行；必要條件不成立時停止。',
       workflow: [
-        {
-          title: '來源接收與依據留存',
-          text: '將來源文件與後續處理建立關聯，保留查閱、版本與內容核對依據，讓帳務結果能回到原始資料。',
-          control: '有資料，不等於已有可信依據。'
-        },
-        {
-          title: '草稿形成與政策檢查',
-          text: '檢查交易資料、科目語意、金額與適用政策，再形成候選分錄；必要條件不足時要求補足。',
-          control: '借貸平衡，不等於會計判斷正確。',
-          branch: { label: '資料不足', text: '停止並要求補足，不以預設值或猜測繞過必要條件。' }
-        },
-        {
-          title: '獨立覆核與補件重審',
-          text: '由準備者以外的人確認與覆核；補件時保留舊版、建立新版，再重新完成確認與核准。',
-          control: '內容變了，核准也要重新成立。',
-          branch: { label: '覆核退回', text: '補件建立新版 → 重新確認與覆核，不沿用舊核准。' }
-        },
-        {
-          title: '受控過帳與帳務更正',
-          text: '過帳前重查來源、核准、科目、政策、權限與期間；更正以沖回或替代方式處理，保留原始關聯。',
-          control: '已過帳內容，不以直接覆寫消除歷史。',
-          branch: { label: '過帳後有誤', text: '另建更正案件 → 核准後沖回或替代，保留原紀錄與處理關聯。' }
-        },
-        {
-          title: '對帳與異常處理',
-          text: '配對提案經獨立確認；未解決差異進入例外處理，結案須有相應佐證，也保留重開歷程。',
-          control: '配對不等於確認，標記不等於問題已解決。'
-        },
-        {
-          title: '結果匯出與佐證交付',
-          text: '將帳務結果連同相關歷程與佐證整理交付，分開記錄檔案建立、授權下載與獨立交付狀態。',
-          control: '產生檔案，不等於完成交付。'
-        }
+        { title: '來源與欄位', text: '受控上傳、查閱與版本關聯；固定合成文字模板可帶入欄位，文件原值與人工修正分開保存。', control: '帶入欄位，不等於完成辨識或覆核。' },
+        { title: '草稿與科目', text: '檢查交易語意、金額、政策及科目。科目修訂另有提案、獨立決策、生效、取代與停用。', control: '借貸平衡，不等於會計判斷正確。' },
+        { title: '確認、覆核與補件', text: '必要確認與核准分工處理；補件保留原版，建立新版後重新覆核。', branch: { label: '覆核退回', text: '補件 → 新版本 → 重新確認，不沿用舊核准。' } },
+        { title: '過帳、更正與期間', text: '寫入時重驗來源、政策、權限與期間；更正透過受控沖回或替代重記，保留原帳依據。', branch: { label: '已過帳有誤', text: '另提更正案件，經核准及必要期間控制後處理。' } },
+        { title: '對帳與例外', text: '合成銀行資料配對經獨立確認；例外須依對應佐證結案，保留拒絕及重開歷程。', control: '配對成功，不代表所有差異已解決。' },
+        { title: '交付與具名審查', text: '建立與下載 CSV、限定範圍的證據包，分開記錄交付、開啟與回覆。', control: '下載或回覆，不等於外部接受或離線驗證通過。' }
       ],
-      workflowControls: [
-        '組織資料與操作權限隔離',
-        '來源、版本與處理歷程追溯',
-        '操作重試不重複產生帳務影響'
-      ],
-      workflowNote: '以上為系統流程與控制設計；各情境的支援及驗證範圍請見公開專案。',
+      workflowControls: ['不同組織的資料與權限分開', '保存來源、版本與處理歷程', '未知結果先查回，不任意重送'],
+      workflowNote: '目前主要操作限本機／測試與合成資料；工作台交付包尚未完整接通離線驗證器。',
+      cases: {
+        heading: 'Design cases · 跨模組難題',
+        items: [
+          { title: '改了科目，舊帳依據怎麼辦？', text: '科目生效、原核准、目前認列、銀行結算及更正鏈必須協調。新設定不能直接改寫過去，單一函式通過也不足以證明整條流程成立。' },
+          { title: '逾時，是沒入帳還是沒收到回覆？', text: '保留原操作與內容，先查提交結果；允許重試時沿用原操作身分。不把網路錯誤當成另一筆交易，也不把未知結果顯示為成功。' },
+          { title: '切換客戶，舊請求還能回來嗎？', text: '每個組織重查成員與細分權限，清除舊畫面並拒收過期回應。管理員身分、看得到案件與有權過帳是不同條件。' }
+        ],
+        note: '這些是有來源的問題與控制原則，不是本次新跑的完整測試。',
+        link: { label: '閱讀案例、取捨與驗證限制', url: ledgerTrailSnapshot + 'docs/CASE_STUDY.md' }
+      },
+      progress: {
+        heading: 'Current status · 進度與界線',
+        items: [
+          { title: '已有的受控操作', text: '來源核對、製單、確認與核准、第三個帳號過帳、CSV 下載，以及案件搜尋、帳跡與本機試用引導。三個帳號不等於三位真人獨立覆核。' },
+          { title: '仍待接通與驗證', text: '真實來源、通用 OCR／ERP 等接入、專業政策採信、交付包與離線工具銜接，以及完整發布與正式維運驗收。部分還要實作，不只是缺 API key。' },
+          { title: '刻意暫緩', text: '跨國合併、永續報告、零知識證明、公有鏈及自主資金等 14 類不列入近期可用功能。另有帳齡／現金流投影未完成，所有環境停用；AI 財務變更控制限內部實驗。' }
+        ],
+        link: { label: '查看 12 領域、暫緩項目與剩餘工作', url: ledgerTrailSnapshot + 'docs/STATUS.md' }
+      },
       example: {
-        heading: 'Case study · 合成資料案例',
-        title: '草稿修改後，重新覆核再過帳',
-        text: '一筆草稿退回補件後建立新版，重新完成獨立確認與核准，再由第三個帳號過帳並匯出分錄。舊版與退回歷程仍然保留，修改資料不沿用舊核准。',
-        note: '2026-09-12 的歷史版本合成資料案例，不代表真實客戶成果或正式營運驗收。'
+        heading: 'Recorded outcome · 歷史操作成果',
+        title: '105 元退回，210 元新版重新核准後過帳',
+        text: '2026-09-12 的合成瀏覽器測試保留舊版與退回歷程，新版重新確認及覆核，再由第三個帳號過帳。原 CSV 有同一分錄 3 行，借貸各 210 元；公開政策函式另有 112 項測試的原紀錄。',
+        note: '流程版本 9012a79、模組版本 4841c001；不是最新版畫面或真實客戶成果。當時整批 19 個工作有 18 個成功，安全套件 2 項失敗仍保留，局部 PASS 不覆蓋整輪失敗。',
+        link: { label: '查看原圖、CSV 與歷史結果', url: ledgerTrailSnapshot + 'docs/CASE_STUDY.md#historical-demo' }
       },
       role: [
-        '我負責提出問題、界定需求與範圍，並要求 AI 依目標修改。',
-        '程式、文件、測試與修復由 AI 產出，測試由 AI 執行；這不等於我已親自重跑或獨立驗證整套系統。'
+        '我以會計背景提出問題、界定範圍及驗收要求，檢視 AI 回報與證據，再依操作反例要求修正。例如減少來源重抄、讓拒絕可定位，並保留原錯誤案件，而不是放寬控制讓它通過。',
+        'AI 協助程式、文件、測試與證據產出。我尚未親自完整重跑或獨立驗證整套系統；系統規模不等於我獨力完成全部實作。'
       ],
-      more: '查看實作案例、功能範圍與最新專案狀態。'
+      more: '完整架構、功能狀態與證據請看公開作品集；本網站不提供完整工作台、核心後端、SQL 或試用帳密。',
+      roleLink: { label: '需求、取捨與實際分工', url: ledgerTrailSnapshot + 'docs/CASE_STUDY.md#contribution' }
     },
     github: 'https://github.com/KeeCharlotte/LedgerTrail-Portfolio',
-    sourceLabel: 'View project'
+    sourceLabel: 'View full portfolio'
   });
   // Main-game metadata; the frozen Babylon build remains a separate reference.
   Object.assign(projects.Games[0], {
@@ -237,7 +239,7 @@
     alias.style.fontFamily = 'var(--sans)';
     title.append(document.createTextNode(' '), alias);
   }
-  // Stable project introductions; live progress and detailed evidence stay in the public repositories.
+  // Project summaries can cite dated public snapshots; other projects keep their existing layout.
   function renderProjectOverview(view, project) {
     const grid = byId('projectStatus').closest('.info-grid');
     const technology = byId('projectTechnology').closest('.info-card');
@@ -275,6 +277,30 @@
       node.setAttribute('aria-labelledby', id); node.append(h); overview.append(node);
       return node;
     };
+    // Optional, text-only sections share existing styles and chapter navigation.
+    const reference = (parent, link) => {
+      if (!link) return;
+      const a = el('a', 'github-button has-project-context', link.label + ' ↗');
+      a.href = link.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.lang = 'zh-Hant'; parent.append(a);
+    };
+    const group = (id, data) => {
+      if (!data?.items?.length) return;
+      const node = section(id, data.heading);
+      const rows = el('div', 'project-highlights');
+      data.items.forEach(item => {
+        const row = el('div', 'project-highlight'); row.lang = 'zh-Hant';
+        row.append(el('h3', 'project-item-title', item.title), paragraph(item.text));
+        rows.append(row);
+      });
+      node.append(rows);
+      if (data.note) {
+        const note = el('p', 'project-example-note', data.note); note.lang = 'zh-Hant';
+        node.append(note);
+      }
+      reference(node, data.link);
+    };
+    group('project-scope', detail.scope);
     if (detail.highlights?.length) {
       const focus = section('project-focus', detail.focusTitle);
       const highlights = el('div', 'project-highlights');
@@ -332,12 +358,16 @@
         flow.append(note);
       }
     }
+    group('project-cases', detail.cases);
+    group('project-progress', detail.progress);
     const example = section('project-example', detail.example.heading);
     const exampleTitle = el('h3', 'project-item-title', detail.example.title); exampleTitle.lang = 'zh-Hant';
     const note = el('p', 'project-example-note', detail.example.note); note.lang = 'zh-Hant';
     example.append(exampleTitle, paragraph(detail.example.text), note);
+    reference(example, detail.example.link);
     const role = section('project-role', 'My role · 我的角色');
     detail.role.forEach(text => role.append(paragraph(text)));
+    reference(role, detail.roleLink);
   }
   function renderProjectTechnologies(project) {
     const value = byId('projectTechnology');
