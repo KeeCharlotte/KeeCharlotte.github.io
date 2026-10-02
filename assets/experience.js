@@ -2,119 +2,177 @@
    content fetch is required. Existing hashes remain valid. */
 (() => {
   'use strict';
-  // Pin the site's dated claims to an already-public portfolio snapshot.
-  const ledgerTrailSnapshot = 'https://github.com/KeeCharlotte/LedgerTrail-Portfolio/blob/d20a0ddcdc7c400f2566fad9a05e9af81f1a9662/';
-  // Project metadata shared by cards, detail pages, and breadcrumbs.
+  // Life-portfolio introductions record purpose, choices and experience.
+  // Implementation status and versioned evidence belong in the linked project repositories.
   Object.assign(projects.Software[0], {
-    name: 'LedgerTrail',
-    engineeringName: 'AAAS-TW / AAAS',
-    summaryEn: 'An accounting workspace spanning review, posting, corrections, and evidence.',
-    summaryZh: '串起來源、覆核、過帳、更正與交付，並管理組織權限及版本依據。',
-    descriptionEn: 'An AI-assisted accounting systems project connecting workflows, database controls, and traceable evidence.',
-    descriptionZh: '帳跡面向會計師／記帳士主導的中小企業流程，讓人查到數字的依據、處理者、使用版本與未解問題。完整系統保留私人，公開政策模組只是其中一個實作樣本。',
-    status: 'Local / synthetic prototype',
-    technology: 'Python / Flask · PostgreSQL · HTML / CSS / JavaScript · Docker',
-    technologyGroups: [
-      { label: 'Backend', value: 'Python · Flask' },
-      { label: 'Database', value: 'PostgreSQL' },
-      { label: 'Frontend', value: 'HTML · CSS · JavaScript' },
-      { label: 'Deployment', value: 'Docker' }
+    "name": "LedgerTrail",
+    "engineeringName": "AAAS-TW / AAAS",
+    "summaryEn": "Exploring the evidence, judgment, and responsibility behind accounting decisions.",
+    "summaryZh": "從會計問題出發，探索數字背後的來源、判斷與責任。",
+    "descriptionEn": "An accounting systems project about making financial decisions understandable and traceable.",
+    "descriptionZh": "帳跡是我從會計背景出發的資訊系統專案。我關心的不只是如何產生分錄，而是人如何理解數字的依據、檢查處理過程，並在出錯時保留可追溯的更正。",
+    "status": "Accounting systems project",
+    "start": "Feb 2026",
+    "technology": "Python / Flask · PostgreSQL · HTML / CSS / JavaScript · Docker",
+    "technologyGroups": [
+      {
+        "label": "Backend",
+        "value": "Python · Flask"
+      },
+      {
+        "label": "Database",
+        "value": "PostgreSQL"
+      },
+      {
+        "label": "Frontend",
+        "value": "HTML · CSS · JavaScript"
+      },
+      {
+        "label": "Environment",
+        "value": "Docker"
+      }
     ],
-    overview: {
-      scope: {
-        heading: 'System scope · 系統全貌',
-        items: [
-          { title: '12 個功能領域', text: '涵蓋身分與平台治理、來源、草稿、覆核、過帳更正、對帳、交付、證據、工作台、恢復、AI 控制及外部接入；實作、受限與待完成項目分開列示。' },
-          { title: '727 個 SQL 目錄項目', text: '涵蓋會計、安全治理、證據及維運。這是生成目錄的物件統計，包含停用與相容資產，不是 727 個可用功能，也不是部署中的實測物件數。' },
-          { title: '1,838 個不重複 Python 案例', text: '0c15ee9 修復基準記錄互補環境取得 PASS；其中 29 套隔離 PostgreSQL 模組記錄 298 項通過。數字不相加，也不代表最新版本重新驗收。' }
-        ],
-        note: '2026-09-29 盤點，對照公開作品集 0.4.0／d20a0dd，系統盤點來源 2bc586c。完整系統測試數沿用庫內紀錄，本次未重跑或取得全部原始 JUnit。',
-        link: { label: '查看系統架構與統計口徑', url: ledgerTrailSnapshot + 'docs/ARCHITECTURE.md' }
+    "overview": {
+      "scope": {
+        "heading": "Why this project · 專案緣起",
+        "items": [
+          {
+            "title": "數字之外，還需要看見依據",
+            "text": "一筆帳務的意義不只在金額，也在原始資料、處理理由與責任分工。我把這些關係當成系統設計的起點，而不是等到查帳時才補上說明。"
+          },
+          {
+            "title": "把會計問題轉成系統問題",
+            "text": "我以會計師／記帳士與中小企業的工作情境為背景，思考哪些工作可以交給系統協助，哪些判斷仍需要人負責。"
+          }
+        ]
       },
-      workflowTitle: 'Workflow & controls · 流程與控制',
-      workflowIntro: '工作台與 API 連接領域服務、PostgreSQL、背景工作及證據查詢。下列是主要操作流程，不是所有元件都依序執行；必要條件不成立時停止。',
-      workflow: [
-        { title: '來源與欄位', text: '受控上傳、查閱與版本關聯；固定合成文字模板可帶入欄位，文件原值與人工修正分開保存。', control: '帶入欄位，不等於完成辨識或覆核。' },
-        { title: '草稿與科目', text: '檢查交易語意、金額、政策及科目。科目修訂另有提案、獨立決策、生效、取代與停用。', control: '借貸平衡，不等於會計判斷正確。' },
-        { title: '確認、覆核與補件', text: '必要確認與核准分工處理；補件保留原版，建立新版後重新覆核。', branch: { label: '覆核退回', text: '補件 → 新版本 → 重新確認，不沿用舊核准。' } },
-        { title: '過帳、更正與期間', text: '寫入時重驗來源、政策、權限與期間；更正透過受控沖回或替代重記，保留原帳依據。', branch: { label: '已過帳有誤', text: '另提更正案件，經核准及必要期間控制後處理。' } },
-        { title: '對帳與例外', text: '合成銀行資料配對經獨立確認；例外須依對應佐證結案，保留拒絕及重開歷程。', control: '配對成功，不代表所有差異已解決。' },
-        { title: '交付與具名審查', text: '建立與下載 CSV、限定範圍的證據包，分開記錄交付、開啟與回覆。', control: '下載或回覆，不等於外部接受或離線驗證通過。' }
+      "workflowTitle": "A design lens · 如何看待會計流程",
+      "workflowIntro": "我用以下問題整理流程與控制需求；它們是設計思路，不是功能完成清單。",
+      "workflow": [
+        {
+          "title": "來源：這個數字從哪裡來？",
+          "text": "先保留原件與使用脈絡，再談自動化；資料被帶入，不代表內容已經正確。"
+        },
+        {
+          "title": "判斷：為什麼這樣處理？",
+          "text": "把輸入事實、政策與專業判斷分開，讓建議有依據，也容許被質疑與退回。"
+        },
+        {
+          "title": "責任：誰可以決定與執行？",
+          "text": "區分準備、覆核與核准的責任，不把看得到資料當成有權改帳。"
+        },
+        {
+          "title": "更正：出錯之後怎麼交代？",
+          "text": "保留原來發生的事與後續修改，使新結果能被理解，而不是把舊錯誤直接抹去。"
+        }
       ],
-      workflowControls: ['不同組織的資料與權限分開', '保存來源、版本與處理歷程', '未知結果先查回，不任意重送'],
-      workflowNote: '目前主要操作限本機／測試與合成資料；工作台交付包尚未完整接通離線驗證器。',
-      cases: {
-        heading: 'Design cases · 跨模組難題',
-        items: [
-          { title: '改了科目，舊帳依據怎麼辦？', text: '科目生效、原核准、目前認列、銀行結算及更正鏈必須協調。新設定不能直接改寫過去，單一函式通過也不足以證明整條流程成立。' },
-          { title: '逾時，是沒入帳還是沒收到回覆？', text: '保留原操作與內容，先查提交結果；允許重試時沿用原操作身分。不把網路錯誤當成另一筆交易，也不把未知結果顯示為成功。' },
-          { title: '切換客戶，舊請求還能回來嗎？', text: '每個組織重查成員與細分權限，清除舊畫面並拒收過期回應。管理員身分、看得到案件與有權過帳是不同條件。' }
-        ],
-        note: '這些是有來源的問題與控制原則，不是本次新跑的完整測試。',
-        link: { label: '閱讀案例、取捨與驗證限制', url: ledgerTrailSnapshot + 'docs/CASE_STUDY.md' }
+      "cases": {
+        "heading": "Design choices · 代表性取捨",
+        "items": [
+          {
+            "title": "自動化與專業判斷分工",
+            "text": "我選擇讓 AI 協助整理與提出建議，而不是把生成結果視為會計結論。效率必須和可檢查、可退回及責任分工一起考慮。"
+          },
+          {
+            "title": "保留錯誤，而不是只留下成功",
+            "text": "面對被拒絕或出錯的案例，我要求先辨認原因、保存前後脈絡，再決定修改哪一層；不以放寬規則讓畫面看起來順利。"
+          }
+        ]
       },
-      progress: {
-        heading: 'Current status · 進度與界線',
-        items: [
-          { title: '已有的受控操作', text: '來源核對、製單、確認與核准、第三個帳號過帳、CSV 下載，以及案件搜尋、帳跡與本機試用引導。三個帳號不等於三位真人獨立覆核。' },
-          { title: '仍待接通與驗證', text: '真實來源、通用 OCR／ERP 等接入、專業政策採信、交付包與離線工具銜接，以及完整發布與正式維運驗收。部分還要實作，不只是缺 API key。' },
-          { title: '刻意暫緩', text: '跨國合併、永續報告、零知識證明、公有鏈及自主資金等 14 類不列入近期可用功能。另有帳齡／現金流投影未完成，所有環境停用；AI 財務變更控制限內部實驗。' }
-        ],
-        link: { label: '查看 12 領域、暫緩項目與剩餘工作', url: ledgerTrailSnapshot + 'docs/STATUS.md' }
+      "progress": {
+        "heading": "What I learned · 留下的思考",
+        "items": [
+          {
+            "title": "單一步驟正確，不代表整個流程成立",
+            "text": "來源、權限、覆核、更正與期間會互相影響。這個專案讓我把注意力從單一功能，移到規則之間的關係。"
+          },
+          {
+            "title": "證據需要說明它能證明什麼",
+            "text": "借貸平衡、資料完整與測試成功，各自回答不同問題；它們不能單獨證明交易真實、判斷適切或實際使用成效。"
+          }
+        ]
       },
-      example: {
-        heading: 'Recorded outcome · 歷史操作成果',
-        title: '105 元退回，210 元新版重新核准後過帳',
-        text: '2026-09-12 的合成瀏覽器測試保留舊版與退回歷程，新版重新確認及覆核，再由第三個帳號過帳。原 CSV 有同一分錄 3 行，借貸各 210 元；公開政策函式另有 112 項測試的原紀錄。',
-        note: '流程版本 9012a79、模組版本 4841c001；不是最新版畫面或真實客戶成果。當時整批 19 個工作有 18 個成功，安全套件 2 項失敗仍保留，局部 PASS 不覆蓋整輪失敗。',
-        link: { label: '查看原圖、CSV 與歷史結果', url: ledgerTrailSnapshot + 'docs/CASE_STUDY.md#historical-demo' }
+      "example": {
+        "heading": "A project experience · 一段開發經驗",
+        "title": "測試之外，親自操作仍會提出新問題",
+        "text": "一次合成資料的人工操作中，我選用了與發票內容不一致的認列證據，流程仍接受核准與過帳。我提出這個反例，再由 AI 協助唯讀核對與保存結果。這讓我更重視：按下核准與留下紀錄，不等於內容已被正確理解。",
+        "note": "這是對一次開發經驗的回顧，不是對後續版本的缺陷狀態或完整系統正確性作判定。"
       },
-      role: [
-        '我以會計背景提出問題、界定範圍及驗收要求，檢視 AI 回報與證據，再依操作反例要求修正。例如減少來源重抄、讓拒絕可定位，並保留原錯誤案件，而不是放寬控制讓它通過。',
-        'AI 協助程式、文件、測試與證據產出。我尚未親自完整重跑或獨立驗證整套系統；系統規模不等於我獨力完成全部實作。'
+      "role": [
+        "我負責從會計問題界定需求、選擇範圍與取捨、提出驗收要求，並透過操作與結果核對檢查自己的假設。需求調整與錯誤案例，也是我在專案中的工作成果。",
+        "我使用 AI 協助程式實作、研究整理、測試與文件；個人判斷、親自操作和 AI 執行的工作分開記錄，不把整套程式或全部驗證歸為我獨力完成。"
       ],
-      more: '完整架構、功能狀態與證據請看公開作品集；本網站不提供完整工作台、核心後端、SQL 或試用帳密。',
-      roleLink: { label: '需求、取捨與實際分工', url: ledgerTrailSnapshot + 'docs/CASE_STUDY.md#contribution' }
+      "more": "這裡記錄專案的問題意識、設計取捨與個人經驗；實作、測試及適用限制由公開作品集承接，不以本頁介紹判定可部署或正式使用。"
     },
-    github: 'https://github.com/KeeCharlotte/LedgerTrail-Portfolio',
-    sourceLabel: 'View full portfolio'
+    "github": "https://github.com/KeeCharlotte/LedgerTrail-Portfolio",
+    "sourceLabel": "Explore the project · 深入了解專案"
   });
-  // Main-game metadata; the frozen Babylon build remains a separate reference.
   Object.assign(projects.Games[0], {
-    name: 'Civilization Rebuilt',
-    summaryEn: 'A first-person simulation of rebuilding civilization from nature.',
-    summaryZh: '從自然材料出發，逐步重建文明的第一人稱模擬遊戲。',
-    descriptionEn: 'A first-person simulation of rebuilding civilization through observation and experimentation.',
-    descriptionZh: '從自然材料出發，透過觀察、試驗與推理，逐步重建文明的第一人稱模擬遊戲。',
-    start: 'May 2026',
-    technology: 'Unity 6 · C# · URP · Blender',
-    technologyGroups: [
-      { label: 'Game Engine', value: 'Unity 6' },
-      { label: 'Programming', value: 'C#' },
-      { label: 'Rendering', value: 'Universal Render Pipeline (URP)' },
-      { label: '3D Assets', value: 'Blender' }
-    ],
-    overview: {
-      focusTitle: 'Design focus · 設計重點',
-      highlights: [
-        { title: '親手操作材料', text: '設計保留拿取、搬運與放置時的形狀、重量和接觸關係，不把材料只當作清單中的名稱。' },
-        { title: '從觀察形成方法', text: '讓玩家先遇到問題，再比較材料、位置與做法，透過嘗試和修正理解條件，而非直接取得配方答案。' },
-        { title: '讓成功成為可靠能力', text: '不只追求碰巧完成一次，而是理解方法何時成立，再逐步走向工具、製造與文明發展。' }
-      ],
-      example: {
-        heading: 'Design scenario · 設計情境',
-        title: '第一次面對寒冷',
-        text: '天色逐漸轉暗，玩家需要決定先登高觀察附近地形，還是先搬運材料、安排停留的位置。探索可能帶來更好的判斷，但也會消耗準備時間；眼前方便的位置，也不一定適合整夜休息。',
-        note: '這是呈現選擇與取捨的設計情境，不是已驗收的遊玩成果或固定攻略。'
+    "name": "Civilization Rebuilt",
+    "summaryEn": "A first-person game project about rebuilding civilization through observation and experimentation.",
+    "summaryZh": "從自然材料出發，透過觀察、試驗與推理，探索文明如何被建立。",
+    "descriptionEn": "A game project about the gap between knowing how civilization works and making it work with your own hands.",
+    "descriptionZh": "文明重建源於一個問題：離開現代便利之後，知道文明如何運作的人，真的能從自然材料重新做出來嗎？我希望玩家透過觀察、嘗試與修正，理解工具與生活能力如何逐步形成。",
+    "start": "May 2026",
+    "status": "First-person game project",
+    "technology": "Unity · C# · URP · Blender",
+    "technologyGroups": [
+      {
+        "label": "Game Engine",
+        "value": "Unity"
       },
-      role: [
-        '我負責遊戲方向、世界與玩法取捨，並根據實際操作回饋調整需求。',
-        'AI 參與研究整理、程式實作、製作工具與文件工作；人工操作回饋與自動檢查分開看待。'
+      {
+        "label": "Programming",
+        "value": "C#"
+      },
+      {
+        "label": "Rendering",
+        "value": "Universal Render Pipeline (URP)"
+      },
+      {
+        "label": "3D Assets",
+        "value": "Blender"
+      }
+    ],
+    "overview": {
+      "focusTitle": "Design philosophy · 核心理念",
+      "highlights": [
+        {
+          "title": "讓玩家創造文明，而不只是使用文明",
+          "text": "我把材料、環境與身體能力視為問題的條件；設計重點不是背熟配方，而是讓玩家理解某種做法為什麼成立。"
+        },
+        {
+          "title": "簡化操作，不代替判斷",
+          "text": "拿什麼、放哪裡、如何安排仍由玩家決定。角色可以協調日常動作，但操作上的協助不應替玩家完成材料與位置的取捨。"
+        },
+        {
+          "title": "從偶然成功，走向可靠能力",
+          "text": "一次做成不等於真正掌握。我關心玩家如何比較結果、修正假設，再把方法變成能重複使用的能力。"
+        }
       ],
-      more: '查看研究、設計紀錄與最新開發進度。'
+      "progress": {
+        "heading": "A design lesson · 一次設計反思",
+        "items": [
+          {
+            "title": "困難不一定等於深度",
+            "text": "試玩時，拿取不順與持物抖動讓我重新區分兩種困難：一種來自材料與環境，一種只是操作沒有可靠回應。前者可以是玩法，後者需要被檢查，不能用「自由度」替它辯護。"
+          }
+        ]
+      },
+      "example": {
+        "heading": "Design scenario · 設計情境",
+        "title": "第一次面對寒冷",
+        "text": "玩家需要決定先登高觀察地勢，還是搬運材料、安排停留的位置。探索可能增加資訊，也會消耗準備時間；眼前方便的位置，也未必適合休息。我想保留的是這種條件與代價之間的比較，而不是只有一條正確路線。",
+        "note": "這個情境說明遊戲想呈現的選擇，不是固定攻略，也不代表列出的體驗已全面實作或驗收。"
+      },
+      "role": [
+        "我負責遊戲方向、世界與玩法取捨，從研究和實際操作中提出問題，再決定哪些差異值得成為玩家需要理解的條件。",
+        "AI 協助研究整理、程式實作、素材製作工具與文件。我把方向決策、人工感受與自動檢查分開看待；程式能執行，不等於遊戲已讓人理解或願意繼續探索。"
+      ],
+      "more": "這裡保留創作動機、設計理念與個人反思；研究、製作紀錄與實作範圍集中於公開作品集，並與設計目標分開說明。"
     },
-    github: 'https://github.com/KeeCharlotte/Civilization-Rebuilt-Portfolio',
-    sourceLabel: 'View project'
+    "github": "https://github.com/KeeCharlotte/Civilization-Rebuilt-Portfolio",
+    "sourceLabel": "Explore the project · 深入了解專案"
   });
   const detailViews = new Set(['fictionDetailPage', 'disciplinePeriodPage',
     'cognitionDetailPage', 'survivalDetailPage', 'projectPage']);
@@ -239,7 +297,7 @@
     alias.style.fontFamily = 'var(--sans)';
     title.append(document.createTextNode(' '), alias);
   }
-  // Project summaries can cite dated public snapshots; other projects keep their existing layout.
+  // Long-lived introductions share the existing project layout and section anchors.
   function renderProjectOverview(view, project) {
     const grid = byId('projectStatus').closest('.info-grid');
     const technology = byId('projectTechnology').closest('.info-card');
